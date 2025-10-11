@@ -8,19 +8,19 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 
 function App() {
-  return (
-    <div>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="movies" element={<Movies />} />
-        <Route path="series" element={<Series />} />
-        <Route path="details" element={<Details />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
-    </div>
-  );
+    return (
+        <div className="space-y-6">
+            <Header />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="movies" element={<Movies />} />
+                <Route path="series" element={<Series />} />
+                <Route path="details" element={<Details />} />
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Footer />
+        </div>
+    );
 }
 
 export default App;
