@@ -64,7 +64,7 @@ export default function Header() {
               <Link
                 key={l.to}
                 to={l.to}
-                className={`px-3 py-2 rounded transition-colors text-sm ${
+                className={`px-3 py-2 rounded transition-colors text-md ${
                   isActive(l.to)
                     ? "text-accent-primary font-semibold"
                     : "text-text-secondary hover:text-text-primary"
