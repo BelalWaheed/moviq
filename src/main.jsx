@@ -4,6 +4,9 @@ import App from "./App.jsx";
 import { ThemeProvider } from "@material-tailwind/react";
 import { BrowserRouter } from "react-router-dom";
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <ThemeProvider>
