@@ -8,12 +8,7 @@ module.exports = withMT({
         "./node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}"
     ],
     theme: {
-        extend: {
-            fontFamily: {
-                bebas: ['"Bebas Neue"', "sans-serif"],
-                poppins: ["Poppins", "sans-serif"]
-            }
-        }
+        extend: {}
     },
     plugins: []
 });
