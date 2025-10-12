@@ -8,6 +8,8 @@ import MovieLoader from "../loading/MovieLoader";
 import { getSeries } from "../../redux/SeriesSlices/SeriesSlice";
 
 function Series() {
+    console.log("for pull");
+
     const dispatch = useDispatch();
 
     const { seriesList, seriesLoading, test } = useSelector(
