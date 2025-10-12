@@ -2,19 +2,24 @@ import React from "react";
 import { Card, CardBody } from "@material-tailwind/react";
 import { FaStar } from "react-icons/fa";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
+import { useDispatch } from "react-redux";
+import { getSeriesDetails } from "../../../redux/SeriesSlices/GetSeriesDetails";
+
+import { useNavigate } from "react-router-dom";
 
 const MainCard = ({
-    series: { name, poster_path, first_air_date, vote_average }
+    series: { id, name, poster_path, first_air_date, vote_average }
 }) => {
-    const movie = {
-        title: "Inception",
-        rating: 8.8,
-        year: 2010,
-        image: "https://m.media-amazon.com/images/I/81p+xe8cbnL._AC_SY679_.jpg"
-    };
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     return (
-        <Card className="w-full max-w-[220px] sm:max-w-[240px] md:max-w-[260px] lg:max-w-[280px] shadow-lg rounded-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer group bg-black">
+        <Card
+            onClick={() => {
+                dispatch(getSeriesDetails(id));
+                navigate("/seriesDetails");
+            }}
+            className="w-full max-w-[220px] sm:max-w-[240px] md:max-w-[260px] lg:max-w-[280px] shadow-lg rounded-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer group bg-black">
             <div className="relative w-full aspect-[2/3] overflow-hidden bg-black">
                 <img
                     src={`https://image.tmdb.org/t/p/w500${poster_path}`}
