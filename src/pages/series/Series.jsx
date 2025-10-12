@@ -5,16 +5,23 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Pagination from "./Pagination ";
 import MovieLoader from "../loading/MovieLoader";
-import { getSeries } from "../../redux/SeriesSlices/SeriesSlice";
+import {
+    getSeries,
+    pageReset,
+    setType
+} from "../../redux/SeriesSlices/SeriesSlice";
+import NotFound from "../notFound/NotFound";
 
 function Series() {
-    console.log("for pull");
-
     const dispatch = useDispatch();
 
-    const { seriesList, seriesLoading, test } = useSelector(
+    const { seriesList, seriesLoading, typing, seriesError } = useSelector(
         state => state.seriesReducer
     );
+
+    if (seriesError) {
+        return <NotFound />;
+    }
 
     return (
         <div className="bg-black min-h-screen">
@@ -25,45 +32,47 @@ function Series() {
                 {/* Start Series type buttons */}
                 <div className="flex flex-wrap gap-3 mb-10">
                     <Button
-                        onClick={() =>
-                            dispatch(
-                                getSeries({
-                                    type: "airing_today",
-                                    pageNumber: 1
-                                })
-                            )
-                        }
+                        onClick={() => {
+                            dispatch(pageReset());
+                            dispatch(setType("airing_today"));
+                            dispatch(getSeries({ type: "airing_today" }));
+                        }}
                         variant="gradient"
+                        color={typing === "airing_today" ? "red" : "gray"}
                         className="rounded-full">
                         Airing Today
                     </Button>
+
                     <Button
-                        onClick={() =>
-                            dispatch(
-                                getSeries({ type: "on_the_air", pageNumber: 1 })
-                            )
-                        }
+                        onClick={() => {
+                            dispatch(pageReset());
+                            dispatch(setType("on_the_air"));
+                            dispatch(getSeries({ type: "on_the_air" }));
+                        }}
                         variant="gradient"
+                        color={typing === "on_the_air" ? "red" : "gray"}
                         className="rounded-full">
                         on the air
                     </Button>
                     <Button
-                        onClick={() =>
-                            dispatch(
-                                getSeries({ type: "popular", pageNumber: 1 })
-                            )
-                        }
+                        onClick={() => {
+                            dispatch(pageReset());
+                            dispatch(setType("popular"));
+                            dispatch(getSeries({ type: "popular" }));
+                        }}
                         variant="gradient"
+                        color={typing === "popular" ? "red" : "gray"}
                         className="rounded-full">
                         popular
                     </Button>
                     <Button
-                        onClick={() =>
-                            dispatch(
-                                getSeries({ type: "top_rated", pageNumber: 1 })
-                            )
-                        }
+                        onClick={() => {
+                            dispatch(pageReset());
+                            dispatch(setType("top_rated"));
+                            dispatch(getSeries({ type: "top_rated" }));
+                        }}
                         variant="gradient"
+                        color={typing === "top_rated" ? "red" : "gray"}
                         className="rounded-full">
                         top rated
                     </Button>

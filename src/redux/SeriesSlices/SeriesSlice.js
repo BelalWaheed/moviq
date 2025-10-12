@@ -2,12 +2,15 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getSeries = createAsyncThunk(
     "/series",
-    async ({ pageNumber, type = "airing_today" }, thunkAPI) => {
+    async ({ type }, thunkAPI) => {
         const { rejectWithValue } = thunkAPI;
+        const state = thunkAPI.getState();
+
+        const { page, typing } = state.seriesReducer;
+
+        const currentType = type || typing;
 
         try {
-            console.log(pageNumber);
-
             const options = {
                 method: "GET",
                 headers: {
@@ -17,14 +20,19 @@ export const getSeries = createAsyncThunk(
                 }
             };
             const request = await fetch(
-                `https://api.themoviedb.org/3/tv/${type}?language=en-US&page=${pageNumber}`,
+                `https://api.themoviedb.org/3/tv/${currentType}?language=en-US&page=${page}`,
                 options
             );
 
             const response = await request.json();
+
+            if (response.success === false) {
+                return rejectWithValue(response);
+            }
+
             return response;
         } catch (e) {
-            return rejectWithValue(e.message);
+            return rejectWithValue({ success: false, message: e.message });
         }
     }
 );
@@ -32,12 +40,43 @@ export const getSeries = createAsyncThunk(
 const initialState = {
     seriesList: [],
     seriesLoading: false,
-    test: false
+    seriesError: false,
+    page: 1,
+    typing: "airing_today",
+    totalPages: 1
 };
 
 const series = createSlice({
     name: "series",
     initialState,
+    reducers: {
+        incrementOne: state => {
+            state.page = state.page + 1;
+        },
+        decrementOne: state => {
+            state.page = state.page - 1;
+        },
+        incrementTen: state => {
+            if (state.page + 10 >= state.totalPages) {
+                state.page = state.totalPages;
+            } else {
+                state.page += 10;
+            }
+        },
+        decrementTen: state => {
+            if (state.page - 10 <= 1) {
+                state.page = 1;
+            } else {
+                state.page -= 10;
+            }
+        },
+        pageReset: state => {
+            state.page = 1;
+        },
+        setType: (state, action) => {
+            state.typing = action.payload;
+        }
+    },
 
     extraReducers: builder => {
         builder.addCase(getSeries.pending, (state, { payload }) => {
@@ -45,13 +84,24 @@ const series = createSlice({
         });
         builder.addCase(getSeries.fulfilled, (state, { payload }) => {
             state.seriesList = payload.results;
+            state.totalPages = payload.total_pages;
             state.seriesLoading = false;
         });
+
         builder.addCase(getSeries.rejected, (state, { payload }) => {
             state.seriesLoading = false;
-            console.log("failed");
+            state.seriesError = true;
         });
     }
 });
 
 export const seriesReducer = series.reducer;
+
+export const {
+    incrementOne,
+    decrementOne,
+    incrementTen,
+    decrementTen,
+    pageReset,
+    setType
+} = series.actions;
