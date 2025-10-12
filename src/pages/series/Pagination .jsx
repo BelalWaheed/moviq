@@ -4,17 +4,23 @@ import { MdFastRewind, MdFastForward } from "react-icons/md";
 import { Button, Card } from "@material-tailwind/react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getSeries } from "../../redux/SeriesSlices/SeriesSlice";
+import {
+    decrementOne,
+    decrementTen,
+    getSeries,
+    incrementOne,
+    incrementTen
+} from "../../redux/SeriesSlices/SeriesSlice";
 import { useEffect } from "react";
 
 const Pagination = () => {
     const dispatch = useDispatch();
 
-    const [pageNumber, setPageNumber] = useState(1);
+    const { page, totalPages } = useSelector(state => state.seriesReducer);
 
     useEffect(() => {
-        dispatch(getSeries({ pageNumber: pageNumber }));
-    }, [pageNumber]);
+        dispatch(getSeries({ pageNumber: page }));
+    }, [page]);
 
     return (
         <div
@@ -25,12 +31,8 @@ const Pagination = () => {
                    rounded-2xl shadow-lg transition-all duration-300 
                    hover:shadow-red-800/30">
                 <Button
-                    onClick={() =>
-                        setPageNumber(
-                            pageNumber - 10 <= 1 ? 1 : pageNumber - 10
-                        )
-                    }
-                    disabled={pageNumber === 1}
+                    onClick={() => dispatch(decrementTen())}
+                    disabled={page === 1}
                     color="red"
                     variant="text"
                     className="!p-2 sm:!p-3 rounded-full hover:bg-red-700/40 active:scale-90 
@@ -39,8 +41,8 @@ const Pagination = () => {
                 </Button>
 
                 <Button
-                    onClick={() => setPageNumber(pageNumber - 1)}
-                    disabled={pageNumber <= 1}
+                    onClick={() => dispatch(decrementOne())}
+                    disabled={page <= 1}
                     color="red"
                     variant="text"
                     className="!p-2 sm:!p-3 rounded-full hover:bg-red-700/40 active:scale-90 
@@ -52,12 +54,12 @@ const Pagination = () => {
                     className="text-red-500 font-bold text-lg sm:text-md tracking-wide 
                      px-4 text-center   
                      shadow-inner">
-                    {pageNumber}
+                    {page}
                 </span>
 
                 <Button
-                    onClick={() => setPageNumber(pageNumber + 1)}
-                    disabled={pageNumber >= 500}
+                    onClick={() => dispatch(incrementOne())}
+                    disabled={page >= totalPages || page >= 500}
                     color="red"
                     variant="text"
                     className="!p-2 sm:!p-3 rounded-full hover:bg-red-700/40 active:scale-90 
@@ -66,12 +68,8 @@ const Pagination = () => {
                 </Button>
 
                 <Button
-                    onClick={() =>
-                        setPageNumber(
-                            pageNumber + 10 >= 500 ? 500 : pageNumber + 10
-                        )
-                    }
-                    disabled={pageNumber >= 500}
+                    onClick={() => dispatch(incrementTen())}
+                    disabled={page >= totalPages || page + 10 > 500}
                     color="red"
                     variant="text"
                     className="!p-2 sm:!p-3 rounded-full hover:bg-red-700/40 active:scale-90 
