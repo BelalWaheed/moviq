@@ -13,8 +13,6 @@ import {
 import NotFound from "../notFound/NotFound";
 
 function Series() {
-    console.log("hi");
-
     const dispatch = useDispatch();
 
     const { seriesList, seriesLoading, typing, seriesError } = useSelector(
