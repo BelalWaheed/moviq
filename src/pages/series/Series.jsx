@@ -14,6 +14,7 @@ import NotFound from "../notFound/NotFound";
 
 function Series() {
     const dispatch = useDispatch();
+    console.log("pull");
 
     const { seriesList, seriesLoading, typing, seriesError } = useSelector(
         state => state.seriesReducer
