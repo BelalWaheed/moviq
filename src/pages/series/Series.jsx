@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Button } from "@material-tailwind/react";
 import MainCard from "./SeriesCard/MainCard";
 import { useDispatch, useSelector } from "react-redux";
+import { motion } from "framer-motion"; // 👈 اضفنا المكتبة هنا
 
 import Pagination from "./Pagination";
 import MovieLoader from "../loading/MovieLoader";
@@ -23,6 +24,7 @@ function Series() {
         page,
         currentType
     } = useSelector(state => state.seriesReducer);
+
     useEffect(() => {
         window.scrollTo({
             top: 0,
@@ -34,59 +36,40 @@ function Series() {
         return <NotFound />;
     }
 
+    // ✨ Animation Variants
+    const cardVariants = {
+        hidden: { opacity: 0, y: 40 },
+        visible: { opacity: 1, y: 0 }
+    };
+
     return (
         <div className="bg-black min-h-screen">
             <div className="px-6 lg:px-12 py-12">
                 <h1 className="text-white text-center md:text-start lg:text-start xl:text-start text-4xl sm:text-4xl lg:text-6xl font-bold mb-6">
                     Series
                 </h1>
+
                 {/* Start Series type buttons */}
                 <div className="flex flex-wrap gap-3 mb-10">
-                    <Button
-                        onClick={() => {
-                            dispatch(pageReset());
-                            dispatch(setType("airing_today"));
-                            dispatch(getSeries({ type: "airing_today" }));
-                        }}
-                        variant="gradient"
-                        color={typing === "airing_today" ? "red" : "gray"}
-                        className="rounded-full">
-                        Airing Today
-                    </Button>
-
-                    <Button
-                        onClick={() => {
-                            dispatch(pageReset());
-                            dispatch(setType("on_the_air"));
-                            dispatch(getSeries({ type: "on_the_air" }));
-                        }}
-                        variant="gradient"
-                        color={typing === "on_the_air" ? "red" : "gray"}
-                        className="rounded-full">
-                        on the air
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            dispatch(pageReset());
-                            dispatch(setType("popular"));
-                            dispatch(getSeries({ type: "popular" }));
-                        }}
-                        variant="gradient"
-                        color={typing === "popular" ? "red" : "gray"}
-                        className="rounded-full">
-                        popular
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            dispatch(pageReset());
-                            dispatch(setType("top_rated"));
-                            dispatch(getSeries({ type: "top_rated" }));
-                        }}
-                        variant="gradient"
-                        color={typing === "top_rated" ? "red" : "gray"}
-                        className="rounded-full">
-                        top rated
-                    </Button>
+                    {[
+                        { label: "Airing Today", type: "airing_today" },
+                        { label: "On the Air", type: "on_the_air" },
+                        { label: "Popular", type: "popular" },
+                        { label: "Top Rated", type: "top_rated" }
+                    ].map(({ label, type }) => (
+                        <Button
+                            key={type}
+                            onClick={() => {
+                                dispatch(pageReset());
+                                dispatch(setType(type));
+                                dispatch(getSeries({ type }));
+                            }}
+                            variant="gradient"
+                            color={typing === type ? "red" : "gray"}
+                            className="rounded-full">
+                            {label}
+                        </Button>
+                    ))}
                 </div>
                 {/* End Series type buttons */}
 
@@ -94,21 +77,31 @@ function Series() {
                 {seriesLoading ? (
                     <MovieLoader />
                 ) : (
-                    <>
-                        <div
-                            className="
-                    grid 
-                    gap-6 
-                    grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
-                    justify-center 
-                    place-items-center
-                    container mx-auto
-                ">
-                            {seriesList?.map(series => (
-                                <MainCard key={series.id} series={series} />
-                            ))}
-                        </div>
-                    </>
+                    <div
+                        className="
+                        grid 
+                        gap-6 
+                        grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
+                        justify-center 
+                        place-items-center
+                        container mx-auto
+                    ">
+                        {seriesList?.map((series, index) => (
+                            <motion.div
+                                key={series.id}
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true, amount: 0.3 }}
+                                transition={{
+                                    duration: 0.4,
+                                    delay: index * 0.01
+                                }}
+                                variants={cardVariants}
+                                className="w-full">
+                                <MainCard series={series} />
+                            </motion.div>
+                        ))}
+                    </div>
                 )}
                 {/* End Series Cards */}
             </div>

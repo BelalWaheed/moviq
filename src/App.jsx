@@ -10,7 +10,7 @@ import DetailsCard from "./pages/series/SeriesCard/DetailsCard";
 
 function App() {
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 bg-background-primary">
             <Header />
             <Routes>
                 <Route path="/" element={<Home />} />
