@@ -3,7 +3,7 @@ import { Button } from "@material-tailwind/react";
 import MainCard from "./SeriesCard/MainCard";
 import { useDispatch, useSelector } from "react-redux";
 
-import Pagination from "./Pagination ";
+import Pagination from "./Pagination";
 import MovieLoader from "../loading/MovieLoader";
 import {
     getSeries,
@@ -14,11 +14,21 @@ import NotFound from "../notFound/NotFound";
 
 function Series() {
     const dispatch = useDispatch();
-    console.log("pull");
 
-    const { seriesList, seriesLoading, typing, seriesError } = useSelector(
-        state => state.seriesReducer
-    );
+    const {
+        seriesList,
+        seriesLoading,
+        typing,
+        seriesError,
+        page,
+        currentType
+    } = useSelector(state => state.seriesReducer);
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }, [page, currentType]);
 
     if (seriesError) {
         return <NotFound />;
