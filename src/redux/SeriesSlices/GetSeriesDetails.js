@@ -34,12 +34,18 @@ export const getSeriesDetails = createAsyncThunk(
 const initialState = {
     selectedSeriesDetails: null,
     detailsLoading: false,
-    detailsError: false
+    detailsError: false,
+    seriesId: localStorage.getItem("seriesId")
 };
 
 const seriesDetails = createSlice({
     name: "seriesDetails",
     initialState,
+    reducers: {
+        setSeriesId: (state, { payload }) => {
+            localStorage.setItem("seriesId", payload);
+        }
+    },
     extraReducers: builder => {
         builder.addCase(getSeriesDetails.pending, (state, { payload }) => {
             state.detailsLoading = true;
@@ -56,3 +62,5 @@ const seriesDetails = createSlice({
 });
 
 export const seriesDetailsReducer = seriesDetails.reducer;
+
+export const { setSeriesId } = seriesDetails.actions;
