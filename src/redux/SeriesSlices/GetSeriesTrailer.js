@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const getSeriesDetails = createAsyncThunk(
-    "/seriesDetails",
+export const getSeriesTrailer = createAsyncThunk(
+    "getSeriesTrailer",
     async (id, thunkAPI) => {
         const { rejectWithValue } = thunkAPI;
 
@@ -14,13 +14,14 @@ export const getSeriesDetails = createAsyncThunk(
                         "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMmNkMDRiMzNjZTMxNjRlMzk3MzExYzBmZGYxYTc5MyIsIm5iZiI6MTc2MDA5OTc5Mi41NDQsInN1YiI6IjY4ZThmZGQwOWI0YTFhYWIxYWU2YWNkMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r5AVkEHlxumduosln1i8Y_ixvvSk2_a-rJElwNV7KVg"
                 }
             };
+
             const request = await fetch(
-                `https://api.themoviedb.org/3/tv/${
-                    id || localStorage.getItem("seriesId")
-                }?language=en-US`,
+                `https://api.themoviedb.org/3/tv/${id}/videos?language=en-US`,
                 options
             );
+
             const response = await request.json();
+
             if (response.success === false) {
                 return rejectWithValue(response);
             }
@@ -32,27 +33,25 @@ export const getSeriesDetails = createAsyncThunk(
 );
 
 const initialState = {
-    selectedSeriesDetails: null,
-    detailsLoading: false,
-    detailsError: false
+    seriesTrailerData: []
 };
 
-const seriesDetails = createSlice({
-    name: "seriesDetails",
+const seriesTrailer = createSlice({
+    name: "seriesTrailer",
     initialState,
-    extraReducers: builder => {
-        builder.addCase(getSeriesDetails.pending, (state, { payload }) => {
-            state.detailsLoading = true;
+    extraReducers: build => {
+        build.addCase(getSeriesTrailer.pending, (state, { payload }) => {});
+        build.addCase(getSeriesTrailer.fulfilled, (state, { payload }) => {
+            if (payload && payload.results && payload.results.length > 0) {
+                const lastTrailer = payload.results[payload.results.length - 1];
+                state.seriesTrailerData = lastTrailer;
+            } else {
+                state.seriesTrailerData = null;
+            }
         });
-        builder.addCase(getSeriesDetails.fulfilled, (state, { payload }) => {
-            state.selectedSeriesDetails = payload;
-            state.detailsLoading = false;
-        });
-        builder.addCase(getSeriesDetails.rejected, (state, { payload }) => {
-            state.detailsLoading = false;
-            state.detailsError = true;
-        });
+
+        build.addCase(getSeriesTrailer.rejected, (state, { payload }) => {});
     }
 });
 
-export const seriesDetailsReducer = seriesDetails.reducer;
+export const seriesTrailerReducer = seriesTrailer.reducer;

@@ -54,7 +54,7 @@ const Pagination = () => {
                     className="text-red-500 font-bold text-lg sm:text-md tracking-wide 
                      px-4 text-center   
                      shadow-inner">
-                    {page}
+                    Page: {page}/{totalPages >= 500 ? 500 : totalPages}
                 </span>
 
                 <Button
