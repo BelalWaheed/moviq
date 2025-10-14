@@ -30,40 +30,23 @@ function Home() {
     dsp(fetchMTop());
     dsp(fetchTNow());
     dsp(fetchTTop());
-  }, []);
+  }, [dsp]);
+
   const navigate = useNavigate();
 
-  if (mNIsLoading || mTisLoading || tNisLoading) return <MovieLoader />;
+  if (mNIsLoading || mTisLoading || tNisLoading || tTisLoading)
+    return <MovieLoader />;
 
-  const sectionTitle = {
-    hidden: { opacity: 0, y: 8 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.45, ease: "easeOut" },
-    },
-  };
-
-  const gridVariant = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.06 } },
-  };
-
-  const cardVariant = {
-    hidden: { opacity: 0, y: 10 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.45, ease: "easeOut" },
-    },
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0 },
   };
 
   return (
-    <main className="HomePage min-h-screen  text-text-primary">
-      <motion.section viewport={{ once: true, amount: 0.12 }} className="mb-8">
-        <MovieCarousel />
-      </motion.section>
+    <main className="HomePage min-h-screen bg-black text-text-primary">
+      <MovieCarousel />
 
+      {/* Series Now Playing */}
       <motion.section
         initial="hidden"
         whileInView="visible"
@@ -71,7 +54,7 @@ function Home() {
         className="Series_NowPlaying mb-8"
       >
         <motion.h2
-          variants={sectionTitle}
+          variants={cardVariants}
           className="text-2xl md:text-3xl font-bold text-accent-primary mb-4"
         >
           Series Now Playing
@@ -80,22 +63,23 @@ function Home() {
         <SeriesCarousel />
       </motion.section>
 
+      {/* 🔹 Top Rated Movies */}
       <section className="Top_Movies mx-12">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.12 }}
-          variants={gridVariant}
-          className="w-full px-4 py-6 mb-16"
-        >
-          <motion.h2
-            variants={sectionTitle}
-            className="text-2xl md:text-3xl font-bold text-accent-primary mb-6"
-          >
+        <div className="w-full px-4 py-6 mb-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-accent-primary mb-6">
             Top Rated Movies
-          </motion.h2>
+          </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div
+            className="
+              grid 
+              gap-6 
+              grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 
+              justify-center 
+              place-items-center
+              container mx-auto
+            "
+          >
             {mTopList?.map((item, index) => {
               const posterPath = item.poster_path || item.backdrop_path || "";
               const title = item.title || "Untitled";
@@ -108,8 +92,15 @@ function Home() {
               return (
                 <motion.div
                   key={item.id || index}
-                  variants={cardVariant}
-                  className="will-change-transform"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: index * 0.05,
+                  }}
+                  variants={cardVariants}
+                  className="w-full"
                 >
                   <Card
                     onClick={() => {
@@ -132,13 +123,11 @@ function Home() {
                         <h3 className="text-sm sm:text-base font-bold truncate">
                           {title}
                         </h3>
-
                         <div className="flex items-center gap-1 text-sm text-text-secondary">
                           <FaStar className="w-4 h-4 text-yellow-400" />
                           <span className="font-semibold">{rating}</span>
                         </div>
                       </div>
-
                       <p className="text-xs text-gray-400 mt-1">{date}</p>
                     </CardBody>
                   </Card>
@@ -146,25 +135,26 @@ function Home() {
               );
             })}
           </div>
-        </motion.div>
+        </div>
       </section>
 
+      {/* 🔹 Top Rated Series */}
       <section className="Top_Series mx-12">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.12 }}
-          variants={gridVariant}
-          className="w-full px-4 py-6 mb-16"
-        >
-          <motion.h2
-            variants={sectionTitle}
-            className="text-2xl md:text-3xl font-bold text-accent-primary mb-6"
-          >
+        <div className="w-full px-4 py-6 mb-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-accent-primary mb-6">
             Top Rated Series
-          </motion.h2>
+          </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div
+            className="
+              grid 
+              gap-6 
+              grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 
+              justify-center 
+              place-items-center
+              container mx-auto
+            "
+          >
             {tTopList?.map((item, index) => {
               const posterPath = item.poster_path || item.backdrop_path || "";
               const title = item.name || "Untitled";
@@ -177,8 +167,15 @@ function Home() {
               return (
                 <motion.div
                   key={item.id || index}
-                  variants={cardVariant}
-                  className="will-change-transform"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: index * 0.05,
+                  }}
+                  variants={cardVariants}
+                  className="w-full"
                 >
                   <Card
                     onClick={() => {
@@ -201,13 +198,11 @@ function Home() {
                         <h3 className="text-sm sm:text-base font-bold truncate">
                           {title}
                         </h3>
-
                         <div className="flex items-center gap-1 text-sm text-text-secondary">
                           <FaStar className="w-4 h-4 text-yellow-400" />
                           <span className="font-semibold">{rating}</span>
                         </div>
                       </div>
-
                       <p className="text-xs text-gray-400 mt-1">{date}</p>
                     </CardBody>
                   </Card>
@@ -215,7 +210,7 @@ function Home() {
               );
             })}
           </div>
-        </motion.div>
+        </div>
       </section>
     </main>
   );

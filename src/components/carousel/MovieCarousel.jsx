@@ -6,6 +6,7 @@ import NextArrow from "./NextArrow";
 import PrevArrow from "./PrevArrow";
 import { useNavigate } from "react-router-dom";
 import { getMovieDetails } from "../../redux/moviesSlices/getMovieDetails";
+import MovieLoader from "../../pages/loading/MovieLoader";
 
 const BACKDROP = (path) =>
   path ? `https://image.tmdb.org/t/p/original${path}` : "/placeholder.png";
@@ -18,7 +19,7 @@ export default function MovieCarousel() {
     fade: false,
     speed: 700,
     autoplay: true,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 4000,
     slidesToShow: 1,
     slidesToScroll: 1,
     pauseOnHover: false,
@@ -27,7 +28,7 @@ export default function MovieCarousel() {
     prevArrow: <PrevArrow />,
     responsive: [
       {
-        breakpoint: 500,
+        breakpoint: 650,
         settings: {
           arrows: false,
           dots: false,
@@ -39,10 +40,10 @@ export default function MovieCarousel() {
   const { mNowList } = useSelector((s) => s.mNowReducer);
   const navigate = useNavigate();
   const dsp = useDispatch();
-  if (!mNowList || mNowList.length === 0) return null;
+  if (!mNowList || mNowList.length === 0) return <MovieLoader />;
 
   return (
-    <div className="w-full relative mb-5">
+    <div className="w-full relative mb-5 min-h-[484px]">
       <Slider {...settings}>
         {mNowList.map((it, i) => {
           const title = it.title || it.name || "Untitled";

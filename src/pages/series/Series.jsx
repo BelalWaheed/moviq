@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Button } from "@material-tailwind/react";
 import MainCard from "./SeriesCard/MainCard";
 import { useDispatch, useSelector } from "react-redux";
-import { motion } from "framer-motion"; // 👈 اضفنا المكتبة هنا
+import { motion } from "framer-motion"; 
 
 import Pagination from "./Pagination";
 import MovieLoader from "../loading/MovieLoader";
@@ -36,7 +36,6 @@ function Series() {
         return <NotFound />;
     }
 
-    // ✨ Animation Variants
     const cardVariants = {
         hidden: { opacity: 0, y: 40 },
         visible: { opacity: 1, y: 0 }
