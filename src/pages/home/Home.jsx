@@ -60,12 +60,7 @@ function Home() {
 
   return (
     <main className="HomePage min-h-screen  text-text-primary">
-      <motion.section
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.12 }}
-        className="mb-8"
-      >
+      <motion.section viewport={{ once: true, amount: 0.12 }} className="mb-8">
         <MovieCarousel />
       </motion.section>
 
