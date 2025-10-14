@@ -33,8 +33,7 @@ function Home() {
   }, []);
   const navigate = useNavigate();
 
-  if (tTisLoading || mNIsLoading || mTisLoading || tNisLoading)
-    return <MovieLoader />;
+  if (mNIsLoading || mTisLoading || tNisLoading) return <MovieLoader />;
 
   const sectionTitle = {
     hidden: { opacity: 0, y: 8 },
