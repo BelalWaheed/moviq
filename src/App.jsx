@@ -7,22 +7,24 @@ import Series from "./pages/series/Series";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import DetailsCard from "./pages/series/SeriesCard/DetailsCard";
+import MovieDetailsCard from "./pages/movies/MovieDetailsCard";
 
 function App() {
-    return (
-        <div className="space-y-6">
-            <Header />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="movies" element={<Movies />} />
-                <Route path="series" element={<Series />} />
-                <Route path="seriesDetails" element={<DetailsCard />} />
-                <Route path="details" element={<Details />} />
-                <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Footer />
-        </div>
-    );
+  return (
+    <div className=" bg-background-primary">
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="movies" element={<Movies />} />
+        <Route path="series" element={<Series />} />
+        <Route path="seriesDetails" element={<DetailsCard />} />
+        <Route path="moviedetails" element={<MovieDetailsCard />} />
+        <Route path="details" element={<Details />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Footer />
+    </div>
+  );
 }
 
 export default App;
