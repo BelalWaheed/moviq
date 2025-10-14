@@ -1,66 +1,80 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+// ✅ اسم منطقي ومميز للـaction
 export const getSeriesDetails = createAsyncThunk(
-    "/seriesDetails",
-    async (id, thunkAPI) => {
-        const { rejectWithValue } = thunkAPI;
+  "series/getDetails",
+  async (id, { rejectWithValue }) => {
+    try {
+      const seriesId = id || localStorage.getItem("seriesId");
 
-        try {
-            const options = {
-                method: "GET",
-                headers: {
-                    accept: "application/json",
-                    Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMmNkMDRiMzNjZTMxNjRlMzk3MzExYzBmZGYxYTc5MyIsIm5iZiI6MTc2MDA5OTc5Mi41NDQsInN1YiI6IjY4ZThmZGQwOWI0YTFhYWIxYWU2YWNkMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r5AVkEHlxumduosln1i8Y_ixvvSk2_a-rJElwNV7KVg"
-                }
-            };
-            const request = await fetch(
-                `https://api.themoviedb.org/3/tv/${
-                    id || localStorage.getItem("seriesId")
-                }?language=en-US`,
-                options
-            );
-            const response = await request.json();
-            if (response.success === false) {
-                return rejectWithValue(response);
-            }
-            return response;
-        } catch (e) {
-            return rejectWithValue({ success: false, message: e.message });
+      if (!seriesId) {
+        return rejectWithValue({ message: "Series ID is missing." });
+      }
+
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMmNkMDRiMzNjZTMxNjRlMzk3MzExYzBmZGYxYTc5MyIsIm5iZiI6MTc2MDA5OTc5Mi41NDQsInN1YiI6IjY4ZThmZGQwOWI0YTFhYWIxYWU2YWNkMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r5AVkEHlxumduosln1i8Y_ixvvSk2_a-rJElwNV7KVg"
         }
+      };
+
+      const response = await fetch(
+        `https://api.themoviedb.org/3/tv/${seriesId}?language=en-US`,
+        options
+      );
+      const data = await response.json();
+
+      // ✅ التحقق من النجاح
+      if (!response.ok || data.success === false) {
+        return rejectWithValue(data);
+      }
+
+      return data;
+    } catch (e) {
+      return rejectWithValue({ message: e.message });
     }
+  }
 );
 
 const initialState = {
-    selectedSeriesDetails: null,
-    detailsLoading: false,
-    detailsError: false,
-    seriesId: localStorage.getItem("seriesId")
+  selectedSeriesDetails: null,
+  detailsLoading: false,
+  detailsError: null, // ✅ بدل boolean نستخدم نص الرسالة
+  seriesId: localStorage.getItem("seriesId") || null
 };
 
 const seriesDetails = createSlice({
-    name: "seriesDetails",
-    initialState,
-    reducers: {
-        setSeriesId: (state, { payload }) => {
-            localStorage.setItem("seriesId", payload);
-        }
+  name: "seriesDetails",
+  initialState,
+  reducers: {
+    // ✅ نحفظ في state و localStorage معًا
+    setSeriesId: (state, { payload }) => {
+      state.seriesId = payload;
+      localStorage.setItem("seriesId", payload);
     },
-    extraReducers: builder => {
-        builder.addCase(getSeriesDetails.pending, (state, { payload }) => {
-            state.detailsLoading = true;
-        });
-        builder.addCase(getSeriesDetails.fulfilled, (state, { payload }) => {
-            state.selectedSeriesDetails = payload;
-            state.detailsLoading = false;
-        });
-        builder.addCase(getSeriesDetails.rejected, (state, { payload }) => {
-            state.detailsLoading = false;
-            state.detailsError = true;
-        });
+    clearSeriesDetails: (state) => {
+      state.selectedSeriesDetails = null;
+      state.detailsError = null;
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getSeriesDetails.pending, (state) => {
+        state.detailsLoading = true;
+        state.detailsError = null;
+      })
+      .addCase(getSeriesDetails.fulfilled, (state, { payload }) => {
+        state.detailsLoading = false;
+        state.selectedSeriesDetails = payload;
+      })
+      .addCase(getSeriesDetails.rejected, (state, { payload }) => {
+        state.detailsLoading = false;
+        state.detailsError = payload?.message || "Failed to fetch series details";
+      });
+  }
 });
 
 export const seriesDetailsReducer = seriesDetails.reducer;
-
-export const { setSeriesId } = seriesDetails.actions;
+export const { setSeriesId, clearSeriesDetails } = seriesDetails.actions;
