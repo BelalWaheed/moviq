@@ -243,7 +243,7 @@ export default function Header() {
                         return (
                           <motion.div
                             key={item.id}
-                            whileHover={{
+                            whileHover={{ 
                               backgroundColor: "rgba(220, 38, 38, 0.1)",
                             }}
                             onClick={() => handleResultClick(item)}
@@ -277,6 +277,8 @@ export default function Header() {
                         );
                       })}
 
+                      {/* Show "See all results" button if there are more than 8 results */}
+                      {/* now there is no search results page */}
                       {searchResults.length > 8 && (
                         <button
                           onClick={handleSearchSubmit}

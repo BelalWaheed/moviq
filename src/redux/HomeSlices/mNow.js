@@ -27,7 +27,6 @@ const mNowSlice = createSlice({
   initialState,
   reducers: {
     resetMNow: () => initialState,
-    
   },
   extraReducers: (builder) =>
     builder
@@ -36,7 +35,9 @@ const mNowSlice = createSlice({
         state.mNError = null;
       })
       .addCase(fetchMNow.fulfilled, (state, { payload }) => {
-        state.mNowList = payload.results.filter((movie) => movie.adult === false);
+        state.mNowList = payload.results.filter(
+          (movie) => movie.adult === false
+        );
         state.mNIsLoading = false;
       })
       .addCase(fetchMNow.rejected, (state, { payload, error }) => {
