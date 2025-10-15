@@ -222,7 +222,7 @@ function Home() {
                         </p>
                     </motion.div>
 
-                    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 container mx-auto">
+                    <div className="grid gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 container mx-auto">
                         {tTopList?.slice(0, 10).map((item, index) => {
                             const posterPath =
                                 item.poster_path || item.backdrop_path || "";
