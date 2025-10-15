@@ -102,6 +102,7 @@ export default function Header() {
       navigate("/moviedetails");
     } else if (item.media_type === "tv") {
       dispatch(getSeriesDetails(item.id));
+      localStorage.setItem("seriesId", item.id);
       navigate("/seriesDetails");
     }
     setSearchQuery("");
@@ -127,8 +128,14 @@ export default function Header() {
               >
                 <Film className="w-8 h-8 text-accent-primary" />
                 <motion.div
-                  animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.5, 0.8, 0.5],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                  }}
                   className="absolute inset-0 bg-accent-primary rounded-full blur-md opacity-50"
                 />
               </motion.div>
@@ -243,7 +250,7 @@ export default function Header() {
                         return (
                           <motion.div
                             key={item.id}
-                            whileHover={{ 
+                            whileHover={{
                               backgroundColor: "rgba(220, 38, 38, 0.1)",
                             }}
                             onClick={() => handleResultClick(item)}
@@ -277,8 +284,6 @@ export default function Header() {
                         );
                       })}
 
-                      {/* Show "See all results" button if there are more than 8 results */}
-                      {/* now there is no search results page */}
                       {searchResults.length > 8 && (
                         <button
                           onClick={handleSearchSubmit}
@@ -321,7 +326,10 @@ export default function Header() {
                   {menuOpen ? (
                     <motion.div
                       key="close"
-                      initial={{ rotate: -90, opacity: 0 }}
+                      initial={{
+                        rotate: -90,
+                        opacity: 0,
+                      }}
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: 90, opacity: 0 }}
                       transition={{ duration: 0.2 }}
@@ -409,8 +417,14 @@ export default function Header() {
                 <AnimatePresence>
                   {showResults && searchResults.length > 0 && (
                     <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
+                      initial={{
+                        opacity: 0,
+                        height: 0,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        height: "auto",
+                      }}
                       exit={{ opacity: 0, height: 0 }}
                       className="mt-2 max-h-[300px] overflow-y-auto bg-background-elevated border border-background-muted/30 rounded-xl"
                     >

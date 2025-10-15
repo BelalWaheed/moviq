@@ -21,8 +21,8 @@ module.exports = withMT({
             // border-[group]-[name]
         */
                 background: {
-                    primary: "#09090b", // zinc-950 → main background (e.g. body, layout)
-                    elevated: "#1f1f23", // zinc-800 → elevated surfaces (cards, modals)
+                    primary: "black", // zinc-950 → main background (e.g. body, layout)
+                    elevated: "black", // zinc-800 → elevated surfaces (cards, modals)
                     muted: "#71717a" // zinc-500 → subtle backgrounds or light borders
                 },
 
