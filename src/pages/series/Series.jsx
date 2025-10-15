@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Button } from "@material-tailwind/react";
 import MainCard from "./SeriesCard/MainCard";
 import { useDispatch, useSelector } from "react-redux";
-import { motion } from "framer-motion"; 
+import { motion } from "framer-motion";
 
 import Pagination from "./Pagination";
 import MovieLoader from "../loading/MovieLoader";
@@ -31,6 +31,9 @@ function Series() {
             behavior: "smooth"
         });
     }, [page, currentType]);
+    useEffect(() => {
+        dispatch(getSeries({ page: 1, type: typing }));
+    }, []);
 
     if (seriesError) {
         return <NotFound />;
@@ -61,7 +64,7 @@ function Series() {
                             onClick={() => {
                                 dispatch(pageReset());
                                 dispatch(setType(type));
-                                dispatch(getSeries({ type }));
+                                dispatch(getSeries({ type: type }));
                             }}
                             variant="gradient"
                             color={typing === type ? "red" : "gray"}

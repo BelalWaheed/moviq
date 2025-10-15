@@ -16,11 +16,9 @@ import { useEffect } from "react";
 const Pagination = () => {
     const dispatch = useDispatch();
 
-    const { page, totalPages } = useSelector(state => state.seriesReducer);
-
-    useEffect(() => {
-        dispatch(getSeries({ pageNumber: page }));
-    }, [page]);
+    const { page, totalPages, typing } = useSelector(
+        state => state.seriesReducer
+    );
 
     return (
         <div
@@ -31,7 +29,9 @@ const Pagination = () => {
                    rounded-2xl shadow-lg transition-all duration-300 
                    hover:shadow-red-800/30">
                 <Button
-                    onClick={() => dispatch(decrementTen())}
+                    onClick={() =>
+                        dispatch(getSeries({ page: page - 10, type: typing }))
+                    }
                     disabled={page === 1}
                     color="red"
                     variant="text"
@@ -41,7 +41,9 @@ const Pagination = () => {
                 </Button>
 
                 <Button
-                    onClick={() => dispatch(decrementOne())}
+                    onClick={() =>
+                        dispatch(getSeries({ page: page - 1, type: typing }))
+                    }
                     disabled={page <= 1}
                     color="red"
                     variant="text"
@@ -58,7 +60,9 @@ const Pagination = () => {
                 </span>
 
                 <Button
-                    onClick={() => dispatch(incrementOne())}
+                    onClick={() =>
+                        dispatch(getSeries({ page: page + 1, type: typing }))
+                    }
                     disabled={page >= totalPages || page >= 500}
                     color="red"
                     variant="text"
@@ -68,7 +72,9 @@ const Pagination = () => {
                 </Button>
 
                 <Button
-                    onClick={() => dispatch(incrementTen())}
+                    onClick={() =>
+                        dispatch(getSeries({ page: page + 10, type: typing }))
+                    }
                     disabled={page >= totalPages || page + 10 > 500}
                     color="red"
                     variant="text"
