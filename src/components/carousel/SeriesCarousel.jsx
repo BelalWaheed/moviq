@@ -1,53 +1,60 @@
-import React from "react";
-import Slider from "react-slick";
-import { Card, CardBody } from "@material-tailwind/react";
+import React, { useEffect } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Card } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import MovieLoader from "../../pages/loading/MovieLoader";
-import NextArrow from "./NextArrow";
-import PrevArrow from "./PrevArrow";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { getSeriesDetails } from "../../redux/SeriesSlices/GetSeriesDetails";
+import { IoIosArrowForward } from "react-icons/io";
 
 function SeriesCarousel() {
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 600,
-    slidesToShow: 4, // default
-    slidesToScroll: 1,
-    arrows: true,
-    autoplay: false,
-    autoplaySpeed: 3000,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
-    responsive: [
-      {
-        // under 1000px show 3
-        breakpoint: 1000,
-        settings: { slidesToShow: 3, slidesToScroll: 1, arrows: true },
-      },
-      {
-        // under 600px show 2
-        breakpoint: 600,
-        settings: { slidesToShow: 2, slidesToScroll: 1, arrows: false },
-      },
-      {
-        // small fallback: under 480 show 1
-        breakpoint: 480,
-        settings: { slidesToShow: 1, slidesToScroll: 1, arrows: false },
-      },
-    ],
-  };
-
   const { tNowList, tNisLoading } = useSelector((s) => s.tNowReducer);
   const navigate = useNavigate();
   const dsp = useDispatch();
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   if (tNisLoading) return <MovieLoader />;
 
   return (
-    <div className="w-full px-4 py-6 mb-16">
-      <Slider {...settings}>
+    <div className="w-full px-4 py-8 mb-10 relative">
+      {/* ✅ Custom Navigation Buttons */}
+      <div className="absolute inset-0 flex justify-between items-center px-3 md:px-6 z-10 pointer-events-none">
+        <button className="custom-prev pointer-events-auto w-10 h-10 bg-accent-primary/70 hover:bg-accent-hover rounded-full flex items-center justify-center transition-all duration-300 text-text-primary hover:scale-110">
+          <IoIosArrowForward className="rotate-180 w-5 h-5" />
+        </button>
+
+        <button className="custom-next pointer-events-auto w-10 h-10 bg-accent-primary/70 hover:bg-accent-hover rounded-full flex items-center justify-center transition-all duration-300 text-text-primary hover:scale-110">
+          <IoIosArrowForward className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* ✅ Swiper */}
+      <Swiper
+        modules={[Navigation, Autoplay]}
+        navigation={{
+          nextEl: ".custom-next",
+          prevEl: ".custom-prev",
+        }}
+        allowTouchMove={true}
+        grabCursor={true}
+        speed={600}
+        slidesPerView={1.5}
+        spaceBetween={16}
+        breakpoints={{
+          1280: { slidesPerView: 4 },
+          1024: { slidesPerView: 3 },
+          768: { slidesPerView: 2.5 },
+          480: { slidesPerView: 2.2 },
+        }}
+        className="series-swiper"
+      >
         {tNowList?.map((item, index) => {
           const { poster_path, name, id } = item;
           const posterSrc = poster_path
@@ -55,27 +62,35 @@ function SeriesCarousel() {
             : "/placeholder.png";
 
           return (
-            <div key={id || index} className="px-2">
-              <Card
-                onClick={() => {
-                  dsp(getSeriesDetails(id));
-                  navigate("/seriesDetails");
-                }}
-                className="w-full max-w-[220px] sm:max-w-[240px] md:max-w-[260px] lg:max-w-[280px] shadow-lg rounded-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer group bg-black mx-auto"
-              >
-                <div className="relative w-full aspect-[2/3] overflow-hidden bg-black">
-                  <img
-                    src={posterSrc}
-                    alt={name}
-                    className="absolute inset-0 w-full h-full object-cover group-hover:opacity-90 transition-opacity"
-                    loading="lazy"
-                  />
-                </div>
-              </Card>
-            </div>
+            <SwiperSlide key={id || index}>
+              <div className="flex justify-center">
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -6 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="w-full"
+                >
+                  <Card
+                    onClick={() => {
+                      dsp(getSeriesDetails(id));
+                      navigate("/seriesDetails");
+                    }}
+                    className="w-full shadow-lg rounded-xl overflow-hidden cursor-pointer group bg-surface-secondary border border-background-muted transition-all"
+                  >
+                    <div className="relative w-full aspect-[2/3] bg-black">
+                      <img
+                        src={posterSrc}
+                        alt={name}
+                        className="absolute inset-0 w-full h-full object-cover group-hover:opacity-90 transition-opacity"
+                        loading="lazy"
+                      />
+                    </div>
+                  </Card>
+                </motion.div>
+              </div>
+            </SwiperSlide>
           );
         })}
-      </Slider>
+      </Swiper>
     </div>
   );
 }
