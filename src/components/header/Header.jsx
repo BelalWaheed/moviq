@@ -79,6 +79,12 @@ export default function Header() {
       ? location.pathname === "/"
       : location.pathname.startsWith(path);
 
+  const placeholder = location.pathname.startsWith("/series")
+    ? "Search Series..."
+    : location.pathname.startsWith("/movies")
+    ? "Search Movies..."
+    : "Search Movies & Series...";
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
