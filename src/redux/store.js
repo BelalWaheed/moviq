@@ -7,6 +7,7 @@ import { tNowReducer } from "./HomeSlices/tNow";
 import { tTopReducer } from "./HomeSlices/tTop";
 import { movieDetailsReducer } from "./moviesSlices/getMovieDetails";
 import { seriesTrailerReducer } from "./SeriesSlices/GetSeriesTrailer";
+import { searchReducer } from "./HomeSlices/searcheSlice.js";
 
 const store = configureStore({
   reducer: {
@@ -17,7 +18,8 @@ const store = configureStore({
     tNowReducer,
     tTopReducer,
     movieDetailsReducer,
-    seriesTrailerReducer, 
+    seriesTrailerReducer,
+    searchReducer,
   },
 });
 

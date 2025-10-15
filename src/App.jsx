@@ -8,12 +8,8 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import DetailsCard from "./pages/series/SeriesCard/DetailsCard";
 import MovieDetailsCard from "./pages/movies/MovieDetailsCard";
-import { useEffect } from "react";
 
 function App() {
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" /* or 'smooth' */ });
-  }, []);
   return (
     <div className=" bg-background-primary">
       <Header />

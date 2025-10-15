@@ -3,10 +3,22 @@
 @tailwind utilities;
 
 .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ===== Slide Auto Height ===== */
+.series-swiper .swiper-slide,
+.movie-swiper .swiper-slide {
+  height: auto;
+}
+@media (max-width: 650px) {
+  .custom-prev,
+  .custom-next {
+    display: none;
+  }
 }
