@@ -32,7 +32,7 @@ function Series() {
         });
     }, [page, currentType]);
     useEffect(() => {
-        dispatch(getSeries({ page: 1, type: typing }));
+        dispatch(getSeries({ page: page, type: typing }));
     }, []);
 
     if (seriesError) {

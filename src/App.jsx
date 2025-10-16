@@ -11,6 +11,7 @@ import MovieDetailsCard from "./pages/movies/MovieDetailsCard";
 import DetailsCard from "./pages/series/SeriesDetails/DetailsCard";
 import SeasonDetails from "./pages/series/SeriesSeasons/SeasonDetails";
 import AllCastPage from "./pages/series/SeriesSeasons/AllCastPage";
+import AllEpisodes from "./pages/series/SeriesEpisodes/AllEpisodes";
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                 <Route path="/" element={<Home />} />
 
                 <Route path="SeasonDetailsCast" element={<AllCastPage />} />
+                <Route path="AllEpisode" element={<AllEpisodes />} />
                 <Route path="SeasonDetails" element={<SeasonDetails />} />
                 <Route path="movies" element={<Movies />} />
                 <Route path="series" element={<Series />} />
