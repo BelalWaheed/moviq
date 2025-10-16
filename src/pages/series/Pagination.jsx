@@ -4,13 +4,7 @@ import { MdFastRewind, MdFastForward } from "react-icons/md";
 import { Button, Card } from "@material-tailwind/react";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-    decrementOne,
-    decrementTen,
-    getSeries,
-    incrementOne,
-    incrementTen
-} from "../../redux/SeriesSlices/SeriesSlice";
+import { getSeries } from "../../redux/SeriesSlices/SeriesSlice";
 import { useEffect } from "react";
 
 const Pagination = () => {

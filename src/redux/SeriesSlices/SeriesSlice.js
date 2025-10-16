@@ -6,8 +6,6 @@ export const getSeries = createAsyncThunk(
         const { rejectWithValue } = thunkAPI;
 
         try {
-            console.log(type);
-
             const options = {
                 method: "GET",
                 headers: {
