@@ -8,19 +8,23 @@ import { tTopReducer } from "./HomeSlices/tTop";
 import { movieDetailsReducer } from "./moviesSlices/getMovieDetails";
 import { seriesTrailerReducer } from "./SeriesSlices/GetSeriesTrailer";
 import { searchReducer } from "./HomeSlices/searcheSlice.js";
+import { seriesSeasonsReducer } from "./SeriesSlices/GetSeriesSeasons.js";
+import { seriesSeasonsAggregateCreditsReducer } from "./SeriesSlices/GetSeriesSesonsAggregateCredits.js";
 
 const store = configureStore({
-  reducer: {
-    seriesReducer,
-    seriesDetailsReducer,
-    mNowReducer,
-    mTopReducer,
-    tNowReducer,
-    tTopReducer,
-    movieDetailsReducer,
-    seriesTrailerReducer,
-    searchReducer,
-  },
+    reducer: {
+        seriesReducer,
+        seriesDetailsReducer,
+        seriesSeasonsReducer,
+        seriesSeasonsAggregateCreditsReducer,
+        mNowReducer,
+        mTopReducer,
+        tNowReducer,
+        tTopReducer,
+        movieDetailsReducer,
+        seriesTrailerReducer,
+        searchReducer
+    }
 });
 
 export default store;
