@@ -19,13 +19,14 @@ import { getSeriesTrailer } from "../../../redux/SeriesSlices/GetSeriesTrailer";
 import { getSeriesDetails } from "../../../redux/SeriesSlices/GetSeriesDetails";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaBuildingFlag } from "react-icons/fa6";
+import { GetSeriesSeasons } from "../../../redux/SeriesSlices/GetSeriesSeasons";
+import { GetSeriesSeasonsAggregateCredits } from "../../../redux/SeriesSlices/GetSeriesSesonsAggregateCredits";
 const DetailsCard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { selectedSeriesDetails, detailsLoading, detailsError } = useSelector(
         state => state.seriesDetailsReducer
     );
-    const [seasonId, setSeasonId] = useState();
 
     const [isTrailerOn, setIsTrailerOn] = useState(false);
 
@@ -45,10 +46,6 @@ const DetailsCard = () => {
 
         dispatch(getSeriesDetails(storedId));
     }, []);
-
-    useEffect(() => {
-        console.log(seasonId);
-    }, [seasonId]);
 
     return (
         <div className="relative w-full min-h-screen bg-black text-white font-poppins">
@@ -168,7 +165,7 @@ const DetailsCard = () => {
                                         <strong className="text-red-500">
                                             Production Country:
                                         </strong>{" "}
-                                        {selectedSeriesDetails?.production_countries.map(
+                                        {selectedSeriesDetails?.production_countries?.map(
                                             (country, inx) => (
                                                 <span key={inx}>
                                                     {country.name}
@@ -183,7 +180,7 @@ const DetailsCard = () => {
                                         <strong className="text-red-500">
                                             Genres:
                                         </strong>{" "}
-                                        {selectedSeriesDetails?.genres.map(
+                                        {selectedSeriesDetails?.genres?.map(
                                             g => (
                                                 <span
                                                     key={g.id}
@@ -320,10 +317,10 @@ const DetailsCard = () => {
                         <h2 className="text-2xl font-bold mb-4 text-red-500">
                             Networks
                         </h2>
-                        <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4">
+                        <div className="flex gap-6 overflow-x-auto scroll-indicator pb-4">
                             {selectedSeriesDetails?.networks.length > 0 ? (
                                 <>
-                                    {selectedSeriesDetails?.networks.map(
+                                    {selectedSeriesDetails?.networks?.map(
                                         net => (
                                             <div
                                                 key={net.id}
@@ -359,11 +356,11 @@ const DetailsCard = () => {
                         <h2 className="text-2xl font-bold mb-4 text-red-500">
                             Production Companies
                         </h2>
-                        <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4">
+                        <div className="flex gap-6 overflow-x-auto scroll-indicator pb-4">
                             {selectedSeriesDetails?.production_companies
                                 .length > 0 ? (
                                 <>
-                                    {selectedSeriesDetails?.production_companies.map(
+                                    {selectedSeriesDetails?.production_companies?.map(
                                         comp => (
                                             <div
                                                 key={comp.id}
@@ -405,7 +402,7 @@ const DetailsCard = () => {
                         <h2 className="text-2xl font-bold mb-6 text-red-500">
                             Seasons
                         </h2>
-                        <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4">
+                        <div className="flex gap-6 overflow-x-auto scroll-indicator pb-4">
                             {selectedSeriesDetails?.seasons.length > 0 ? (
                                 <>
                                     {" "}
@@ -413,7 +410,33 @@ const DetailsCard = () => {
                                         (season, idx) => (
                                             <div
                                                 onClick={() => {
-                                                    setSeasonId(season.id);
+                                                    localStorage.setItem(
+                                                        "seriesId",
+                                                        selectedSeriesDetails?.id
+                                                    );
+                                                    localStorage.setItem(
+                                                        "seasonNumber",
+                                                        season.season_number
+                                                    );
+                                                    dispatch(
+                                                        GetSeriesSeasons({
+                                                            seriesId:
+                                                                selectedSeriesDetails?.id,
+                                                            seasonNumber:
+                                                                season.season_number
+                                                        })
+                                                    );
+                                                    dispatch(
+                                                        GetSeriesSeasonsAggregateCredits(
+                                                            {
+                                                                seriesId:
+                                                                    selectedSeriesDetails?.id,
+                                                                seasonNumber:
+                                                                    season.season_number
+                                                            }
+                                                        )
+                                                    );
+                                                    navigate("/SeasonDetails");
                                                 }}
                                                 key={idx}
                                                 className="flex-shrink-0
