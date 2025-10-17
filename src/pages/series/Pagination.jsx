@@ -1,22 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import { MdFastRewind, MdFastForward } from "react-icons/md";
 import { Button, Card } from "@material-tailwind/react";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-    decrementOne,
-    decrementTen,
-    getSeries,
-    incrementOne,
-    incrementTen
-} from "../../redux/SeriesSlices/SeriesSlice";
-import { useEffect } from "react";
+import { getSeries } from "../../redux/SeriesSlices/SeriesSlice";
 
 const Pagination = () => {
     const dispatch = useDispatch();
 
-    const { page, totalPages, typing } = useSelector(
+    const { page, totalPages, typing, seriesLoading } = useSelector(
         state => state.seriesReducer
     );
 
@@ -32,7 +25,7 @@ const Pagination = () => {
                     onClick={() =>
                         dispatch(getSeries({ page: page - 10, type: typing }))
                     }
-                    disabled={page === 1}
+                    disabled={seriesLoading || page === 1}
                     color="red"
                     variant="text"
                     className="!p-2 sm:!p-3 rounded-full hover:bg-red-700/40 active:scale-90 
@@ -44,7 +37,7 @@ const Pagination = () => {
                     onClick={() =>
                         dispatch(getSeries({ page: page - 1, type: typing }))
                     }
-                    disabled={page <= 1}
+                    disabled={seriesLoading || page <= 1}
                     color="red"
                     variant="text"
                     className="!p-2 sm:!p-3 rounded-full hover:bg-red-700/40 active:scale-90 
@@ -63,7 +56,9 @@ const Pagination = () => {
                     onClick={() =>
                         dispatch(getSeries({ page: page + 1, type: typing }))
                     }
-                    disabled={page >= totalPages || page >= 500}
+                    disabled={
+                        seriesLoading || page >= totalPages || page >= 500
+                    }
                     color="red"
                     variant="text"
                     className="!p-2 sm:!p-3 rounded-full hover:bg-red-700/40 active:scale-90 
@@ -75,7 +70,9 @@ const Pagination = () => {
                     onClick={() =>
                         dispatch(getSeries({ page: page + 10, type: typing }))
                     }
-                    disabled={page >= totalPages || page + 10 > 500}
+                    disabled={
+                        seriesLoading || page >= totalPages || page + 10 > 500
+                    }
                     color="red"
                     variant="text"
                     className="!p-2 sm:!p-3 rounded-full hover:bg-red-700/40 active:scale-90 
