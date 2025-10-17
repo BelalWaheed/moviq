@@ -125,7 +125,7 @@ function Home() {
                             <div className="w-12 h-12 bg-accent-secondary/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
                                 <FaTrophy className="w-6 h-6 text-accent-secondary" />
                             </div>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary">
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text-primary items-center">
                                 Top Rated{" "}
                                 <span className="text-accent-secondary">
                                     Movies
@@ -249,6 +249,10 @@ function Home() {
                                     <Card
                                         onClick={() => {
                                             dsp(getSeriesDetails(item.id));
+                                            localStorage.setItem(
+                                                "seriesId",
+                                                item.id
+                                            );
                                             navigate("/seriesDetails");
                                         }}
                                         className="w-full max-w-[220px] sm:max-w-[240px] md:max-w-[260px] lg:max-w-[280px] shadow-lg rounded-xl overflow-hidden cursor-pointer group bg-black transition-all duration-300">

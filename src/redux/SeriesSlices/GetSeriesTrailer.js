@@ -33,15 +33,20 @@ export const getSeriesTrailer = createAsyncThunk(
 );
 
 const initialState = {
-    seriesTrailerData: []
+    seriesTrailerData: [],
+    seriesTrailerDataLoading: false,
+    seriesTrailerDataError: false
 };
 
 const seriesTrailer = createSlice({
     name: "seriesTrailer",
     initialState,
     extraReducers: build => {
-        build.addCase(getSeriesTrailer.pending, (state, { payload }) => {});
+        build.addCase(getSeriesTrailer.pending, (state, { payload }) => {
+            state.seriesTrailerDataLoading = true;
+        });
         build.addCase(getSeriesTrailer.fulfilled, (state, { payload }) => {
+            state.seriesTrailerDataLoading = false;
             if (payload && payload.results && payload.results.length > 0) {
                 const lastTrailer = payload.results[payload.results.length - 1];
                 state.seriesTrailerData = lastTrailer;
@@ -50,7 +55,10 @@ const seriesTrailer = createSlice({
             }
         });
 
-        build.addCase(getSeriesTrailer.rejected, (state, { payload }) => {});
+        build.addCase(getSeriesTrailer.rejected, (state, { payload }) => {
+            state.seriesTrailerDataLoading = false;
+            seriesTrailerDataError = true;
+        });
     }
 });
 

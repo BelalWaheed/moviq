@@ -20,7 +20,6 @@ const AllEpisodes = () => {
                 {seasonDetails?.episodes?.map(episode => (
                     <Card
                         key={episode.id}
-                        // onClick={() => navigate(`/episode/${episode.id}`)}
                         className="w-full bg-zinc-900 rounded-2xl overflow-hidden shadow-xl 
                                 hover:scale-105 transition-transform duration-300 cursor-pointer group">
                         {/* === Image === */}

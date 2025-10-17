@@ -1,6 +1,6 @@
 import { Button } from "@material-tailwind/react";
 import React, { useEffect } from "react";
-import { MdSlowMotionVideo } from "react-icons/md";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
@@ -9,12 +9,14 @@ import { GetSeriesSeasonsAggregateCredits } from "../../../redux/SeriesSlices/Ge
 function AllCastPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
     const {
         seasonsAggregateCreditsDetails,
         seasonsAggregateCreditsDetailsLoading,
         seasonsAggregateCreditsDetailsError
     } = useSelector(state => state.seriesSeasonsAggregateCreditsReducer);
 
+    //for scroll to top
     useEffect(() => {
         window.scrollTo({
             top: 0,
@@ -22,6 +24,7 @@ function AllCastPage() {
         });
     }, [seasonsAggregateCreditsDetails]);
 
+    //if the page was updated
     useEffect(() => {
         dispatch(
             GetSeriesSeasonsAggregateCredits({
