@@ -43,7 +43,7 @@ function AllCastPage() {
                     color="gray"
                     className="rounded-full w-fit mt-6 flex items-center gap-2 hover:shadow-gray-500/30">
                     <IoArrowBackOutline className="w-5 h-5 text-white" />
-                    Season Details
+                    Back
                 </Button>
             </div>
 

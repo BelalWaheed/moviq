@@ -24,6 +24,7 @@ import NetworksSection from "./NetworksSection";
 import ProductionCompaniesSection from "./ProductionCompaniesSection";
 import TrailersSection from "./TrailersSection";
 import SeasonsSection from "./SeasonsSection";
+import { IoArrowBackOutline } from "react-icons/io5";
 const DetailsCard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -258,7 +259,7 @@ const DetailsCard = () => {
                                     onClick={() => navigate("/series")}
                                     color="gray"
                                     className="rounded-full w-fit mt-6 flex items-center gap-2 hover:shadow-gray-500/30">
-                                    <MdSlowMotionVideo className="w-5 h-5 text-white" />
+                                    <IoArrowBackOutline className="w-5 h-5 text-white" />
                                     Series Page
                                 </Button>
                             </div>

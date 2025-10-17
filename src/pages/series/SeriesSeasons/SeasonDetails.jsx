@@ -6,12 +6,12 @@ import { GetSeriesSeasons } from "../../../redux/SeriesSlices/GetSeriesSeasons";
 import MovieLoader from "../../loading/MovieLoader";
 import NotFound from "../../notFound/NotFound";
 import { Button } from "@material-tailwind/react";
-import { MdSlowMotionVideo } from "react-icons/md";
+
 import { useNavigate } from "react-router-dom";
 import { GetSeriesSeasonsAggregateCredits } from "../../../redux/SeriesSlices/GetSeriesSesonsAggregateCredits";
 import EpisodesListSection from "./EpisodesListSection";
 import CastSection from "./CastSection";
-
+import { IoArrowBackOutline } from "react-icons/io5";
 const SeasonDetails = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -85,7 +85,7 @@ const SeasonDetails = () => {
                                             src={
                                                 seasonDetails?.poster_path
                                                     ? `https://image.tmdb.org/t/p/w500${seasonDetails.poster_path}`
-                                                    : "Image-not-found.png"
+                                                    : "/Image-not-found.png"
                                             }
                                             alt={seasonDetails?.name}
                                             className="object-cover w-[250px] md:w-full h-full"
@@ -153,7 +153,7 @@ const SeasonDetails = () => {
                                         }
                                         color="gray"
                                         className="rounded-full w-fit mt-6 flex items-center gap-2 hover:shadow-gray-500/30">
-                                        <MdSlowMotionVideo className="w-5 h-5 text-white" />
+                                        <IoArrowBackOutline className="w-5 h-5 text-white" />
                                         Season Page
                                     </Button>
                                 </div>
