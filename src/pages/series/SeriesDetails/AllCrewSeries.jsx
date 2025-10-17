@@ -7,7 +7,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { GetSeriesAggregateCredits } from "../../../redux/SeriesSlices/GetSeriesAggregateCredits";
 import MovieLoader from "../../loading/MovieLoader";
 import NotFound from "../../notFound/NotFound";
-function AllCastSeries() {
+function AllCrewSeries() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -48,7 +48,7 @@ function AllCastSeries() {
                             <div className="bg-black min-h-screen text-white px-6 py-10">
                                 <div className="flex justify-between items-center mb-8">
                                     <h1 className="text-3xl font-bold text-red-500">
-                                        All Cast
+                                        All Crew
                                     </h1>
                                     <Button
                                         onClick={() =>
@@ -62,35 +62,38 @@ function AllCastSeries() {
                                 </div>
 
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                                    {SeriesAggregateCreditsDetails?.cast?.map(
-                                        actor => (
+                                    {SeriesAggregateCreditsDetails?.crew?.map(
+                                        (Worker, index) => (
                                             <div
-                                                key={actor.id}
+                                                key={index}
                                                 className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
                                                 <div className="h-72 w-full overflow-hidden">
                                                     <img
                                                         src={
-                                                            actor.profile_path
-                                                                ? `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+                                                            Worker.profile_path
+                                                                ? `https://image.tmdb.org/t/p/w500${Worker.profile_path}`
                                                                 : "./Image-not-found.png"
                                                         }
-                                                        alt={actor.name}
+                                                        alt={Worker.name}
                                                         className="w-full h-full object-cover"
                                                     />
                                                 </div>
                                                 <div className="p-4">
                                                     <h2 className="text-lg font-semibold truncate">
-                                                        {actor.name}
+                                                        {Worker.name}
                                                     </h2>
-                                                    <p className="text-gray-400 text-sm truncate">
-                                                        {actor.roles?.[0]
-                                                            ?.character ||
-                                                            "Unknown Role"}
-                                                    </p>
+                                                    {Worker.jobs?.map(job => (
+                                                        <p
+                                                            key={job.credit_id}
+                                                            className="text-gray-400 text-xs truncate">
+                                                            {job.job ||
+                                                                "Unknown Role"}
+                                                        </p>
+                                                    ))}
                                                     <p className="text-gray-500 text-xs mt-1">
                                                         Episodes:{" "}
                                                         {
-                                                            actor.total_episode_count
+                                                            Worker.total_episode_count
                                                         }
                                                     </p>
                                                 </div>
@@ -107,4 +110,4 @@ function AllCastSeries() {
     );
 }
 
-export default AllCastSeries;
+export default AllCrewSeries;
