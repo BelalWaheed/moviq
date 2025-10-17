@@ -59,7 +59,7 @@ export default function MovieCarousel() {
                   src={BACKDROP(backdrop)}
                   alt={title}
                   className="w-full h-full min-h-[400px] sm:min-h-[500px] object-cover object-center transform-gpu scale-100 md:scale-105 transition-transform duration-1000 ease-out brightness-[0.75] contrast-[1.05] saturate-[1.05]"
-                  loading="lazy"
+                  loading="eager"
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-background-primary/95 via-black/40 to-transparent pointer-events-none" />
