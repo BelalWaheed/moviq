@@ -47,7 +47,7 @@ function SeriesCarousel() {
                     1280: { slidesPerView: 6 }, // PC → 5 كروت
                     1024: { slidesPerView: 5 }, // Tablet → 4 كروت
                     600: { slidesPerView: 3.7 }, // Mobile → 3 كروت
-                    400: { slidesPerView: 2.8 },
+                    300: { slidesPerView: 2.8 },
                     200: { slidesPerView: 1.8 }
                 }}
                 className="series-swiper">

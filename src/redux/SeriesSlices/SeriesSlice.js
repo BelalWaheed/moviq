@@ -65,7 +65,6 @@ const series = createSlice({
             state.seriesList = payload.results;
             state.totalPages = payload.total_pages;
             state.seriesLoading = false;
-            console.log(payload);
         });
 
         builder.addCase(getSeries.rejected, (state, { payload }) => {
