@@ -5,8 +5,6 @@ export const GetSeriesAggregateCredits = createAsyncThunk(
     async ({ seriesId }, thunkAPI) => {
         const { rejectWithValue } = thunkAPI;
         try {
-            console.log(seriesId);
-
             const options = {
                 method: "GET",
                 headers: {
@@ -52,7 +50,6 @@ const SeriesAggregateCredits = createSlice({
             GetSeriesAggregateCredits.fulfilled,
             (state, { payload }) => {
                 state.SeriesAggregateCreditsDetails = payload;
-                console.log(payload);
 
                 state.SeriesAggregateCreditsDetailsLoading = false;
             }
