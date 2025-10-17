@@ -25,6 +25,7 @@ import ProductionCompaniesSection from "./ProductionCompaniesSection";
 import TrailersSection from "./TrailersSection";
 import SeasonsSection from "./SeasonsSection";
 import { IoArrowBackOutline } from "react-icons/io5";
+import CastSection from "../SeriesDetails/CastSection";
 const DetailsCard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -268,6 +269,8 @@ const DetailsCard = () => {
                     {/* === Trailer Section === */}
                     <TrailersSection isTrailerOn={isTrailerOn} />
 
+                    {/* Cast */}
+                    <CastSection />
                     {/* === Networks === */}
                     <NetworksSection />
 

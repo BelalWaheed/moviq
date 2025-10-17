@@ -15,6 +15,7 @@ import SeasonDetails from "./pages/series/SeriesSeasons/SeasonDetails";
 import AllCastPage from "./pages/series/SeriesSeasons/AllCastPage";
 import AllEpisodes from "./pages/series/SeriesEpisodes/AllEpisodes";
 import Series from "./pages/series/Series";
+import AllCastSeries from "./pages/series/SeriesDetails/AllCastSeries";
 /* END ALL SERIES IMPORTS */
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
 
                 {/* START ALL SERIES ROUTES */}
                 <Route path="series" element={<Series />} />
+                <Route path="AllCastSeries" element={<AllCastSeries />} />
                 <Route path="seriesDetails" element={<DetailsCard />} />
                 <Route path="SeasonDetailsCast" element={<AllCastPage />} />
                 <Route path="AllEpisode" element={<AllEpisodes />} />
