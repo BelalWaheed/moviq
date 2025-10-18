@@ -7,6 +7,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { GetSeriesAggregateCredits } from "../../../redux/SeriesSlices/GetSeriesAggregateCredits";
 import MovieLoader from "../../loading/MovieLoader";
 import NotFound from "../../notFound/NotFound";
+import { GetPersonDetails } from "../../../redux/SeriesSlices/GetPersonDetails";
 function AllCrewSeries() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -65,6 +66,18 @@ function AllCrewSeries() {
                                     {SeriesAggregateCreditsDetails?.crew?.map(
                                         (Worker, index) => (
                                             <div
+                                                onClick={() => {
+                                                    dispatch(
+                                                        GetPersonDetails({
+                                                            personId: Worker.id
+                                                        })
+                                                    );
+                                                    localStorage.setItem(
+                                                        "personId",
+                                                        Worker.id
+                                                    );
+                                                    navigate("/PersonalInfo");
+                                                }}
                                                 key={index}
                                                 className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
                                                 <div className="h-72 w-full overflow-hidden">

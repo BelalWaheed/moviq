@@ -110,7 +110,11 @@ const DetailsCard = () => {
                             className="flex justify-center md:justify-start">
                             <Card className="rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-transform bg-[#0f0f0f]">
                                 <img
-                                    src={`https://image.tmdb.org/t/p/w500${selectedSeriesDetails?.poster_path}`}
+                                    src={
+                                        selectedSeriesDetails?.poster_path
+                                            ? `https://image.tmdb.org/t/p/w500${selectedSeriesDetails?.poster_path}`
+                                            : "./Image-not-found.png"
+                                    }
                                     alt="Poster"
                                     className="object-cover w-[250px] md:w-full h-full"
                                 />
