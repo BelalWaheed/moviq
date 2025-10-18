@@ -28,32 +28,8 @@ const AllCastSeries = lazy(() =>
 
 function App() {
   return (
-    <div className="bg-background-primary">
-      <Header />
-
-      {/*  Wrap routes in Suspense for lazy loading */}
-      <Suspense fallback={<MovieLoader />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-
-          {/* Series Routes */}
-          <Route path="series" element={<Series />} />
-          <Route path="AllCastSeries" element={<AllCastSeries />} />
-          <Route path="seriesDetails" element={<DetailsCard />} />
-          <Route path="SeasonDetailsCast" element={<AllCastPage />} />
-          <Route path="AllEpisode" element={<AllEpisodes />} />
-          <Route path="SeasonDetails" element={<SeasonDetails />} />
-
-          {/* Movie Routes */}
-          <Route path="movies" element={<Movies />} />
-          <Route path="moviedetails" element={<MovieDetailsCard />} />
-
-          {/* 404 */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-
-      <Footer />
+    <div>
+      <h2>hello</h2>
     </div>
   );
 }
