@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+
+  <url>
+    <loc>https://moviqq.vercel.app/</loc>
+    <lastmod>2025-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://moviqq.vercel.app/movies</loc>
+    <lastmod>2025-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moviqq.vercel.app/series</loc>
+    <lastmod>2025-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moviqq.vercel.app/AllCastSeries</loc>
+    <lastmod>2025-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moviqq.vercel.app/seriesDetails</loc>
+    <lastmod>2025-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moviqq.vercel.app/SeasonDetailsCast</loc>
+    <lastmod>2025-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moviqq.vercel.app/AllEpisode</loc>
+    <lastmod>2025-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moviqq.vercel.app/SeasonDetails</loc>
+    <lastmod>2025-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moviqq.vercel.app/moviedetails</loc>
+    <lastmod>2025-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>
