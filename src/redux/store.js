@@ -11,6 +11,8 @@ import { searchReducer } from "./HomeSlices/searcheSlice.js";
 import { seriesSeasonsReducer } from "./SeriesSlices/GetSeriesSeasons.js";
 import { seriesSeasonsAggregateCreditsReducer } from "./SeriesSlices/GetSeriesSesonsAggregateCredits.js";
 import { SeriesAggregateCreditsReducer } from "./SeriesSlices/GetSeriesAggregateCredits.js";
+import { PersonReducer } from "./SeriesSlices/GetPersonDetails.js";
+import { personCombinedCreditsReducer } from "./SeriesSlices/GetPersonCombinedCredits.js";
 
 const store = configureStore({
     reducer: {
@@ -19,6 +21,8 @@ const store = configureStore({
         seriesSeasonsReducer,
         seriesSeasonsAggregateCreditsReducer,
         SeriesAggregateCreditsReducer,
+        PersonReducer,
+        personCombinedCreditsReducer,
 
         mNowReducer,
         mTopReducer,
