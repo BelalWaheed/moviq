@@ -41,7 +41,7 @@ const Cast_And_CrewSection = () => {
                     {SeriesAggregateCreditsDetails?.cast?.length > 0 && (
                         <section className="max-w-6xl mx-auto px-6 pb-20">
                             <h2 className="text-2xl font-bold mb-4 text-red-500">
-                                Cast
+                                All actors in this work
                             </h2>
                             <div className="flex gap-4 overflow-x-auto overflow-y-hidden scroll-indicator pb-3">
                                 {SeriesAggregateCreditsDetails.cast
@@ -115,7 +115,7 @@ const Cast_And_CrewSection = () => {
                     {SeriesAggregateCreditsDetails?.crew?.length > 0 && (
                         <section className="max-w-6xl mx-auto px-6 pb-20">
                             <h2 className="text-2xl font-bold mb-4 text-red-500">
-                                Crew
+                                All crew in this work
                             </h2>
                             <div className="flex gap-4 overflow-x-auto overflow-y-hidden scroll-indicator pb-3">
                                 {SeriesAggregateCreditsDetails.crew

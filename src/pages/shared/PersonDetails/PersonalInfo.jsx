@@ -18,7 +18,11 @@ import NotFound from "../../notFound/NotFound";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 
 import { IoPersonCircleOutline } from "react-icons/io5";
-import PersonCombinedCredits from "./PersonCombinedCredits";
+import PersonCombinedCredits from "./PersonCombinedCredits/CastSeriesPersonCombinedCredits";
+import CastSeriesPersonCombinedCredits from "./PersonCombinedCredits/CastSeriesPersonCombinedCredits";
+import CastMoviesPersonCombinedCredits from "./PersonCombinedCredits/CastMoviesPersonCombinedCredits";
+import CrewSeriesPersonCombinedCredits from "./PersonCombinedCredits/CrewSeriesPersonCombinedCredits";
+import CrewMoviesPersonCombinedCredits from "./PersonCombinedCredits/CrewMoviesPersonCombinedCredits";
 
 const PersonalInfo = () => {
     const { PersonDetails, PersonDetailsLoading, PersonDetailsError } =
@@ -159,7 +163,7 @@ const PersonalInfo = () => {
                                             )}
                                             <Button
                                                 onClick={() => {
-                                                    navigate("/SeriesDetails");
+                                                    navigate(-1);
                                                 }}
                                                 color="gray"
                                                 className="flex items-center gap-2 rounded-xl">
@@ -169,7 +173,18 @@ const PersonalInfo = () => {
                                         </div>
                                     </CardBody>
                                 </Card>
-                                <PersonCombinedCredits />
+                                <CastSeriesPersonCombinedCredits
+                                    PersonDetailsname={PersonDetails?.name}
+                                />
+                                <CastMoviesPersonCombinedCredits
+                                    PersonDetailsname={PersonDetails?.name}
+                                />
+                                <CrewSeriesPersonCombinedCredits
+                                    PersonDetailsname={PersonDetails?.name}
+                                />
+                                <CrewMoviesPersonCombinedCredits
+                                    PersonDetailsname={PersonDetails?.name}
+                                />
                             </motion.section>
                         </>
                     )}

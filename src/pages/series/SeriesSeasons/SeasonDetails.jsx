@@ -12,6 +12,7 @@ import { GetSeriesSeasonsAggregateCredits } from "../../../redux/SeriesSlices/Ge
 import EpisodesListSection from "./EpisodesListSection";
 import CastSection from "./CastSection";
 import { IoArrowBackOutline } from "react-icons/io5";
+import CrewSection from "./CrewSection";
 const SeasonDetails = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -163,6 +164,9 @@ const SeasonDetails = () => {
 
                             {/* === Cast Section === */}
                             <CastSection />
+
+                            {/* === Crew Section === */}
+                            <CrewSection />
                         </div>
                     )}
                 </>
