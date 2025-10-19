@@ -6,7 +6,7 @@ import MovieLoader from "../../loading/MovieLoader";
 import { GetPersonDetails } from "../../../redux/SeriesSlices/GetPersonDetails";
 import { GetPersonCombinedCredits } from "../../../redux/SeriesSlices/GetPersonCombinedCredits";
 
-const CastSection = () => {
+const CrewSection = () => {
     const {
         seasonsAggregateCreditsDetails,
         seasonsAggregateCreditsDetailsLoading,
@@ -23,68 +23,66 @@ const CastSection = () => {
             ) : seasonsAggregateCreditsDetailsLoading ? (
                 <MovieLoader />
             ) : (
-                seasonsAggregateCreditsDetails?.cast?.length > 0 && (
+                seasonsAggregateCreditsDetails?.crew?.length > 0 && (
                     <section className="max-w-6xl mx-auto px-6 pb-20">
                         <h2 className="text-2xl font-bold mb-4 text-red-500">
-                            Cast
+                            Crew
                         </h2>
                         <div className="flex gap-4 overflow-x-auto overflow-y-hidden scroll-indicator pb-3">
-                            {seasonsAggregateCreditsDetails.cast
+                            {seasonsAggregateCreditsDetails.crew
                                 .slice(0, 10)
-                                .map(actor => (
+                                .map((Worker, index) => (
                                     <div
                                         onClick={() => {
                                             dispatch(
                                                 GetPersonDetails({
-                                                    personId: actor.id
+                                                    personId: Worker.id
                                                 })
                                             );
                                             dispatch(
                                                 GetPersonCombinedCredits({
-                                                    personId: actor.id
+                                                    personId: Worker.id
                                                 })
                                             );
                                             localStorage.setItem(
                                                 "personId",
-                                                actor.id
+                                                Worker.id
                                             );
                                             navigate("/PersonalInfo");
                                         }}
-                                        key={actor.id}
+                                        key={index}
                                         className="min-w-[150px] bg-zinc-900 rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300">
                                         <div className="h-56 w-full overflow-hidden">
                                             <img
                                                 src={
-                                                    actor.profile_path
-                                                        ? `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+                                                    Worker.profile_path
+                                                        ? `https://image.tmdb.org/t/p/w500${Worker.profile_path}`
                                                         : "./Image-not-found.png"
                                                 }
-                                                alt={actor.name}
+                                                alt={Worker.name}
                                                 className="w-full h-full object-cover"
                                             />
                                         </div>
                                         <div className="p-2">
                                             <h3 className="text-sm font-semibold truncate">
-                                                {actor.name}
+                                                {Worker.name}
                                             </h3>
                                             <p className="text-gray-400 text-xs truncate">
-                                                {actor.roles?.[0]?.character ||
+                                                {Worker.roles?.[0]?.character ||
                                                     "Unknown Role"}
                                             </p>
                                         </div>
                                     </div>
                                 ))}
 
-                            {seasonsAggregateCreditsDetails.cast.length >
+                            {seasonsAggregateCreditsDetails.crew.length >
                                 10 && (
                                 <button
-                                    onClick={() =>
-                                        navigate("/SeasonDetailsCast")
-                                    }
+                                    onClick={() => navigate("/AllCrewPage")}
                                     className="min-w-[150px] flex flex-col justify-center items-center bg-zinc-800 rounded-2xl cursor-pointer hover:scale-105 hover:bg-red-600 transition-all duration-300">
                                     <span className="text-white text-lg font-bold">
                                         +
-                                        {seasonsAggregateCreditsDetails.cast
+                                        {seasonsAggregateCreditsDetails.crew
                                             .length - 10}
                                     </span>
                                     <span className="text-sm text-gray-300">
@@ -100,4 +98,4 @@ const CastSection = () => {
     );
 };
 
-export default CastSection;
+export default CrewSection;

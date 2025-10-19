@@ -25,7 +25,7 @@ const Pagination = () => {
                     onClick={() =>
                         dispatch(getSeries({ page: page - 10, type: typing }))
                     }
-                    disabled={seriesLoading || page === 1}
+                    disabled={seriesLoading || page - 10 < 1}
                     color="red"
                     variant="text"
                     className="!p-2 sm:!p-3 rounded-full hover:bg-red-700/40 active:scale-90 
@@ -71,7 +71,9 @@ const Pagination = () => {
                         dispatch(getSeries({ page: page + 10, type: typing }))
                     }
                     disabled={
-                        seriesLoading || page >= totalPages || page + 10 > 500
+                        seriesLoading ||
+                        page + 10 > totalPages ||
+                        page + 10 > 500
                     }
                     color="red"
                     variant="text"
