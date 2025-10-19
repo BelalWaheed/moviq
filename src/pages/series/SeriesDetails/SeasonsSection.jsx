@@ -27,17 +27,9 @@ const SeasonsSection = () => {
             <div className="flex gap-6 overflow-x-auto overflow-y-hidden scroll-indicator pb-4">
                 {selectedSeriesDetails?.seasons.length > 0 ? (
                     selectedSeriesDetails.seasons.map((season, idx) => (
-                        <motion.div
+                        <div
                             key={idx}
-                            variants={itemVariants}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: false, amount: 0.3 }}
-                            whileHover={{
-                                scale: 1.05,
-                                transition: { duration: 0.2 }
-                            }}
-                            className="flex-shrink-0 cursor-pointer w-44 sm:w-56 md:w-64 bg-[#0f0f0f] rounded-2xl overflow-hidden shadow-lg border border-gray-800"
+                            className="hover:scale-105 transition duration-250 flex-shrink-0 cursor-pointer w-44 sm:w-56 md:w-64 bg-[#0f0f0f] rounded-2xl overflow-hidden shadow-lg border border-gray-800"
                             onClick={() => {
                                 localStorage.setItem(
                                     "seriesId",
@@ -93,7 +85,7 @@ const SeasonsSection = () => {
                                     {season.vote_average || 0} ⭐
                                 </p>
                             </div>
-                        </motion.div>
+                        </div>
                     ))
                 ) : (
                     <div className="bg-[#0f0f0f] border border-gray-800 rounded-2xl p-10">

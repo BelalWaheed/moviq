@@ -33,6 +33,9 @@ const AllCrewSeries = lazy(() =>
 const AllCrewPage = lazy(() =>
     import("./pages/series/SeriesSeasons/AllCrewPage")
 );
+const RecommendationsSection = lazy(() =>
+    import("./pages/series/SeriesDetails/RecommendationsSection")
+);
 
 /* === Person === */
 const PersonalInfo = lazy(() =>
@@ -58,6 +61,8 @@ const AllPersonMoviesCrew = lazy(() =>
         "./pages/shared/PersonDetails/AllPersonCombinedCredits/AllPersonMoviesCrew"
     )
 );
+
+//
 
 function App() {
     return (
@@ -99,6 +104,11 @@ function App() {
                             element={<AllCrewSeries />}
                         />
                         <Route path="AllCrewPage" element={<AllCrewPage />} />
+
+                        <Route
+                            path="RecommendationsSection"
+                            element={<RecommendationsSection />}
+                        />
 
                         {/* Person */}
                         <Route path="PersonalInfo" element={<PersonalInfo />} />
