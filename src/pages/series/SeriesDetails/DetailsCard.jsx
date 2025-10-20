@@ -29,6 +29,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import Cast_And_CrewSection from "./Cast_And_CrewSection";
 import RecommendationsSection from "./RecommendationsSection";
 import ExternalLinksSection from "./ExternalLinksSection";
+import MediaSection from "./MediaSection";
 const DetailsCard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -277,7 +278,7 @@ const DetailsCard = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5 }}
-                                className="flex flex-col w-full sm:w-3/4 mt-8 bg-[#0f0f0f] border border-red-600/30 rounded-2xl p-5 shadow-lg shadow-red-600/10">
+                                className="flex flex-col w-full sm:w-3/4 mt-8 ">
                                 <div className="flex items-center gap-3 mb-4">
                                     <PlayIcon className="w-6 h-6 text-red-500" />
                                     <h2 className="text-xl font-bold bg-gradient-to-r from-red-600 to-red-400 bg-clip-text text-transparent">
@@ -296,8 +297,11 @@ const DetailsCard = () => {
                     {/* === Trailer Section === */}
                     <TrailersSection isTrailerOn={isTrailerOn} />
 
-                    {/* Cast */}
+                    {/* Cast_And_Crew */}
                     <Cast_And_CrewSection />
+
+                    {/* Media */}
+                    <MediaSection />
 
                     {/* === Networks === */}
                     <NetworksSection />

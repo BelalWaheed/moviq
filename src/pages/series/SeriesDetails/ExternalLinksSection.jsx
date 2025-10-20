@@ -15,13 +15,14 @@ const ExternalLinksSection = () => {
         SeriesExternalLinksDetailsError
     } = useSelector(state => state.SeriesExternalLinksReducer);
 
+    // if page was updated
     useEffect(() => {
         dispatch(
             GetSeriesExternalLinks({
                 seriesId: localStorage.getItem("seriesId")
             })
         );
-    }, [dispatch]);
+    }, []);
 
     const links = [
         {
