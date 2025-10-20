@@ -27,6 +27,8 @@ import SeasonsSection from "./SeasonsSection";
 import { IoArrowBackOutline } from "react-icons/io5";
 
 import Cast_And_CrewSection from "./Cast_And_CrewSection";
+import RecommendationsSection from "./RecommendationsSection";
+import ExternalLinksSection from "./ExternalLinksSection";
 const DetailsCard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -88,7 +90,6 @@ const DetailsCard = () => {
                             </p>
                         </motion.div>
                     </motion.div>
-
                     {/* === Main Content === */}
                     <motion.div
                         initial="hidden"
@@ -110,7 +111,11 @@ const DetailsCard = () => {
                             className="flex justify-center md:justify-start">
                             <Card className="rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition-transform bg-[#0f0f0f]">
                                 <img
-                                    src={`https://image.tmdb.org/t/p/w500${selectedSeriesDetails?.poster_path}`}
+                                    src={
+                                        selectedSeriesDetails?.poster_path
+                                            ? `https://image.tmdb.org/t/p/w500${selectedSeriesDetails?.poster_path}`
+                                            : "./Image-not-found.png"
+                                    }
                                     alt="Poster"
                                     className="object-cover w-[250px] md:w-full h-full"
                                 />
@@ -257,6 +262,7 @@ const DetailsCard = () => {
                                     <PlayIcon className="w-5 h-5 text-white" />
                                     Watch Trailer
                                 </Button>
+
                                 <Button
                                     onClick={() => navigate("/series")}
                                     color="gray"
@@ -265,6 +271,26 @@ const DetailsCard = () => {
                                     Series Page
                                 </Button>
                             </div>
+
+                            {/*  External Links Section */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5 }}
+                                className="flex flex-col w-full sm:w-3/4 mt-8 bg-[#0f0f0f] border border-red-600/30 rounded-2xl p-5 shadow-lg shadow-red-600/10">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <PlayIcon className="w-6 h-6 text-red-500" />
+                                    <h2 className="text-xl font-bold bg-gradient-to-r from-red-600 to-red-400 bg-clip-text text-transparent">
+                                        Official & Social Links
+                                    </h2>
+                                </div>
+                                <p className="text-gray-400 text-sm mb-4">
+                                    Official and social media links related to
+                                    this series
+                                </p>
+
+                                <ExternalLinksSection />
+                            </motion.div>
                         </motion.div>
                     </motion.div>
                     {/* === Trailer Section === */}
@@ -272,6 +298,7 @@ const DetailsCard = () => {
 
                     {/* Cast */}
                     <Cast_And_CrewSection />
+
                     {/* === Networks === */}
                     <NetworksSection />
 
@@ -280,6 +307,9 @@ const DetailsCard = () => {
 
                     {/* === Seasons Section === */}
                     <SeasonsSection />
+
+                    {/* Recommendations Section */}
+                    <RecommendationsSection />
                 </>
             )}
         </div>

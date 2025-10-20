@@ -1,5 +1,9 @@
-function Movies() {
-  return <div className="bg-background-primary min-h-[484px]">Movies</div>;
+import React from 'react'
+
+const Movies = () => {
+  return (
+    <div className='bg-black'>Movies</div>
+  )
 }
 
-export default Movies;
+export default Movies

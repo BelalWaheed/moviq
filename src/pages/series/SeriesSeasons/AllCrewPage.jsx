@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { GetPersonDetails } from "../../../redux/SeriesSlices/GetPersonDetails";
 import { GetPersonCombinedCredits } from "../../../redux/SeriesSlices/GetPersonCombinedCredits";
 
-function AllCastPage() {
+function AllCrewPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -18,7 +18,7 @@ function AllCastPage() {
         seasonsAggregateCreditsDetailsError
     } = useSelector(state => state.seriesSeasonsAggregateCreditsReducer);
 
-    const [castCount, setCastCount] = useState(20);
+    const [crewCount, setcrewCount] = useState(20);
     const [showHeaderButtons, setShowHeaderButtons] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -62,7 +62,7 @@ function AllCastPage() {
                         transition={{ duration: 0.3 }}
                         className="fixed top-[70px] left-0 w-full px-6 z-40 flex justify-between items-center py-3">
                         <h1 className="text-3xl font-bold text-red-500 bg-black/30 backdrop-blur-md rounded-2xl px-5 py-3 shadow-lg">
-                            All Cast
+                            All crew
                         </h1>
                         <motion.button
                             whileHover={{ scale: 1.1 }}
@@ -76,49 +76,53 @@ function AllCastPage() {
                 )}
             </AnimatePresence>
 
-            {/* ===== Grid of Cast ===== */}
+            {/* ===== Grid of crew ===== */}
             <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-3 mt-6">
-                {seasonsAggregateCreditsDetails?.cast
-                    ?.slice(0, castCount)
-                    ?.map(actor => (
+                {seasonsAggregateCreditsDetails?.crew
+                    ?.filter(
+                        (value, index, self) =>
+                            index === self.findIndex(t => t.id === value.id)
+                    )
+                    ?.slice(0, crewCount)
+                    ?.map((Worker, index) => (
                         <div
                             onClick={() => {
                                 dispatch(
                                     GetPersonDetails({
-                                        personId: actor.id
+                                        personId: Worker.id
                                     })
                                 );
                                 dispatch(
                                     GetPersonCombinedCredits({
-                                        personId: actor.id
+                                        personId: Worker.id
                                     })
                                 );
-                                localStorage.setItem("personId", actor.id);
+                                localStorage.setItem("personId", Worker.id);
                                 navigate("/PersonalInfo");
                             }}
-                            key={actor.id}
+                            key={Worker.id}
                             className="bg-zinc-900 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
                             <div className="h-36 w-full overflow-hidden">
                                 <img
                                     src={
-                                        actor.profile_path
-                                            ? `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+                                        Worker.profile_path
+                                            ? `https://image.tmdb.org/t/p/w500${Worker.profile_path}`
                                             : "./Image-not-found.png"
                                     }
-                                    alt={actor.name}
+                                    alt={Worker.name}
                                     className="w-full h-full object-cover"
                                 />
                             </div>
                             <div className="p-2">
                                 <h2 className="text-sm font-semibold truncate">
-                                    {actor.name}
+                                    {Worker.name}
                                 </h2>
                                 <p className="text-gray-400 text-xs truncate">
-                                    {actor.roles?.[0]?.character ||
+                                    {Worker.roles?.[0]?.character ||
                                         "Unknown Role"}
                                 </p>
                                 <p className="text-gray-500 text-[10px] mt-1">
-                                    Ep: {actor.total_episode_count}
+                                    Ep: {Worker.total_episode_count}
                                 </p>
                             </div>
                         </div>
@@ -127,20 +131,20 @@ function AllCastPage() {
 
             {/* ====== Buttons Section ====== */}
             <div className="flex justify-center gap-4 mt-10">
-                {seasonsAggregateCreditsDetails?.cast.length > castCount && (
+                {seasonsAggregateCreditsDetails?.crew.length > crewCount && (
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => setCastCount(castCount + 20)}
+                        onClick={() => setcrewCount(crewCount + 20)}
                         className="bg-gradient-to-r from-red-600 to-red-800 px-8 py-3 rounded-full font-semibold shadow-md hover:shadow-red-500/40 transition">
                         Show More
                     </motion.button>
                 )}
-                {castCount > 20 && (
+                {crewCount > 20 && (
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => setCastCount(castCount - 20)}
+                        onClick={() => setcrewCount(crewCount - 20)}
                         className="bg-gradient-to-r from-gray-600 to-gray-800 px-8 py-3 rounded-full font-semibold shadow-md hover:shadow-gray-500/40 transition">
                         Show Less
                     </motion.button>
@@ -150,4 +154,4 @@ function AllCastPage() {
     );
 }
 
-export default AllCastPage;
+export default AllCrewPage;

@@ -6,11 +6,10 @@ import { useDispatch } from "react-redux";
 import {
     getSeriesDetails,
     setSeriesId
-} from "../../../redux/SeriesSlices/GetSeriesDetails";
+} from "../../../redux/moviesSlices/getMovieDetails";
 
 import { useNavigate } from "react-router-dom";
 import { GetSeriesAggregateCredits } from "../../../redux/SeriesSlices/GetSeriesAggregateCredits";
-import { GetSeriesRecommendations } from "../../../redux/SeriesSlices/GetSeriesRecommendations";
 
 const MainCard = ({
     series: { id, name, poster_path, first_air_date, vote_average }
@@ -28,17 +27,12 @@ const MainCard = ({
                         seriesId: id
                     })
                 );
-                dispatch(GetSeriesRecommendations({ seriesId: id }));
                 navigate("/seriesDetails");
             }}
             className="w-full max-w-[220px] sm:max-w-[240px] md:max-w-[260px] lg:max-w-[280px] shadow-lg rounded-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer group bg-black">
             <div className="relative w-full aspect-[2/3] overflow-hidden bg-black">
                 <img
-                    src={
-                        poster_path
-                            ? `https://image.tmdb.org/t/p/w500${poster_path}`
-                            : "./Image-not-found.png"
-                    }
+                    src={`https://image.tmdb.org/t/p/w500${poster_path}`}
                     alt={name}
                     className="absolute inset-0 w-full h-full object-cover group-hover:opacity-90 transition-opacity"
                 />

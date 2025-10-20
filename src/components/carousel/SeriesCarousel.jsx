@@ -70,6 +70,10 @@ function SeriesCarousel() {
                                     <Card
                                         onClick={() => {
                                             dsp(getSeriesDetails(id));
+                                            localStorage.setItem(
+                                                "seriesId",
+                                                id
+                                            );
                                             navigate("/seriesDetails");
                                         }}
                                         className="w-full shadow-lg rounded-xl overflow-hidden cursor-pointer group bg-surface-secondary border border-background-muted transition-all">

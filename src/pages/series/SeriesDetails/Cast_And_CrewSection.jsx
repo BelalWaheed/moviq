@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import NotFound from "../../notFound/NotFound";
 import MovieLoader from "../../loading/MovieLoader";
 import { GetSeriesAggregateCredits } from "../../../redux/SeriesSlices/GetSeriesAggregateCredits";
+import { GetPersonDetails } from "../../../redux/SeriesSlices/GetPersonDetails";
+import { GetPersonCombinedCredits } from "../../../redux/SeriesSlices/GetPersonCombinedCredits";
 
 const Cast_And_CrewSection = () => {
     const {
@@ -14,12 +16,18 @@ const Cast_And_CrewSection = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    // if page was refreshing
     useEffect(() => {
         dispatch(
             GetSeriesAggregateCredits({
                 seriesId: localStorage.getItem("seriesId")
             })
         );
+        // dispatch(
+        //     GetPersonDetails({
+        //         personId: localStorage.getItem("personId")
+        //     })
+        // );
     }, []);
     return (
         <>
@@ -33,13 +41,30 @@ const Cast_And_CrewSection = () => {
                     {SeriesAggregateCreditsDetails?.cast?.length > 0 && (
                         <section className="max-w-6xl mx-auto px-6 pb-20">
                             <h2 className="text-2xl font-bold mb-4 text-red-500">
-                                Cast
+                                All actors in this work
                             </h2>
                             <div className="flex gap-4 overflow-x-auto overflow-y-hidden scroll-indicator pb-3">
                                 {SeriesAggregateCreditsDetails.cast
                                     .slice(0, 10)
                                     .map(actor => (
                                         <div
+                                            onClick={() => {
+                                                dispatch(
+                                                    GetPersonDetails({
+                                                        personId: actor.id
+                                                    })
+                                                );
+                                                dispatch(
+                                                    GetPersonCombinedCredits({
+                                                        personId: actor.id
+                                                    })
+                                                );
+                                                localStorage.setItem(
+                                                    "personId",
+                                                    actor.id
+                                                );
+                                                navigate("/PersonalInfo");
+                                            }}
                                             key={actor.id}
                                             className="min-w-[150px] bg-zinc-900 rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300">
                                             <div className="h-56 w-full overflow-hidden">
@@ -90,13 +115,30 @@ const Cast_And_CrewSection = () => {
                     {SeriesAggregateCreditsDetails?.crew?.length > 0 && (
                         <section className="max-w-6xl mx-auto px-6 pb-20">
                             <h2 className="text-2xl font-bold mb-4 text-red-500">
-                                Crew
+                                All crew in this work
                             </h2>
                             <div className="flex gap-4 overflow-x-auto overflow-y-hidden scroll-indicator pb-3">
                                 {SeriesAggregateCreditsDetails.crew
                                     .slice(0, 10)
                                     .map((worker, index) => (
                                         <div
+                                            onClick={() => {
+                                                dispatch(
+                                                    GetPersonDetails({
+                                                        personId: worker.id
+                                                    })
+                                                );
+                                                dispatch(
+                                                    GetPersonCombinedCredits({
+                                                        personId: worker.id
+                                                    })
+                                                );
+                                                localStorage.setItem(
+                                                    "personId",
+                                                    worker.id
+                                                );
+                                                navigate("/PersonalInfo");
+                                            }}
                                             key={index}
                                             className="min-w-[150px] bg-zinc-900 rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300">
                                             <div className="h-56 w-full overflow-hidden">

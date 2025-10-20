@@ -11,21 +11,29 @@ import { searchReducer } from "./HomeSlices/searcheSlice.js";
 import { seriesSeasonsReducer } from "./SeriesSlices/GetSeriesSeasons.js";
 import { seriesSeasonsAggregateCreditsReducer } from "./SeriesSlices/GetSeriesSesonsAggregateCredits.js";
 import { SeriesAggregateCreditsReducer } from "./SeriesSlices/GetSeriesAggregateCredits.js";
+import { PersonReducer } from "./SeriesSlices/GetPersonDetails.js";
+import { personCombinedCreditsReducer } from "./SeriesSlices/GetPersonCombinedCredits.js";
+import { SeriesRecommendationsReducer } from "./SeriesSlices/GetSeriesRecommendations.js";
+import { SeriesExternalLinksReducer } from "./SeriesSlices/GetSeriesExternalLinks.js";
 
 const store = configureStore({
     reducer: {
         seriesReducer,
         seriesDetailsReducer,
+        seriesTrailerReducer,
         seriesSeasonsReducer,
         seriesSeasonsAggregateCreditsReducer,
         SeriesAggregateCreditsReducer,
+        PersonReducer,
+        personCombinedCreditsReducer,
+        SeriesRecommendationsReducer,
+        SeriesExternalLinksReducer,
 
         mNowReducer,
         mTopReducer,
         tNowReducer,
         tTopReducer,
         movieDetailsReducer,
-        seriesTrailerReducer,
         searchReducer
     }
 });
