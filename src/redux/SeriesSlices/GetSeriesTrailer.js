@@ -33,9 +33,14 @@ export const getSeriesTrailer = createAsyncThunk(
 );
 
 const initialState = {
-    seriesTrailerData: [],
+    // trailer
+    seriesTrailerData: null,
     seriesTrailerDataLoading: false,
-    seriesTrailerDataError: false
+    seriesTrailerDataError: false,
+    // all videos
+    seriesVideosData: [],
+    seriesVideosDataLoading: false,
+    seriesVideosDataError: false
 };
 
 const seriesTrailer = createSlice({
@@ -44,20 +49,25 @@ const seriesTrailer = createSlice({
     extraReducers: build => {
         build.addCase(getSeriesTrailer.pending, (state, { payload }) => {
             state.seriesTrailerDataLoading = true;
+            state.seriesVideosDataLoading = true;
         });
         build.addCase(getSeriesTrailer.fulfilled, (state, { payload }) => {
             state.seriesTrailerDataLoading = false;
+            state.seriesVideosDataLoading = false;
             if (payload && payload.results && payload.results.length > 0) {
                 const lastTrailer = payload.results[payload.results.length - 1];
                 state.seriesTrailerData = lastTrailer;
             } else {
                 state.seriesTrailerData = null;
             }
+            state.seriesVideosData = payload;
         });
 
         build.addCase(getSeriesTrailer.rejected, (state, { payload }) => {
             state.seriesTrailerDataLoading = false;
-            seriesTrailerDataError = true;
+            state.seriesVideosDataLoading = false;
+            state.seriesTrailerDataError = true;
+            state.seriesVideosDataError = true;
         });
     }
 });

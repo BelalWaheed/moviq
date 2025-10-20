@@ -15,6 +15,7 @@ import { PersonReducer } from "./SeriesSlices/GetPersonDetails.js";
 import { personCombinedCreditsReducer } from "./SeriesSlices/GetPersonCombinedCredits.js";
 import { SeriesRecommendationsReducer } from "./SeriesSlices/GetSeriesRecommendations.js";
 import { SeriesExternalLinksReducer } from "./SeriesSlices/GetSeriesExternalLinks.js";
+import { SeriesImagesDetailsReducer } from "./SeriesSlices/GetSeriesImages.js";
 
 const store = configureStore({
     reducer: {
@@ -28,6 +29,7 @@ const store = configureStore({
         personCombinedCreditsReducer,
         SeriesRecommendationsReducer,
         SeriesExternalLinksReducer,
+        SeriesImagesDetailsReducer,
 
         mNowReducer,
         mTopReducer,

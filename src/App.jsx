@@ -61,6 +61,13 @@ const AllPersonMoviesCrew = lazy(() =>
         "./pages/shared/PersonDetails/AllPersonCombinedCredits/AllPersonMoviesCrew"
     )
 );
+const BackdropsPage = lazy(() =>
+    import("./pages/series/SeriesImages/BackdropsPage")
+);
+const LogosPage = lazy(() => import("./pages/series/SeriesImages/LogosPage"));
+const PostersPage = lazy(() =>
+    import("./pages/series/SeriesImages/PostersPage")
+);
 
 //
 
@@ -105,6 +112,12 @@ function App() {
                         />
                         <Route path="AllCrewPage" element={<AllCrewPage />} />
 
+                        <Route
+                            path="BackdropsPage"
+                            element={<BackdropsPage />}
+                        />
+                        <Route path="LogosPage" element={<LogosPage />} />
+                        <Route path="PostersPage" element={<PostersPage />} />
                         <Route
                             path="RecommendationsSection"
                             element={<RecommendationsSection />}
