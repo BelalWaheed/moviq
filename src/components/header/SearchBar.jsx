@@ -53,17 +53,22 @@ export function Search({ placeholderOverride }) {
     return () => clearTimeout(timeoutRef.current);
   }, [searchQuery, dispatch]);
 
-  // click outside to close results
   useEffect(() => {
-    function onClick(e) {
+    const handleClickOutside = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
         setShowResults(false);
         setIsSearchFocused(false);
       }
+    };
+
+    if (showResults) {
+      document.addEventListener("click", handleClickOutside);
     }
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
-  }, []);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [showResults]);
 
   const handleSearchSubmit = (e) => {
     e && e.preventDefault();
@@ -87,21 +92,6 @@ export function Search({ placeholderOverride }) {
     setSearchQuery("");
     setShowResults(false);
   };
-
-  const [noResultsVisible, setNoResultsVisible] = useState(false);
-
-  useEffect(() => {
-    if (
-      showResults &&
-      searchQuery.trim().length >= 2 &&
-      searchResults.length === 0 &&
-      !isSearching
-    ) {
-      setNoResultsVisible(true);
-      const timer = setTimeout(() => setNoResultsVisible(false), 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [showResults, searchResults, searchQuery, isSearching]);
 
   const placeholder = placeholderOverride || "Search Movies & Series";
 
@@ -218,7 +208,7 @@ export function Search({ placeholderOverride }) {
             !isSearching && (
               <motion.div
                 {...softFadeUp}
-                className="absolute scrollbar-none  left-0 mt-2 w-full bg-background-elevated border border-background-muted/30 rounded-xl shadow-2xl p-4 text-center text-text-secondary z-[200]"
+                className="absolute search-scroll  left-0 mt-2 w-full bg-background-elevated border border-background-muted/30 rounded-xl shadow-2xl p-4 text-center text-text-secondary z-[200]"
               >
                 No results found for "{searchQuery}"
               </motion.div>
@@ -251,7 +241,7 @@ export function Search({ placeholderOverride }) {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                className="absolute left-0 w-full max-h-[300px] overflow-y-auto scrollbar-none bg-background-elevated border border-background-muted/30 rounded-xl z-[200]"
+                className="absolute left-0 w-full max-h-[300px] overflow-y-auto search-scroll bg-background-elevated border border-background-muted/30 rounded-xl z-[200]"
               >
                 <div className="p-2">
                   {searchResults.slice(0, 5).map((item) => {
@@ -290,19 +280,21 @@ export function Search({ placeholderOverride }) {
             )}
           </AnimatePresence>
 
-          {/* --- No Results Message --- */}
           <AnimatePresence>
-            {noResultsVisible && (
-              <motion.div
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -5 }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
-                className="absolute left-0 w-full mt-2 bg-background-elevated border border-background-muted/30 rounded-xl shadow-lg text-center py-4 text-text-secondary text-sm z-[200]"
-              >
-                No results found for "{searchQuery}"
-              </motion.div>
-            )}
+            {showResults &&
+              searchQuery.trim().length >= 2 &&
+              searchResults.length === 0 &&
+              !isSearching && (
+                <motion.div
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="absolute left-0 w-full mt-2 bg-background-elevated border border-background-muted/30 rounded-xl shadow-lg text-center py-4 text-text-secondary text-sm z-[200]"
+                >
+                  No results found for "{searchQuery}"
+                </motion.div>
+              )}
           </AnimatePresence>
         </motion.div>
       </div>
