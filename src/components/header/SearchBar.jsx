@@ -13,7 +13,6 @@ import { getSeriesDetails } from "../../redux/SeriesSlices/GetSeriesDetails";
 const POSTER = (path) =>
   path ? `https://image.tmdb.org/t/p/w92${path}` : "/placeholder.png";
 
-// Soft animation variants used across components
 const softFadeUp = {
   initial: { opacity: 0, y: 8 },
   animate: {
@@ -24,19 +23,21 @@ const softFadeUp = {
   exit: { opacity: 0, y: 6, transition: { duration: 0.22, ease: "easeIn" } },
 };
 
-export function Search({ placeholderOverride }) {
+export function Search({ placeholderOverride, iconOnly = false }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false); // controls icon-only panel
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const searchRef = useRef(null);
+  const inputRef = useRef(null);
   const timeoutRef = useRef(null);
 
   const { searchResults, isSearching } = useSelector((s) => s.searchReducer);
 
-  // Debounced search logic
+  // Debounced search logic 
   useEffect(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
@@ -44,7 +45,7 @@ export function Search({ placeholderOverride }) {
       timeoutRef.current = setTimeout(() => {
         dispatch(searchMulti({ query: searchQuery.trim() }));
         setShowResults(true);
-      }, 450); // slightly longer debounce for softer network bursts
+      }, 450);
     } else {
       dispatch(clearSearchResults());
       setShowResults(false);
@@ -53,22 +54,29 @@ export function Search({ placeholderOverride }) {
     return () => clearTimeout(timeoutRef.current);
   }, [searchQuery, dispatch]);
 
+  // Close results when navigating away
+  useEffect(() => {
+    setShowResults(false);
+    setIsSearchFocused(false);
+    setMobileOpen(false);
+    setSearchQuery("");
+  }, [navigate]);
+
+  // click outside to close results / mobile panel
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
         setShowResults(false);
         setIsSearchFocused(false);
+        setMobileOpen(false);
       }
     };
 
-    if (showResults) {
+    if (showResults || mobileOpen) {
       document.addEventListener("click", handleClickOutside);
     }
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [showResults]);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [showResults, mobileOpen]);
 
   const handleSearchSubmit = (e) => {
     e && e.preventDefault();
@@ -77,6 +85,7 @@ export function Search({ placeholderOverride }) {
       setSearchQuery("");
       setShowResults(false);
       setIsSearchFocused(false);
+      setMobileOpen(false);
     }
   };
 
@@ -91,10 +100,139 @@ export function Search({ placeholderOverride }) {
     }
     setSearchQuery("");
     setShowResults(false);
+    setMobileOpen(false);
   };
 
   const placeholder = placeholderOverride || "Search Movies & Series";
 
+  // ---------- ICON-ONLY MOBILE UI ----------
+  if (iconOnly) {
+    return (
+      <div ref={searchRef} className="relative">
+        <button
+          onClick={() => {
+            setMobileOpen((s) => !s);
+            setTimeout(() => inputRef.current?.focus(), 80);
+          }}
+          aria-label="Open search"
+          className="p-2 rounded-lg hover:bg-background-elevated text-text-secondary transition-colors"
+        >
+          <SearchIcon className="w-5 h-5" />
+        </button>
+
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.18 }}
+              className="absolute  right-0 top-full mt-2 w-[calc(100vw-1rem)] max-w-xs sm:max-w-sm z-[200]"
+            >
+              <div className="bg-background-elevated border border-background-muted/30 rounded-xl shadow-2xl p-3">
+                <form onSubmit={handleSearchSubmit} className="relative">
+                  <input
+                    ref={inputRef}
+                    type="search"
+                    placeholder={placeholder}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onFocus={() => {
+                      setIsSearchFocused(true);
+                      setShowResults(true);
+                    }}
+                    className="w-full bg-surface-secondary text-text-primary px-10 py-2.5 rounded-xl outline-none border-2 border-transparent focus:border-accent-primary transition-all"
+                  />
+                  <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
+                  {isSearching && (
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                      <div className="w-4 h-4 border-2 border-accent-primary border-t-transparent rounded-full animate-spin" />
+                    </div>
+                  )}
+                </form>
+
+                {/* Results (mobile icon panel) */}
+                <AnimatePresence>
+                  {showResults && searchResults.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="mt-3 scroll-indicator w-full max-h-[280px] overflow-y-auto rounded-md"
+                    >
+                      <div className="space-y-1">
+                        {searchResults.slice(0, 5).map((item) => {
+                          const title = item.title || item.name || "Untitled";
+                          const year = (
+                            item.release_date ||
+                            item.first_air_date ||
+                            ""
+                          ).split("-")[0];
+
+                          return (
+                            <div
+                              key={item.id}
+                              onClick={() => handleResultClick(item)}
+                              className="flex items-center gap-3 p-2 rounded-lg hover:bg-accent-primary/10 cursor-pointer transition-colors"
+                            >
+                              <img
+                                src={POSTER(
+                                  item.poster_path || item.backdrop_path
+                                )}
+                                alt={title}
+                                className="w-10 h-14 object-cover rounded-md"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <h4 className="text-text-primary font-semibold text-sm truncate">
+                                  {title}
+                                </h4>
+                                <p className="text-xs text-text-secondary">
+                                  {item.media_type === "movie"
+                                    ? "Movie"
+                                    : "Series"}{" "}
+                                  • {year}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {searchResults.length > 5 && (
+                        <button
+                          onClick={handleSearchSubmit}
+                          className="w-full mt-2 py-2 text-sm text-accent-primary hover:text-accent-hover font-semibold transition-colors"
+                        >
+                          See all {searchResults.length} results →
+                        </button>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* No results (mobile) */}
+                <AnimatePresence>
+                  {showResults &&
+                    searchQuery.trim().length >= 2 &&
+                    searchResults.length === 0 &&
+                    !isSearching && (
+                      <motion.div
+                        {...softFadeUp}
+                        className="mt-3 p-4 text-center text-text-secondary text-sm"
+                      >
+                        No results found for "{searchQuery}"
+                      </motion.div>
+                    )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
+
+  // ---------- DEFAULT (desktop/full) UI ----------
   return (
     <div ref={searchRef} className="relative">
       {/* Desktop */}
@@ -127,7 +265,7 @@ export function Search({ placeholderOverride }) {
           )}
         </div>
 
-        {/* Results */}
+        {/* Results (desktop) */}
         <AnimatePresence>
           {showResults && searchResults.length > 0 && (
             <motion.div
@@ -138,7 +276,7 @@ export function Search({ placeholderOverride }) {
                 transition: { duration: 0.28, ease: "easeOut" },
               }}
               exit={{ opacity: 0, y: -6, transition: { duration: 0.2 } }}
-              className="absolute search-scroll  left-0 mt-2 w-72 max-h-[500px] overflow-y-auto bg-background-elevated border border-background-muted/30 rounded-xl shadow-2xl shadow-black/40 z-[200]"
+              className="absolute scroll-indicator left-0 mt-2 w-72 max-h-[500px] overflow-y-auto bg-background-elevated border border-background-muted/30 rounded-xl shadow-2xl shadow-black/40 z-[200]"
             >
               <div className="p-2">
                 {searchResults.slice(0, 8).map((item) => {
@@ -208,96 +346,15 @@ export function Search({ placeholderOverride }) {
             !isSearching && (
               <motion.div
                 {...softFadeUp}
-                className="absolute search-scroll  left-0 mt-2 w-full bg-background-elevated border border-background-muted/30 rounded-xl shadow-2xl p-4 text-center text-text-secondary z-[200]"
+                className="absolute left-0 mt-2 w-72 bg-background-elevated border border-background-muted/30 rounded-xl shadow-2xl p-4 text-center text-text-secondary z-[200]"
               >
                 No results found for "{searchQuery}"
               </motion.div>
             )}
         </AnimatePresence>
       </motion.form>
-      {/* ==================== MOBILE VERSION ==================== */}
-      <div className="md:hidden">
-        <motion.div {...softFadeUp} className="relative">
-          <div className="relative">
-            <input
-              type="search"
-              placeholder={placeholder}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-surface-secondary text-text-primary px-10 py-3 rounded-xl outline-none border-2 border-transparent focus:border-accent-primary transition-all"
-            />
-            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
-            {isSearching && (
-              <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                <div className="w-4 h-4 border-2 border-accent-primary border-t-transparent rounded-full animate-spin" />
-              </div>
-            )}
-          </div>
 
-          {/* --- Search Results --- */}
-          <AnimatePresence>
-            {showResults && searchResults.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="absolute left-0 w-full max-h-[300px] overflow-y-auto search-scroll bg-background-elevated border border-background-muted/30 rounded-xl z-[200]"
-              >
-                <div className="p-2">
-                  {searchResults.slice(0, 5).map((item) => {
-                    const title = item.title || item.name || "Untitled";
-                    const year = (
-                      item.release_date ||
-                      item.first_air_date ||
-                      ""
-                    ).split("-")[0];
-
-                    return (
-                      <div
-                        key={item.id}
-                        onClick={() => handleResultClick(item)}
-                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-accent-primary/10 cursor-pointer transition-colors"
-                      >
-                        <img
-                          src={POSTER(item.poster_path || item.backdrop_path)}
-                          alt={title}
-                          className="w-10 h-14 object-cover rounded-md"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-text-primary font-semibold text-sm truncate">
-                            {title}
-                          </h4>
-                          <p className="text-xs text-text-secondary">
-                            {item.media_type === "movie" ? "Movie" : "Series"} •{" "}
-                            {year}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <AnimatePresence>
-            {showResults &&
-              searchQuery.trim().length >= 2 &&
-              searchResults.length === 0 &&
-              !isSearching && (
-                <motion.div
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="absolute left-0 w-full mt-2 bg-background-elevated border border-background-muted/30 rounded-xl shadow-lg text-center py-4 text-text-secondary text-sm z-[200]"
-                >
-                  No results found for "{searchQuery}"
-                </motion.div>
-              )}
-          </AnimatePresence>
-        </motion.div>
-      </div>
+      <div className="md:hidden" />
     </div>
   );
 }
