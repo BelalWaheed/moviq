@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { GetSeriesImages } from "../../../redux/SeriesSlices/GetSeriesImages";
+import ImagePreview from "./Preview/ImagePreview";
 
 const LogosPage = () => {
     const {
@@ -16,6 +17,7 @@ const LogosPage = () => {
     const navigate = useNavigate();
     const [showHeaderButtons, setShowHeaderButtons] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
+    const [selectedImage, setSelectedImage] = useState(null);
     // Hide / Show header on scroll
     useEffect(() => {
         const handleScroll = () => {
@@ -72,7 +74,8 @@ const LogosPage = () => {
                 {SeriesImagesDetails?.logos?.map((img, idx) => (
                     <motion.div
                         key={idx}
-                        className="rounded-2xl overflow-hidden bg-[#1a1a1a] flex items-center justify-center hover:scale-105 transition-transform duration-300"
+                        onClick={() => setSelectedImage(img)}
+                        className=" cursor-pointer rounded-2xl overflow-hidden bg-[#1a1a1a] flex items-center justify-center hover:scale-105 transition-transform duration-300"
                         whileHover={{ scale: 1.05 }}>
                         <img
                             src={`https://image.tmdb.org/t/p/original${img.file_path}`}
@@ -81,6 +84,11 @@ const LogosPage = () => {
                         />
                     </motion.div>
                 ))}
+                {/* image preview */}
+                <ImagePreview
+                    image={selectedImage}
+                    onClick={() => setSelectedImage(null)}
+                />
             </div>
         </div>
     );

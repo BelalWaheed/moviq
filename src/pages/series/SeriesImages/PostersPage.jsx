@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetSeriesImages } from "../../../redux/SeriesSlices/GetSeriesImages";
 import { IoArrowBackOutline } from "react-icons/io5";
+import ImagePreview from "./Preview/ImagePreview";
 
 const PostersPage = () => {
     const {
@@ -17,6 +18,7 @@ const PostersPage = () => {
 
     const [showHeaderButtons, setShowHeaderButtons] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
+    const [selectedImage, setSelectedImage] = useState(null);
 
     // if page was updated
     useEffect(() => {
@@ -24,7 +26,6 @@ const PostersPage = () => {
             GetSeriesImages({ seriesId: localStorage.getItem("seriesId") })
         );
     }, []);
-    console.log("pull last update");
 
     // Hide / Show header on scroll
     useEffect(() => {
@@ -74,19 +75,25 @@ const PostersPage = () => {
             </AnimatePresence>
 
             {/* ===== Grid of Posters ===== */}
-            <div className="mt-28 grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="mt-28 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                 {SeriesImagesDetails?.posters?.map((img, idx) => (
                     <motion.div
                         key={idx}
-                        className="rounded-2xl overflow-hidden bg-[#1a1a1a] flex items-center justify-center hover:scale-105 transition-transform duration-300"
+                        onClick={() => setSelectedImage(img)}
+                        className="rounded-2xl overflow-hidden bg-[#1a1a1a] hover:scale-105 cursor-pointer transition-transform duration-300 flex items-center justify-center"
                         whileHover={{ scale: 1.05 }}>
                         <img
-                            src={`https://image.tmdb.org/t/p/original${img.file_path}`}
+                            src={`https://image.tmdb.org/t/p/w500${img.file_path}`}
                             alt="poster"
                             className="w-full h-full object-contain"
                         />
                     </motion.div>
                 ))}
+                {/* image preview */}
+                <ImagePreview
+                    image={selectedImage}
+                    onClick={() => setSelectedImage(null)}
+                />
             </div>
         </div>
     );

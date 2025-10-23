@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetSeriesImages } from "../../../redux/SeriesSlices/GetSeriesImages";
 import { getSeriesTrailer } from "../../../redux/SeriesSlices/GetSeriesTrailer";
 import { useNavigate } from "react-router-dom";
+import ImagePreview from "../SeriesImages/Preview/ImagePreview";
 
 const MediaSection = () => {
     const [activeTab, setActiveTab] = useState("videos");
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const {
         SeriesImagesDetails,
@@ -140,13 +142,14 @@ const MediaSection = () => {
                             ?.slice(0, 10)
                             .map((backdrop, idx) => (
                                 <div
+                                    onClick={() => setSelectedImage(backdrop)}
                                     key={backdrop.file_path}
                                     style={getImageStyle(
                                         backdrop.width,
                                         backdrop.height,
                                         "backdrops"
                                     )}
-                                    className="bg-[#1a1a1a] rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center hover:scale-105 transition-transform duration-300">
+                                    className="cursor-pointer bg-[#1a1a1a] rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center hover:scale-105 transition-transform duration-300">
                                     <img
                                         src={`https://image.tmdb.org/t/p/w500${backdrop.file_path}`}
                                         alt="backdrop"
@@ -177,8 +180,9 @@ const MediaSection = () => {
                             ?.slice(0, 10)
                             ?.map((logo, idx) => (
                                 <div
+                                    onClick={() => setSelectedImage(logo)}
                                     key={logo.file_path}
-                                    className="w-[200px] h-[100px] bg-[#1a1a1a] rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center hover:scale-105 transition-transform duration-300">
+                                    className="cursor-pointer w-[200px] h-[100px] bg-[#1a1a1a] rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center hover:scale-105 transition-transform duration-300">
                                     <img
                                         src={`https://image.tmdb.org/t/p/w500${logo.file_path}`}
                                         alt="logo"
@@ -208,13 +212,14 @@ const MediaSection = () => {
                             ?.slice(0, 10)
                             ?.map((poster, idx) => (
                                 <div
+                                    onClick={() => setSelectedImage(poster)}
                                     key={poster.file_path}
                                     style={getImageStyle(
                                         poster.width,
                                         poster.height,
                                         "posters"
                                     )}
-                                    className="bg-[#1a1a1a] rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center hover:scale-105 transition-transform duration-300">
+                                    className="cursor-pointer bg-[#1a1a1a] rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center hover:scale-105 transition-transform duration-300">
                                     <img
                                         src={`https://image.tmdb.org/t/p/w500${poster.file_path}`}
                                         alt="poster"
@@ -236,6 +241,11 @@ const MediaSection = () => {
                         )}
                     </>
                 )}
+                {/* image preview */}
+                <ImagePreview
+                    image={selectedImage}
+                    onClick={() => setSelectedImage(null)}
+                />
             </div>
         </div>
     );
