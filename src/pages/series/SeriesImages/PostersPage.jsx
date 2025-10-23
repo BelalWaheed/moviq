@@ -24,6 +24,7 @@ const PostersPage = () => {
             GetSeriesImages({ seriesId: localStorage.getItem("seriesId") })
         );
     }, []);
+    console.log("pull last update");
 
     // Hide / Show header on scroll
     useEffect(() => {
