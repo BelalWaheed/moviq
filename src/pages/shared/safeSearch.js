@@ -149,6 +149,7 @@ export function safeFilter(results = []) {
     "bunny girl",
     "exercise routines",
     "summer camp",
+    "young girl from Japan",
   ];
 
   // Pattern-based detection for phrases
