@@ -12,8 +12,14 @@ import {
     setType
 } from "../../redux/SeriesSlices/SeriesSlice";
 import NotFound from "../notFound/NotFound";
+import { RequestSingIn } from "../../redux/AuthSlices/RequestSingIn";
+import { AccountInfo } from "../../redux/AuthSlices/AccountInfo";
 
 function Series() {
+    const { RequestSingInDetails } = useSelector(
+        state => state.SignInTokenReducer
+    );
+    const [isLogged, setIsLogged] = useState(false);
     const dispatch = useDispatch();
 
     const {
@@ -30,11 +36,22 @@ function Series() {
             top: 0,
             behavior: "smooth"
         });
-    }, [page, currentType]);
+    }, []);
 
     // if page was updated
     useEffect(() => {
         dispatch(getSeries({ page: page, type: typing }));
+    }, []);
+    useEffect(() => {
+        if (RequestSingInDetails?.success && !localStorage.getItem("token")) {
+            localStorage.setItem("token", RequestSingInDetails?.request_token);
+            window.location.href = `https://www.themoviedb.org/authenticate/${RequestSingInDetails.request_token}?redirect_to=http://localhost:5173/series`;
+        }
+    }, []);
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+            dispatch(AccountInfo());
+        }
     }, []);
 
     if (seriesError) {
@@ -52,6 +69,13 @@ function Series() {
                 <h1 className="text-white text-center md:text-start lg:text-start xl:text-start text-4xl sm:text-4xl lg:text-6xl font-bold mb-6">
                     Series
                 </h1>
+
+                <Button
+                    onClick={() => dispatch(RequestSingIn())}
+                    color="yellow"
+                    className="flex items-center gap-2 rounded-xl">
+                    Sign in
+                </Button>
 
                 {/* Start Series type buttons */}
                 <div className="flex flex-wrap gap-3 mb-10">

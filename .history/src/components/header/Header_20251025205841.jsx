@@ -171,7 +171,7 @@ export default function Header() {
                             <Search />
                         </div>
 
-                        {/* TMDB connect button or loading */}
+                        {/* TMDB connect button */}
                         {AccountInfoDetailsLoading ? (
                             // Loading State
                             <div className="flex items-center gap-2 text-sm text-text-secondary">

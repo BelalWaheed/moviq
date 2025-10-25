@@ -26,8 +26,9 @@ export default function Header() {
     const dispatch = useDispatch();
 
     // Redux state
-    const { isLogged, AccountInfoDetails, AccountInfoDetailsLoading } =
-        useSelector(state => state.AccountInfoSliceReducer);
+    const { isLogged, AccountInfoDetails } = useSelector(
+        state => state.AccountInfoSliceReducer
+    );
     const { RequestSingInDetails } = useSelector(
         state => state.SignInTokenReducer
     );
@@ -171,28 +172,19 @@ export default function Header() {
                             <Search />
                         </div>
 
-                        {/* TMDB connect button or loading */}
-                        {AccountInfoDetailsLoading ? (
-                            // Loading State
-                            <div className="flex items-center gap-2 text-sm text-text-secondary">
-                                <span className="w-4 h-4 border-2 border-t-transparent border-white/70 rounded-full animate-spin"></span>
-                                <span>Loading...</span>
-                            </div>
-                        ) : (
-                            !isLogged && (
-                                // TMDB Button
-                                <motion.button
-                                    onClick={() => {
-                                        dispatch(RequestSingIn());
-                                        navigate("/");
-                                    }}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.97 }}
-                                    className="flex items-center gap-2 bg-[#01b4e4] text-white text-xs font-semibold px-2.5 py-1.5 rounded-md shadow-md hover:bg-[#009fc9] transition-all">
-                                    <SiThemoviedatabase size={14} />
-                                    Connect TMDB
-                                </motion.button>
-                            )
+                        {/* TMDB connect button */}
+                        {!isLogged && (
+                            <motion.button
+                                onClick={() => {
+                                    dispatch(RequestSingIn());
+                                    navigate("/");
+                                }}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.97 }}
+                                className="flex items-center gap-2 bg-[#01b4e4] text-white text-xs font-semibold px-2.5 py-1.5 rounded-md shadow-md hover:bg-[#009fc9] transition-all">
+                                <SiThemoviedatabase size={14} />
+                                Connect TMDB
+                            </motion.button>
                         )}
 
                         {/* User dropdown */}
@@ -278,6 +270,25 @@ export default function Header() {
                         {/* Mobile search icon */}
                         <Search iconOnly />
                     </div>
+
+                    {/* Mobile user info */}
+                    {isLogged && (
+                        <div className="flex items-center gap-2 px-3 pb-2">
+                            <img
+                                src={
+                                    AccountInfoDetails?.avatar?.tmdb
+                                        ?.avatar_path
+                                        ? `https://image.tmdb.org/t/p/w45${AccountInfoDetails.avatar.tmdb.avatar_path}`
+                                        : `https://www.gravatar.com/avatar/${AccountInfoDetails?.avatar?.gravatar?.hash}?d=mp`
+                                }
+                                alt="avatar"
+                                className="w-8 h-8 rounded-full border border-accent-primary/40"
+                            />
+                            <span className="text-sm font-medium text-text-primary">
+                                {AccountInfoDetails?.username}
+                            </span>
+                        </div>
+                    )}
                 </div>
             </div>
         </header>

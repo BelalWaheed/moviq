@@ -170,31 +170,27 @@ export default function Header() {
                         <div className="hidden md:flex items-center gap-3">
                             <Search />
                         </div>
+                        {/* TMDB connect button */}
 
-                        {/* TMDB connect button or loading */}
                         {AccountInfoDetailsLoading ? (
-                            // Loading State
-                            <div className="flex items-center gap-2 text-sm text-text-secondary">
-                                <span className="w-4 h-4 border-2 border-t-transparent border-white/70 rounded-full animate-spin"></span>
-                                <span>Loading...</span>
-                            </div>
+                            "loading"
                         ) : (
-                            !isLogged && (
-                                // TMDB Button
-                                <motion.button
-                                    onClick={() => {
-                                        dispatch(RequestSingIn());
-                                        navigate("/");
-                                    }}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.97 }}
-                                    className="flex items-center gap-2 bg-[#01b4e4] text-white text-xs font-semibold px-2.5 py-1.5 rounded-md shadow-md hover:bg-[#009fc9] transition-all">
-                                    <SiThemoviedatabase size={14} />
-                                    Connect TMDB
-                                </motion.button>
-                            )
+                            <>
+                                {!isLogged && (
+                                    <motion.button
+                                        onClick={() => {
+                                            dispatch(RequestSingIn());
+                                            navigate("/");
+                                        }}
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.97 }}
+                                        className="flex items-center gap-2 bg-[#01b4e4] text-white text-xs font-semibold px-2.5 py-1.5 rounded-md shadow-md hover:bg-[#009fc9] transition-all">
+                                        <SiThemoviedatabase size={14} />
+                                        Connect TMDB
+                                    </motion.button>
+                                )}
+                            </>
                         )}
-
                         {/* User dropdown */}
                         {isLogged && (
                             <div className="relative" ref={dropdownRef}>

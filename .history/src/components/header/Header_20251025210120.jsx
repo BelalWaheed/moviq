@@ -172,7 +172,7 @@ export default function Header() {
                         </div>
 
                         {/* TMDB connect button or loading */}
-                        {AccountInfoDetailsLoading ? (
+                        {AccountInfoDetails ? (
                             // Loading State
                             <div className="flex items-center gap-2 text-sm text-text-secondary">
                                 <span className="w-4 h-4 border-2 border-t-transparent border-white/70 rounded-full animate-spin"></span>
