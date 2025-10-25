@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button } from "@material-tailwind/react";
 import MainCard from "./SeriesCard/MainCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,8 @@ import {
 } from "../../redux/SeriesSlices/SeriesSlice";
 import NotFound from "../notFound/NotFound";
 
+const { RequestSingInDetails } = useSelector(state => state.SignInTokenReducer);
+
 function Series() {
     const dispatch = useDispatch();
 
@@ -24,15 +26,13 @@ function Series() {
         page,
         currentType
     } = useSelector(state => state.seriesReducer);
-    // scroll to top
+
     useEffect(() => {
         window.scrollTo({
             top: 0,
             behavior: "smooth"
         });
     }, [page, currentType]);
-
-    // if page was updated
     useEffect(() => {
         dispatch(getSeries({ page: page, type: typing }));
     }, []);
@@ -52,7 +52,17 @@ function Series() {
                 <h1 className="text-white text-center md:text-start lg:text-start xl:text-start text-4xl sm:text-4xl lg:text-6xl font-bold mb-6">
                     Series
                 </h1>
-
+                <a
+                    href={`https://www.themoviedb.org/authenticate/{REQUEST_TOKEN}?redirect_to=http://localhost:3000/auth/callback
+`}
+                    target="_blank"
+                    rel="noreferrer">
+                    <Button
+                        color="yellow"
+                        className="flex items-center gap-2 rounded-xl">
+                        Sign in
+                    </Button>
+                </a>
                 {/* Start Series type buttons */}
                 <div className="flex flex-wrap gap-3 mb-10">
                     {[

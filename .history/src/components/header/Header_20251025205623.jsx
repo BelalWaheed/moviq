@@ -79,7 +79,7 @@ export default function Header() {
     // Redirect to TMDB auth when token is ready
     useEffect(() => {
         if (RequestSingInDetails?.success) {
-            window.location.href = `https://www.themoviedb.org/authenticate/${RequestSingInDetails.request_token}?redirect_to=https://moviqq.vercel.app/`;
+            window.location.href = `https://www.themoviedb.org/authenticate/${RequestSingInDetails.request_token}?redirect_to=http://localhost:5173/`;
         }
     }, [RequestSingInDetails]);
 
@@ -171,16 +171,80 @@ export default function Header() {
                             <Search />
                         </div>
 
-                        {/* TMDB connect button or loading */}
-                        {AccountInfoDetailsLoading ? (
-                            // Loading State
-                            <div className="flex items-center gap-2 text-sm text-text-secondary">
-                                <span className="w-4 h-4 border-2 border-t-transparent border-white/70 rounded-full animate-spin"></span>
-                                <span>Loading...</span>
+                        {/* TMDB connect button */}
+                        {/* Right side elements */}
+                        <div className="flex items-center gap-3">
+                            {/* Desktop search bar */}
+                            <div className="hidden md:flex items-center gap-3">
+                                <Search />
                             </div>
-                        ) : (
-                            !isLogged && (
-                                // TMDB Button
+
+                            {/* Loading state */}
+                            {AccountInfoDetailsLoading ? (
+                                <div className="flex items-center gap-2 text-sm text-text-secondary">
+                                    <span className="w-4 h-4 border-2 border-t-transparent border-white/70 rounded-full animate-spin"></span>
+                                    <span>Loading...</span>
+                                </div>
+                            ) : isLogged ? (
+                                // User dropdown when logged in
+                                <div className="relative" ref={dropdownRef}>
+                                    <motion.div
+                                        className="flex items-center gap-2 cursor-pointer"
+                                        onClick={() =>
+                                            setDropdownOpen(prev => !prev)
+                                        }
+                                        whileHover={{ scale: 1.05 }}>
+                                        <motion.img
+                                            src={
+                                                AccountInfoDetails?.avatar?.tmdb
+                                                    ?.avatar_path
+                                                    ? `https://image.tmdb.org/t/p/w45${AccountInfoDetails.avatar.tmdb.avatar_path}`
+                                                    : `https://www.gravatar.com/avatar/${AccountInfoDetails?.avatar?.gravatar?.hash}?d=mp`
+                                            }
+                                            alt="avatar"
+                                            className="w-9 h-9 rounded-full border border-accent-primary/40"
+                                        />
+                                        <span className="text-text-primary font-medium text-sm">
+                                            {AccountInfoDetails?.username}
+                                        </span>
+                                    </motion.div>
+
+                                    {/* Dropdown menu */}
+                                    <AnimatePresence>
+                                        {dropdownOpen && (
+                                            <motion.div
+                                                initial={{
+                                                    opacity: 0,
+                                                    scale: 0.95,
+                                                    y: -5
+                                                }}
+                                                animate={{
+                                                    opacity: 1,
+                                                    scale: 1,
+                                                    y: 0
+                                                }}
+                                                exit={{
+                                                    opacity: 0,
+                                                    scale: 0.95,
+                                                    y: -5
+                                                }}
+                                                transition={{ duration: 0.15 }}
+                                                className="absolute right-0 mt-2 w-36 bg-background-elevated rounded-lg shadow-lg border border-accent-primary/20 p-1 z-50">
+                                                <button
+                                                    onClick={() => {
+                                                        setDropdownOpen(false);
+                                                        signOutAlert();
+                                                    }}
+                                                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 rounded-md transition">
+                                                    <LogOut size={16} />
+                                                    Sign out
+                                                </button>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
+                            ) : (
+                                // TMDB connect button when not logged in
                                 <motion.button
                                     onClick={() => {
                                         dispatch(RequestSingIn());
@@ -192,8 +256,8 @@ export default function Header() {
                                     <SiThemoviedatabase size={14} />
                                     Connect TMDB
                                 </motion.button>
-                            )
-                        )}
+                            )}
+                        </div>
 
                         {/* User dropdown */}
                         {isLogged && (
