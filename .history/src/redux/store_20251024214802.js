@@ -17,8 +17,6 @@ import { SeriesRecommendationsReducer } from "./SeriesSlices/GetRequest/SeriesDe
 import { SeriesExternalLinksReducer } from "./SeriesSlices/GetRequest/SeriesDetails/GetSeriesExternalLinks.js";
 import { SeriesImagesDetailsReducer } from "./SeriesSlices/GetRequest/SeriesDetails/GetSeriesImages.js";
 import { SignInTokenReducer } from "./AuthSlices/RequestSingIn.js";
-import { AccountInfoSliceReducer } from "./AuthSlices/AccountInfo.js";
-import { RequestSignOutReducer } from "./AuthSlices/RequestSignOut.js";
 
 const store = configureStore({
     reducer: {
@@ -34,8 +32,6 @@ const store = configureStore({
         SeriesExternalLinksReducer,
         SeriesImagesDetailsReducer,
         SignInTokenReducer,
-        AccountInfoSliceReducer,
-        RequestSignOutReducer,
 
         mNowReducer,
         mTopReducer,

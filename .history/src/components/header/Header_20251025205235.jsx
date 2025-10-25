@@ -79,7 +79,7 @@ export default function Header() {
     // Redirect to TMDB auth when token is ready
     useEffect(() => {
         if (RequestSingInDetails?.success) {
-            window.location.href = `https://www.themoviedb.org/authenticate/${RequestSingInDetails.request_token}?redirect_to=https://moviqq.vercel.app/`;
+            window.location.href = `https://www.themoviedb.org/authenticate/${RequestSingInDetails.request_token}?redirect_to=http://localhost:5173/`;
         }
     }, [RequestSingInDetails]);
 
@@ -171,27 +171,24 @@ export default function Header() {
                             <Search />
                         </div>
 
-                        {/* TMDB connect button or loading */}
+                        {/* TMDB connect button */}
                         {AccountInfoDetailsLoading ? (
-                            // Loading State
-                            <div className="flex items-center gap-2 text-sm text-text-secondary">
-                                <span className="w-4 h-4 border-2 border-t-transparent border-white/70 rounded-full animate-spin"></span>
+                            <div className="flex items-center gap-2">
+                                <span className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></span>
                                 <span>Loading...</span>
                             </div>
                         ) : (
                             !isLogged && (
-                                // TMDB Button
-                                <motion.button
-                                    onClick={() => {
-                                        dispatch(RequestSingIn());
-                                        navigate("/");
-                                    }}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.97 }}
-                                    className="flex items-center gap-2 bg-[#01b4e4] text-white text-xs font-semibold px-2.5 py-1.5 rounded-md shadow-md hover:bg-[#009fc9] transition-all">
-                                    <SiThemoviedatabase size={14} />
-                                    Connect TMDB
-                                </motion.button>
+                                <button
+                                    onClick={handleConnect}
+                                    className="bg-[#01d277] text-white px-3 py-1.5 text-sm rounded-md flex items-center gap-2 hover:bg-[#00b868] transition">
+                                    <img
+                                        src="/tmdb-icon.svg"
+                                        alt="TMDB"
+                                        className="w-4 h-4"
+                                    />
+                                    Connect TMDB Account
+                                </button>
                             )
                         )}
 

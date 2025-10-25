@@ -12,8 +12,17 @@ import {
     setType
 } from "../../redux/SeriesSlices/SeriesSlice";
 import NotFound from "../notFound/NotFound";
+import { RequestSingIn } from "../../redux/AuthSlices/RequestSingIn";
+import { AccountInfo, signOut } from "../../redux/AuthSlices/AccountInfo";
+import { RequestSingOut } from "../../redux/AuthSlices/RequestSignOut";
 
 function Series() {
+    const { RequestSingInDetails, isLogged } = useSelector(
+        state => state.SignInTokenReducer
+    );
+
+    console.log(isLogged);
+
     const dispatch = useDispatch();
 
     const {
@@ -36,6 +45,17 @@ function Series() {
     useEffect(() => {
         dispatch(getSeries({ page: page, type: typing }));
     }, []);
+    useEffect(() => {
+        if (RequestSingInDetails?.success && !localStorage.getItem("token")) {
+            localStorage.setItem("token", RequestSingInDetails?.request_token);
+
+            window.location.href = `https://www.themoviedb.org/authenticate/${RequestSingInDetails.request_token}?redirect_to=http://localhost:5173/series`;
+        }
+    }, []);
+
+    useEffect(() => {
+        dispatch(AccountInfo());
+    }, []);
 
     if (seriesError) {
         return <NotFound />;
@@ -52,6 +72,26 @@ function Series() {
                 <h1 className="text-white text-center md:text-start lg:text-start xl:text-start text-4xl sm:text-4xl lg:text-6xl font-bold mb-6">
                     Series
                 </h1>
+
+                {!isLogged && (
+                    <Button
+                        onClick={() => dispatch(RequestSingIn())}
+                        color="yellow"
+                        className="flex items-center gap-2 rounded-xl">
+                        Sign in
+                    </Button>
+                )}
+                {isLogged && (
+                    <Button
+                        onClick={() => {
+                            dispatch(RequestSingOut());
+                            dispatch(signOut());
+                        }}
+                        color="red"
+                        className="flex items-center gap-2 rounded-xl">
+                        Sign OUT
+                    </Button>
+                )}
 
                 {/* Start Series type buttons */}
                 <div className="flex flex-wrap gap-3 mb-10">

@@ -79,7 +79,7 @@ export default function Header() {
     // Redirect to TMDB auth when token is ready
     useEffect(() => {
         if (RequestSingInDetails?.success) {
-            window.location.href = `https://www.themoviedb.org/authenticate/${RequestSingInDetails.request_token}?redirect_to=https://moviqq.vercel.app/`;
+            window.location.href = `https://www.themoviedb.org/authenticate/${RequestSingInDetails.request_token}?redirect_to=http://localhost:5173/`;
         }
     }, [RequestSingInDetails]);
 
