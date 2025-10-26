@@ -126,10 +126,6 @@ function App() {
                             path="RecommendationsSection"
                             element={<RecommendationsSection />}
                         />
-                        <Route
-                            path="AllReviewsSeries"
-                            element={<AllReviewsSeries />}
-                        />
 
                         {/* Person */}
                         <Route path="PersonalInfo" element={<PersonalInfo />} />
