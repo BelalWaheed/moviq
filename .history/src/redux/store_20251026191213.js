@@ -20,7 +20,6 @@ import { SignInTokenReducer } from "./AuthSlices/RequestSingIn.js";
 import { AccountInfoSliceReducer } from "./AuthSlices/AccountInfo.js";
 import { RequestSignOutReducer } from "./AuthSlices/RequestSignOut.js";
 import { SeriesSimilarReducer } from "./SeriesSlices/GetRequest/SeriesDetails/GetSeriesSimilar.js";
-import { SeriesReviewsReducer } from "./SeriesSlices/GetRequest/SeriesDetails/GetSeriesReviews.js";
 
 const store = configureStore({
     reducer: {
@@ -39,7 +38,6 @@ const store = configureStore({
         AccountInfoSliceReducer,
         RequestSignOutReducer,
         SeriesSimilarReducer,
-        SeriesReviewsReducer,
 
         mNowReducer,
         mTopReducer,

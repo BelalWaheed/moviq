@@ -31,7 +31,6 @@ import RecommendationsSection from "./RecommendationsSection";
 import ExternalLinksSection from "./ExternalLinksSection";
 import MediaSection from "./MediaSection";
 import SimilarSection from "./SimilarSection";
-import ReviewsSection from "./ReviewsSection";
 const DetailsCard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -57,7 +56,7 @@ const DetailsCard = () => {
     }, []);
 
     return (
-        <div className="relative w-full min-h-screen bg-black text-white font-poppins overflow-x-hidden">
+        <div className="relative w-full min-h-screen bg-black text-white font-poppins">
             {detailsError ? (
                 <NotFound />
             ) : detailsLoading ? (
@@ -298,9 +297,6 @@ const DetailsCard = () => {
                     </motion.div>
                     {/* === Trailer Section === */}
                     <TrailersSection isTrailerOn={isTrailerOn} />
-
-                    {/* Reviews Section */}
-                    <ReviewsSection />
 
                     {/* Cast_And_Crew */}
                     <Cast_And_CrewSection />

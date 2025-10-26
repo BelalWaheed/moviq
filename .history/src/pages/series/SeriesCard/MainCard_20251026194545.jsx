@@ -15,7 +15,6 @@ import { GetSeriesRecommendations } from "../../../redux/SeriesSlices/GetRequest
 import { GetSeriesImages } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesImages";
 import { getSeriesTrailer } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesTrailer";
 import { GetSeriesSimilar } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesSimilar";
-import { GetSeriesReviews } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesReviews";
 
 const MainCard = ({
     series: { id, name, poster_path, first_air_date, vote_average }
@@ -37,7 +36,6 @@ const MainCard = ({
                 dispatch(GetSeriesSimilar({ seriesId: id }));
                 dispatch(GetSeriesImages({ seriesId: id }));
                 dispatch(getSeriesTrailer(id));
-                dispatch(GetSeriesReviews({ seriesId: id }));
                 navigate("/seriesDetails");
             }}
             className="w-full max-w-[220px] sm:max-w-[240px] md:max-w-[260px] lg:max-w-[280px] shadow-lg rounded-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer group bg-black">
