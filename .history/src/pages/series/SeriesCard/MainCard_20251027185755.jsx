@@ -16,7 +16,6 @@ import { GetSeriesImages } from "../../../redux/SeriesSlices/GetRequest/SeriesDe
 import { getSeriesTrailer } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesTrailer";
 import { GetSeriesSimilar } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesSimilar";
 import { GetSeriesReviews } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesReviews";
-import { GetSeriesWatchProviders } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesWatchProviders";
 
 const MainCard = ({
     series: { id, name, poster_path, first_air_date, vote_average }

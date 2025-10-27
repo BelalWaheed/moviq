@@ -248,6 +248,7 @@ const DetailsCard = () => {
                                         votes)
                                     </span>
                                 </div>
+                                <WatchProvidersSection />
                             </motion.div>
 
                             {/* Action Buttons */}
@@ -297,9 +298,6 @@ const DetailsCard = () => {
                             </motion.div>
                         </motion.div>
                     </motion.div>
-                    <div className="flex justify-center items-center">
-                        <WatchProvidersSection />
-                    </div>
                     {/* === Trailer Section === */}
                     <TrailersSection isTrailerOn={isTrailerOn} />
 

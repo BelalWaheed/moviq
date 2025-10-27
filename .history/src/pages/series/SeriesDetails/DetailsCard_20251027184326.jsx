@@ -297,7 +297,7 @@ const DetailsCard = () => {
                             </motion.div>
                         </motion.div>
                     </motion.div>
-                    <div className="flex justify-center items-center">
+                    <div className="flex justify-end items-end w-1/2">
                         <WatchProvidersSection />
                     </div>
                     {/* === Trailer Section === */}
