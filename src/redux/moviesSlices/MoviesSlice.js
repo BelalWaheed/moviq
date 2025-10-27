@@ -1,11 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { safeFilter } from "../../pages/shared/safeSearch";
 
-export const getSeries = createAsyncThunk(
+export const getMovies = createAsyncThunk(
   "/movies",
   async ({ page = 1, type }, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
-
     try {
       const options = {
         method: "GET",
@@ -16,7 +15,7 @@ export const getSeries = createAsyncThunk(
         },
       };
       const request = await fetch(
-        `https://api.themoviedb.org/3/tv/${type}?language=en-US&page=${page}`,
+        `https://api.themoviedb.org/3/movie/${type}?language=en-US&page=${page}`,
         options
       );
 
@@ -26,7 +25,7 @@ export const getSeries = createAsyncThunk(
         return rejectWithValue(response);
       }
 
-      // filter  content
+      // filter NSFW content
       const safeResults = safeFilter(response.results);
       return { ...response, results: safeResults };
     } catch (e) {
@@ -36,16 +35,17 @@ export const getSeries = createAsyncThunk(
 );
 
 const initialState = {
-  seriesList: [],
-  seriesLoading: false,
-  seriesError: false,
-
-  typing: "airing_today",
+  moviesList: [],
+  moviesLoading: false,
+  moviesError: false,
+  page: 1,
+  typing: "now_playing",
   totalPages: 1,
+  currentType: "now_playing",
 };
 
-const series = createSlice({
-  name: "series",
+const movies = createSlice({
+  name: "movies",
   initialState,
   reducers: {
     pageReset: (state) => {
@@ -53,37 +53,27 @@ const series = createSlice({
     },
     setType: (state, action) => {
       state.typing = action.payload;
+      state.currentType = action.payload;
     },
   },
 
   extraReducers: (builder) => {
-    builder.addCase(getSeries.pending, (state, { payload }) => {
-      state.seriesLoading = true;
+    builder.addCase(getMovies.pending, (state) => {
+      state.moviesLoading = true;
     });
-    builder.addCase(getSeries.fulfilled, (state, { payload }) => {
-      state.seriesList = payload.results.filter(
-        (movie) => movie.adult === false
-      );
+    builder.addCase(getMovies.fulfilled, (state, { payload }) => {
+      state.moviesList = payload.results;
       state.page = payload.page;
-      state.seriesList = payload.results;
       state.totalPages = payload.total_pages;
-      state.seriesLoading = false;
+      state.moviesLoading = false;
     });
 
-    builder.addCase(getSeries.rejected, (state, { payload }) => {
-      state.seriesLoading = false;
-      state.seriesError = true;
+    builder.addCase(getMovies.rejected, (state) => {
+      state.moviesLoading = false;
+      state.moviesError = true;
     });
   },
 });
 
-export const seriesReducer = series.reducer;
-
-export const {
-  incrementOne,
-  decrementOne,
-  incrementTen,
-  decrementTen,
-  pageReset,
-  setType,
-} = series.actions;
+export const moviesReducer = movies.reducer;
+export const { pageReset, setType } = movies.actions;

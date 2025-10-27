@@ -48,7 +48,16 @@ export default function Footer() {
       <div className="border-t border-background-elevated py-4 text-center text-sm text-text-secondary">
         Done by{" "}
         <span className="text-accent-primary font-semibold">
-          Belal, Omar, Mariam
+          <Link to="https://github.com/BelalWaheed" target="_blank">
+            Belal <i className="fa-brands fa-github"></i>
+          </Link>
+        </span>
+        <span className="mx-1">and </span>
+        <span className="text-accent-primary font-semibold">
+          <Link to="https://github.com/7aider1" target="_blank">
+            Omar
+            <i className="fa-brands fa-github"></i>
+          </Link>
         </span>
       </div>
     </footer>
