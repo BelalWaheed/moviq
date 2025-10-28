@@ -249,6 +249,7 @@ const DetailsCard = () => {
                                     </span>
                                 </div>
                             </motion.div>
+                            <WatchProvidersSection />
 
                             {/* Action Buttons */}
                             <div className="flex flex-wrap gap-4">
@@ -297,9 +298,6 @@ const DetailsCard = () => {
                             </motion.div>
                         </motion.div>
                     </motion.div>
-                    <div className="flex justify-center items-center">
-                        <WatchProvidersSection />
-                    </div>
                     {/* === Trailer Section === */}
                     <TrailersSection isTrailerOn={isTrailerOn} />
 

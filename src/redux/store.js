@@ -1,4 +1,4 @@
-// src/redux/store.js - UPDATED
+// src/redux/store.js
 import { configureStore } from "@reduxjs/toolkit";
 
 // Series Reducers
@@ -13,6 +13,7 @@ import { SeriesExternalLinksReducer } from "./SeriesSlices/GetRequest/SeriesDeta
 import { SeriesImagesDetailsReducer } from "./SeriesSlices/GetRequest/SeriesDetails/GetSeriesImages.js";
 import { SeriesSimilarReducer } from "./SeriesSlices/GetRequest/SeriesDetails/GetSeriesSimilar.js";
 import { SeriesReviewsReducer } from "./SeriesSlices/GetRequest/SeriesDetails/GetSeriesReviews.js";
+import { SeriesWatchProvidersReducer } from "./SeriesSlices/GetRequest/SeriesDetails/GetSeriesWatchProviders.js"; // ✅ Added after merge
 
 // Movie Reducers
 import { moviesReducer } from "./moviesSlices/MoviesSlice";
@@ -42,48 +43,48 @@ import { AccountInfoSliceReducer } from "./AuthSlices/AccountInfo.js";
 import { RequestSignOutReducer } from "./AuthSlices/RequestSignOut.js";
 
 const store = configureStore({
-    reducer: {
-        // Series
-        seriesReducer,
-        seriesDetailsReducer,
-        seriesTrailerReducer,
-        seriesSeasonsReducer,
-        seriesSeasonsAggregateCreditsReducer,
-        SeriesAggregateCreditsReducer,
-        SeriesRecommendationsReducer,
-        SeriesExternalLinksReducer,
-        SeriesImagesDetailsReducer,
-        SeriesSimilarReducer,
-        SeriesReviewsReducer,
+  reducer: {
+    // Series
+    seriesReducer,
+    seriesDetailsReducer,
+    seriesTrailerReducer,
+    seriesSeasonsReducer,
+    seriesSeasonsAggregateCreditsReducer,
+    SeriesAggregateCreditsReducer,
+    SeriesRecommendationsReducer,
+    SeriesExternalLinksReducer,
+    SeriesImagesDetailsReducer,
+    SeriesSimilarReducer,
+    SeriesReviewsReducer,
+    SeriesWatchProvidersReducer, // ✅ merged correctly
 
-        // Movies
-        moviesReducer,
-        movieDetailsReducer,
-        MovieCreditsReducer,
-        MovieRecommendationsReducer,
-        MovieSimilarReducer,
-        MovieReviewsReducer,
-        MovieImagesReducer,
-        MovieExternalLinksReducer,
-        MovieVideosReducer,
+    // Movies
+    moviesReducer,
+    movieDetailsReducer,
+    MovieCreditsReducer,
+    MovieRecommendationsReducer,
+    MovieSimilarReducer,
+    MovieReviewsReducer,
+    MovieImagesReducer,
+    MovieExternalLinksReducer,
+    MovieVideosReducer,
 
-        // Home
-        mNowReducer,
-        mTopReducer,
-        tNowReducer,
-        tTopReducer,
-        searchReducer,
+    // Home
+    mNowReducer,
+    mTopReducer,
+    tNowReducer,
+    tTopReducer,
+    searchReducer,
 
-        // Shared
-        PersonReducer,
-        personCombinedCreditsReducer,
+    // Shared
+    PersonReducer,
+    personCombinedCreditsReducer,
 
-        // Auth
-        SignInTokenReducer,
-        AccountInfoSliceReducer,
-        RequestSignOutReducer
-    }
+    // Auth
+    SignInTokenReducer,
+    AccountInfoSliceReducer,
+    RequestSignOutReducer,
+  },
 });
 
 export default store;
-
