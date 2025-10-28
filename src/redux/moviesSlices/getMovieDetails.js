@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { moveItem } from "framer-motion";
 
 export const getMovieDetails = createAsyncThunk(
   "/movieDetails",
@@ -14,9 +15,13 @@ export const getMovieDetails = createAsyncThunk(
             "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMmNkMDRiMzNjZTMxNjRlMzk3MzExYzBmZGYxYTc5MyIsIm5iZiI6MTc2MDA5OTc5Mi41NDQsInN1YiI6IjY4ZThmZGQwOWI0YTFhYWIxYWU2YWNkMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r5AVkEHlxumduosln1i8Y_ixvvSk2_a-rJElwNV7KVg",
         },
       };
+      const movieId = id || localStorage.getItem("movieId");
 
+      if (!movieId) {
+        return rejectWithValue({ message: "Movie ID is missing." });
+      }
       const request = await fetch(
-        `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
+        `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`,
         options
       );
 
@@ -37,11 +42,18 @@ const initialState = {
   selectedMovieDetails: null,
   detailsLoading: false,
   detailsError: false,
+  movieId: localStorage.getItem("movieId") || null,
 };
 
 const movieDetails = createSlice({
   name: "movieDetails",
   initialState,
+  reducers: {
+    setMovieId: (state, { payload }) => {
+      state.movieId = payload;
+      localStorage.setItem("movieId", payload);
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getMovieDetails.pending, (state) => {
       state.detailsLoading = true;
@@ -59,3 +71,4 @@ const movieDetails = createSlice({
 });
 
 export const movieDetailsReducer = movieDetails.reducer;
+export const { setMovieId } = movieDetails.actions;

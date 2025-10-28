@@ -119,6 +119,9 @@ export function safeFilter(results = []) {
     "kemonomimi",
     "beast",
     "furry",
+    "Girlfriends",
+    "Girlfriend",
+    "myGirlfriend",
 
     // Known problematic content
     "anais nin",
@@ -198,8 +201,6 @@ export function safeFilter(results = []) {
     if (suspiciousPatterns.some((pattern) => pattern.test(combinedText)))
       return false;
 
-    // Additional heuristic checks
-
     // Check if title + overview combination seems suspicious
     const titleOverviewCombo = `${title} ${overview}`;
     const suspiciousWordCount = bannedWords.filter((word) =>
@@ -209,23 +210,6 @@ export function safeFilter(results = []) {
     // If multiple suspicious words appear together, flag it
     if (suspiciousWordCount >= 2) return false;
 
-    // Check for common NSFW genre combinations
-    const genresLower = genres.toLowerCase();
-    if (
-      (genresLower.includes("romance") && genresLower.includes("thriller")) ||
-      (genresLower.includes("drama") &&
-        overview.match(/\b(passion|desire|obsess)/i))
-    ) {
-      // Additional scrutiny for romance thrillers
-      if (
-        unsafeRegex.test(overview) ||
-        suspiciousPatterns.some((p) => p.test(overview))
-      ) {
-        return false;
-      }
-    }
-
-    // Check overview length vs suspicious content ratio
     // Sometimes NSFW content has very detailed, suggestive descriptions
     if (overview.length) {
       const words = overview.split(/\s+/);
