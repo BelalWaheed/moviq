@@ -33,8 +33,10 @@ export const GetRatedSeries = createAsyncThunk(
                 const res = await req.json();
                 allResults = [...allResults, ...res.results];
             }
+            console.log(response);
+            console.log(allResults);
 
-            return { ...response, results: allResults };
+            return response;
         } catch (e) {
             return rejectWithValue({ success: false, message: e.message });
         }

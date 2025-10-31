@@ -14,7 +14,7 @@ export const GetRatedSeries = createAsyncThunk(
                 }
             };
             const request = await fetch(
-                `https://api.themoviedb.org/3/account/${accountId}/rated/tv?language=en-US&page=${page}&session_id=${sessionId}&sort_by=created_at.asc`,
+                `https://api.themoviedb.org/3/account/${accountId}/rated/tv?language=en-US&page=${page}&session_id=${sessionId}&sort_by=created_at.asc'`,
                 options
             );
             const response = await request.json();
@@ -33,8 +33,10 @@ export const GetRatedSeries = createAsyncThunk(
                 const res = await req.json();
                 allResults = [...allResults, ...res.results];
             }
+            console.log(response);
+            console.log(allResults);
 
-            return { ...response, results: allResults };
+            return response;
         } catch (e) {
             return rejectWithValue({ success: false, message: e.message });
         }

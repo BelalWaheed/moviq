@@ -23,9 +23,6 @@ const UserRateSection = () => {
     const { RatedSeriesDetails } = useSelector(
         state => state.RatedSeriesReducer
     );
-    const { SeriesRatingLoading } = useSelector(
-        state => state.SeriesRatingReducer
-    );
 
     const { isRated } = useSelector(state => state.SeriesRatingReducer);
 
@@ -160,19 +157,6 @@ const UserRateSection = () => {
                                         rate: value
                                     })
                                 )
-                                    .then(() =>
-                                        dispatch(
-                                            GetRatedSeries({
-                                                accountId:
-                                                    AccountInfoDetails?.id,
-                                                sessionId:
-                                                    localStorage.getItem(
-                                                        "sessionId"
-                                                    )
-                                            })
-                                        )
-                                    )
-
                                     .then(() => setIsSubmit(!isSubmit))
                                     .then(() =>
                                         Swal.fire({
@@ -242,18 +226,8 @@ const UserRateSection = () => {
                 }}
                 as="div"
                 size="sm"
-                className={`rounded-lg px-3 py-2 flex items-center justify-center shadow-sm transition-all
-        ${
-            SeriesRatingLoading
-                ? "bg-red-400 cursor-not-allowed"
-                : "cursor-pointer bg-red-600 hover:bg-red-800 hover:shadow-red-500/30"
-        }
-    `}>
-                {SeriesRatingLoading ? (
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                ) : (
-                    <RiSendPlaneFill size={16} />
-                )}
+                className="cursor-pointer hover:bg-red-800 rounded-lg bg-red-600 px-3 py-2 flex items-center justify-center shadow-sm hover:shadow-red-500/30 transition-all">
+                <RiSendPlaneFill size={16} />
             </Typography>
         </div>
     );
