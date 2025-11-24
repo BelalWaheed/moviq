@@ -6,7 +6,9 @@ export const RequestSingOut = createAsyncThunk(
         const { rejectWithValue } = thunkAPI;
         try {
             const request = await fetch(
-                `https://api.themoviedb.org/3/authentication/session?api_key=a2cd04b33ce3164e397311c0fdf1a793`,
+                `https://api.themoviedb.org/3/authentication/session?api_key=${
+                    import.meta.env.VITE_TMDB_v4_omar
+                }`,
                 {
                     method: "DELETE",
                     headers: {

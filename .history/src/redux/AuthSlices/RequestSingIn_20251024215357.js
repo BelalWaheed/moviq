@@ -9,12 +9,13 @@ export const RequestSingIn = createAsyncThunk(
                 method: "GET",
                 headers: {
                     accept: "application/json",
-                    Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMmNkMDRiMzNjZTMxNjRlMzk3MzExYzBmZGYxYTc5MyIsIm5iZiI6MTc2MDA5OTc5Mi41NDQsInN1YiI6IjY4ZThmZGQwOWI0YTFhYWIxYWU2YWNkMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r5AVkEHlxumduosln1i8Y_ixvvSk2_a-rJElwNV7KVg"
+                    Authorization: `Bearer ${import.meta.env.VITE_TMDB_v3_omar}`
                 }
             };
             const request = await fetch(
-                `https://api.themoviedb.org/3/authentication/token/new?api_key=a2cd04b33ce3164e397311c0fdf1a793`
+                `https://api.themoviedb.org/3/authentication/token/new?api_key=${
+                    import.meta.env.VITE_TMDB_v4_omar
+                }`
             );
 
             const response = await request.json();

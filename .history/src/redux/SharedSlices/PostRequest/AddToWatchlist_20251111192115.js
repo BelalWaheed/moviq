@@ -15,8 +15,7 @@ export const AddFavorite = createAsyncThunk(
                 headers: {
                     accept: "application/json",
                     "content-type": "application/json",
-                    Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMmNkMDRiMzNjZTMxNjRlMzk3MzExYzBmZGYxYTc5MyIsIm5iZiI6MTc2MDA5OTc5Mi41NDQsInN1YiI6IjY4ZThmZGQwOWI0YTFhYWIxYWU2YWNkMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r5AVkEHlxumduosln1i8Y_ixvvSk2_a-rJElwNV7KVg"
+                    Authorization: `Bearer ${import.meta.env.VITE_TMDB_v3_omar}`
                 },
                 body: JSON.stringify({
                     media_type,

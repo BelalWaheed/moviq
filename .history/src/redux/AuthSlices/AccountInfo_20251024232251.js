@@ -12,7 +12,7 @@ export const AccountInfo = createAsyncThunk(
             if (approved === "true" && token) {
                 // create sessionId
                 const request = await fetch(
-                    "https://api.themoviedb.org/3/authentication/session/new?api_key=a2cd04b33ce3164e397311c0fdf1a793",
+                    "https://api.themoviedb.org/3/authentication/session/new?api_key=${import.meta.env.VITE_TMDB_v4_omar}",
                     {
                         method: "POST",
                         headers: {
