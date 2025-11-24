@@ -54,6 +54,8 @@ import { watchlistReducer } from "./SharedSlices/PostRequest/AddToWatchlist.js";
 import { SignInTokenReducer } from "./AuthSlices/RequestSingIn.js";
 import { AccountInfoSliceReducer } from "./AuthSlices/AccountInfo.js";
 import { RequestSignOutReducer } from "./AuthSlices/RequestSignOut.js";
+import { nowPlayingReducer } from "./HomeSlices/nowPlayingSlice.js";
+import { topRatedReducer } from "./HomeSlices/topRatedSlice.js";
 
 const store = configureStore({
     reducer: {
@@ -109,7 +111,12 @@ const store = configureStore({
         // Auth
         SignInTokenReducer,
         AccountInfoSliceReducer,
-        RequestSignOutReducer
+        RequestSignOutReducer,
+
+
+        //new home
+        nowPlayingReducer,
+        topRatedReducer
     }
 });
 
