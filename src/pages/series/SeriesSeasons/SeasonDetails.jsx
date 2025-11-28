@@ -9,11 +9,11 @@ import { Button } from "@material-tailwind/react";
 
 import { useNavigate } from "react-router-dom";
 import { GetSeriesSeasonsAggregateCredits } from "../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSesonsAggregateCredits";
-import EpisodesListSection from "./EpisodesListSection";
-import CastSection from "./CastSection";
+import EpisodesListSection from "./Sections/EpisodesListSection";
+import CastSection from "././Sections/CastSection";
 import { IoArrowBackOutline } from "react-icons/io5";
-import CrewSection from "./CrewSection";
-import MediaSection from "./MediaSection";
+import CrewSection from "./Sections/CrewSection";
+import MediaSection from "./Sections/MediaSection";
 import { getSeriesDetails } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesDetails";
 const SeasonDetails = () => {
     const dispatch = useDispatch();

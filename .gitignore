@@ -6,12 +6,12 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-.history
 
 node_modules
 dist
 dist-ssr
 *.local
+.history
 .env
 test.json
 # Editor directories and files
