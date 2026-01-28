@@ -1,12 +1,17 @@
 import { motion } from "framer-motion";
-import { FaHeart, FaBookmark } from "react-icons/fa";
+import { FaHeart, FaBookmark, FaListUl } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { AddFavorite } from "../../../redux/SharedSlices/PostRequest/AddFavorite";
+import { AddFavorite } from "../../../../redux/SharedSlices/PostRequest/AddFavorite";
 import { useEffect, useState } from "react";
-import { GetSeriesAccountStates } from "../../../redux/SeriesSlices/GetRequest/UserInteractions/GetSeriesAccountStates";
+import { GetSeriesAccountStates } from "../../../../redux/SeriesSlices/GetRequest/UserInteractions/GetSeriesAccountStates";
 import Swal from "sweetalert2";
-import { AddToWatchlist } from "../../../redux/SharedSlices/PostRequest/AddToWatchlist";
-import { RequestSingIn } from "../../../redux/AuthSlices/RequestSingIn";
+import { AddToWatchlist } from "../../../../redux/SharedSlices/PostRequest/AddToWatchlist";
+import { RequestSingIn } from "../../../../redux/AuthSlices/RequestSingIn";
+import ListsModal from "../ListsModal";
+import CreateListModal from "../CreateListModal";
+import { GetLists } from "../../../../redux/SharedSlices/GetRequest/Lists";
+import { AddMedia } from "../../../../redux/SharedSlices/PostRequest/List/AddMedia";
+import { GetListsDetails } from "../../../../redux/SharedSlices/GetRequest/ListsDetails";
 
 const FavouriteWishlistSection = ({}) => {
     const { AccountInfoDetails, isLogged } = useSelector(
@@ -16,6 +21,9 @@ const FavouriteWishlistSection = ({}) => {
     const { accountSeriesStatesDetails } = useSelector(
         state => state.GetAccountSeriesStatesReducer
     );
+
+    const { listDetails } = useSelector(state => state.createListReducer);
+    const { userListDetails } = useSelector(state => state.getListsReducer);
 
     const dispatch = useDispatch();
 
@@ -28,6 +36,22 @@ const FavouriteWishlistSection = ({}) => {
             })
         );
     }, [favoriteDetails]);
+
+    // Get user lists
+    useEffect(() => {
+        console.log(listDetails);
+
+        dispatch(
+            GetLists({
+                pageNumber: userListDetails?.page,
+                accountId: AccountInfoDetails?.id,
+                sessionId: localStorage.getItem("sessionId")
+            })
+        );
+    }, [listDetails]);
+
+    const [openLists, setOpenLists] = useState(false);
+    const [openCreate, setOpenCreate] = useState(false);
 
     return (
         <>
@@ -149,7 +173,50 @@ const FavouriteWishlistSection = ({}) => {
                         ? "Added to Wishlist"
                         : "Add to Wishlist"}
                 </motion.button>
+                {/* === Add To List Button === */}
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                        setOpenLists(true);
+                        dispatch(
+                            GetSeriesAccountStates({
+                                seriesId: localStorage.getItem("seriesId"),
+                                sessionId: localStorage.getItem("sessionId")
+                            })
+                        );
+                    }}
+                    className={`
+        flex-1 text-xs sm:text-sm 
+        flex items-center justify-center gap-2 
+        py-2 px-4 
+        rounded-xl font-semibold 
+        transition-all duration-200
+        bg-white/20 text-white hover:bg-blue-500/60 hover:text-black
+    `}>
+                    <FaListUl className="text-base sm:text-lg" />
+                    Add to List
+                </motion.button>
             </motion.div>
+            {openLists && (
+                <ListsModal
+                    lists={userListDetails?.results}
+                    onClose={() => setOpenLists(false)}
+                    onCreate={() => {
+                        setOpenLists(false);
+                        setOpenCreate(true);
+                    }}
+                    openLists={openLists}
+                    setOpenLists={setOpenLists}
+                />
+            )}
+            {openCreate && (
+                <CreateListModal
+                    onClose={() => setOpenCreate(false)}
+                    setOpenLists={setOpenLists}
+                    setOpenCreate={setOpenCreate}
+                />
+            )}
         </>
     );
 };

@@ -3,7 +3,7 @@ import { Card } from "@material-tailwind/react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { GetSeriesWatchProviders } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesWatchProviders";
+import { GetSeriesWatchProviders } from "../../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesWatchProviders";
 import { Radio } from "@material-tailwind/react";
 
 const WatchProvidersSection = () => {

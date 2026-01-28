@@ -5,7 +5,7 @@ import { FaXTwitter } from "react-icons/fa6";
 
 import { FaWikipediaW } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { GetSeriesExternalLinks } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesExternalLinks";
+import { GetSeriesExternalLinks } from "../../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesExternalLinks";
 
 const ExternalLinksSection = () => {
     const dispatch = useDispatch();

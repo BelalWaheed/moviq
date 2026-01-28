@@ -22,21 +22,21 @@ import { getSeriesDetails } from "../../../redux/SeriesSlices/GetRequest/SeriesD
 import { motion } from "framer-motion";
 import { FaBuildingFlag } from "react-icons/fa6";
 
-import NetworksSection from "./NetworksSection";
-import ProductionCompaniesSection from "./ProductionCompaniesSection";
-import TrailersSection from "./TrailersSection";
-import SeasonsSection from "./SeasonsSection";
+import NetworksSection from "./Sections/NetworksSection";
+import ProductionCompaniesSection from "./Sections/ProductionCompaniesSection";
+import TrailersSection from "./Sections/TrailersSection";
+import SeasonsSection from "././Sections/SeasonsSection";
 import { IoArrowBackOutline } from "react-icons/io5";
 
-import Cast_And_CrewSection from "./Cast_And_CrewSection";
-import RecommendationsSection from "./RecommendationsSection";
-import ExternalLinksSection from "./ExternalLinksSection";
-import MediaSection from "./MediaSection";
-import SimilarSection from "./SimilarSection";
-import ReviewsSection from "./ReviewsSection";
-import WatchProvidersSection from "./WatchProvidersSection";
-import RatingWishlistFavourite from "./RatingWishlistFavourite";
-import FavouriteWishlistSection from "./FavouriteWishlistSection";
+import Cast_And_CrewSection from "./Sections/Cast_And_CrewSection";
+import RecommendationsSection from "././Sections/RecommendationsSection";
+import ExternalLinksSection from "./Sections/ExternalLinksSection";
+import MediaSection from "./Sections/MediaSection";
+import SimilarSection from "./Sections/SimilarSection";
+import ReviewsSection from "././Sections/ReviewsSection";
+import WatchProvidersSection from "./Sections/WatchProvidersSection";
+import RatingWishlistFavourite from "./Sections/RatingWishlistFavourite";
+import InteractionsSection from "./Sections/InteractionsSection";
 const DetailsCard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -258,7 +258,7 @@ const DetailsCard = () => {
                                 </div>
                             </motion.div>
 
-                            <FavouriteWishlistSection />
+                            <InteractionsSection />
 
                             {/* Action Buttons */}
                             <div className="flex flex-wrap gap-4">

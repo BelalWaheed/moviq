@@ -1,4 +1,7 @@
-import { createSlice as createSlice5, createAsyncThunk as createAsyncThunk5 } from "@reduxjs/toolkit";
+import {
+    createSlice as createSlice5,
+    createAsyncThunk as createAsyncThunk5
+} from "@reduxjs/toolkit";
 
 export const GetMovieExternalLinks = createAsyncThunk5(
     "GetMovieExternalLinks",
@@ -9,7 +12,7 @@ export const GetMovieExternalLinks = createAsyncThunk5(
                 method: "GET",
                 headers: {
                     accept: "application/json",
-                    Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMmNkMDRiMzNjZTMxNjRlMzk3MzExYzBmZGYxYTc5MyIsIm5iZiI6MTc2MDA5OTc5Mi41NDQsInN1YiI6IjY4ZThmZGQwOWI0YTFhYWIxYWU2YWNkMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r5AVkEHlxumduosln1i8Y_ixvvSk2_a-rJElwNV7KVg"
+                    Authorization: `Bearer ${import.meta.env.VITE_TMDB_v3_omar}`
                 }
             };
             const request = await fetch(
@@ -34,14 +37,14 @@ const MovieExternalLinks = createSlice5({
     },
     extraReducers: builder => {
         builder
-            .addCase(GetMovieExternalLinks.pending, (state) => {
+            .addCase(GetMovieExternalLinks.pending, state => {
                 state.MovieExternalLinksDetailsLoading = true;
             })
             .addCase(GetMovieExternalLinks.fulfilled, (state, { payload }) => {
                 state.MovieExternalLinksDetails = payload;
                 state.MovieExternalLinksDetailsLoading = false;
             })
-            .addCase(GetMovieExternalLinks.rejected, (state) => {
+            .addCase(GetMovieExternalLinks.rejected, state => {
                 state.MovieExternalLinksDetailsError = true;
                 state.MovieExternalLinksDetailsLoading = false;
             });

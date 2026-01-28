@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import NotFound from "../../notFound/NotFound";
-import MovieLoader from "../../loading/MovieLoader";
-import { GetSeriesAggregateCredits } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesAggregateCredits";
-import { GetPersonDetails } from "../../../redux/SharedSlices/GetRequest/Person/GetPersonDetails";
-import { GetPersonCombinedCredits } from "../../../redux/SharedSlices/GetRequest/Person/GetPersonCombinedCredits";
+import NotFound from "../../../notFound/NotFound";
+import MovieLoader from "../../../loading/MovieLoader";
+import { GetSeriesAggregateCredits } from "../../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesAggregateCredits";
+import { GetPersonDetails } from "../../../../redux/SharedSlices/GetRequest/Person/GetPersonDetails";
+import { GetPersonCombinedCredits } from "../../../../redux/SharedSlices/GetRequest/Person/GetPersonCombinedCredits";
 
 const Cast_And_CrewSection = () => {
     const {
@@ -23,11 +23,6 @@ const Cast_And_CrewSection = () => {
                 seriesId: localStorage.getItem("seriesId")
             })
         );
-        // dispatch(
-        //     GetPersonDetails({
-        //         personId: localStorage.getItem("personId")
-        //     })
-        // );
     }, []);
     return (
         <>

@@ -53,7 +53,7 @@ const AllCrewPage = lazy(() =>
     import("./pages/series/SeriesSeasons/AllCrewPage")
 );
 const RecommendationsSection = lazy(() =>
-    import("./pages/series/SeriesDetails/RecommendationsSection")
+    import("./pages/series/SeriesDetails/Sections/RecommendationsSection")
 );
 const AllReviewsSeries = lazy(() =>
     import("./pages/series/SeriesDetails/AllReviewsSeries")

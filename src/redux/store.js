@@ -49,6 +49,11 @@ import { PersonReducer } from "./SharedSlices/GetRequest/Person/GetPersonDetails
 import { personCombinedCreditsReducer } from "./SharedSlices/GetRequest/Person/GetPersonCombinedCredits.js";
 import { favoriteReducer } from "./SharedSlices/PostRequest/AddFavorite.js";
 import { watchlistReducer } from "./SharedSlices/PostRequest/AddToWatchlist.js";
+import { createListReducer } from "./SharedSlices/PostRequest/List/CreateList.js";
+import { getListsReducer } from "./SharedSlices/GetRequest/Lists.js";
+import { AddMediaReducer } from "./SharedSlices/PostRequest/List/AddMedia.js";
+import { GetListsDetailsReducer } from "./SharedSlices/GetRequest/ListsDetails.js";
+import { CheckItemStatusReducer } from "./SharedSlices/GetRequest/CheckItemStatus.js";
 
 // Auth Reducers
 import { SignInTokenReducer } from "./AuthSlices/RequestSingIn.js";
@@ -105,6 +110,11 @@ const store = configureStore({
         personCombinedCreditsReducer,
         favoriteReducer,
         watchlistReducer,
+        createListReducer,
+        getListsReducer,
+        AddMediaReducer,
+        GetListsDetailsReducer,
+        CheckItemStatusReducer,
 
         // Auth
         SignInTokenReducer,

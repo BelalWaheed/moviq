@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetSeriesReviews } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesReviews";
+import { GetSeriesReviews } from "../../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesReviews";
 import { useNavigate } from "react-router-dom";
 import UserRateSection from "./UserRateSection";
 

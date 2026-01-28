@@ -11,8 +11,7 @@ export const AddSeriesRating = createAsyncThunk(
                 headers: {
                     accept: "application/json",
                     "Content-Type": "application/json;charset=utf-8",
-                    Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMmNkMDRiMzNjZTMxNjRlMzk3MzExYzBmZGYxYTc5MyIsIm5iZiI6MTc2MDA5OTc5Mi41NDQsInN1YiI6IjY4ZThmZGQwOWI0YTFhYWIxYWU2YWNkMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r5AVkEHlxumduosln1i8Y_ixvvSk2_a-rJElwNV7KVg"
+                    Authorization: `Bearer ${import.meta.env.VITE_TMDB_v3_omar}`
                 },
                 body: `{"value":${rate}}`
             };
@@ -48,7 +47,7 @@ const SeriesRating = createSlice({
         });
         builder.addCase(AddSeriesRating.fulfilled, (state, { payload }) => {
             state.SeriesRatingDetails = payload;
-            state.isRated = true;
+            state.isRated = !state.isRated;
 
             state.SeriesRatingLoading = false;
         });
