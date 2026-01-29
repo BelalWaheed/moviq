@@ -1,4 +1,7 @@
-import { createSlice as createSlice3, createAsyncThunk as createAsyncThunk3 } from "@reduxjs/toolkit";
+import {
+    createSlice as createSlice3,
+    createAsyncThunk as createAsyncThunk3
+} from "@reduxjs/toolkit";
 
 export const GetMovieReviews = createAsyncThunk3(
     "GetMovieReviews",
@@ -9,7 +12,7 @@ export const GetMovieReviews = createAsyncThunk3(
                 method: "GET",
                 headers: {
                     accept: "application/json",
-                    Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMmNkMDRiMzNjZTMxNjRlMzk3MzExYzBmZGYxYTc5MyIsIm5iZiI6MTc2MDA5OTc5Mi41NDQsInN1YiI6IjY4ZThmZGQwOWI0YTFhYWIxYWU2YWNkMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r5AVkEHlxumduosln1i8Y_ixvvSk2_a-rJElwNV7KVg"
+                    Authorization: `Bearer ${import.meta.env.VITE_TMDB_v3_omar}`
                 }
             };
             const request = await fetch(
@@ -34,14 +37,14 @@ const MovieReviews = createSlice3({
     },
     extraReducers: builder => {
         builder
-            .addCase(GetMovieReviews.pending, (state) => {
+            .addCase(GetMovieReviews.pending, state => {
                 state.MovieReviewsDetailsLoading = true;
             })
             .addCase(GetMovieReviews.fulfilled, (state, { payload }) => {
                 state.MovieReviewsDetails = payload;
                 state.MovieReviewsDetailsLoading = false;
             })
-            .addCase(GetMovieReviews.rejected, (state) => {
+            .addCase(GetMovieReviews.rejected, state => {
                 state.MovieReviewsDetailsError = true;
                 state.MovieReviewsDetailsLoading = false;
             });

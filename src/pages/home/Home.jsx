@@ -2,9 +2,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import MovieLoader from "../loading/MovieLoader";
-
-import { fetchNowPlayingMovies } from "../../redux/HomeSlices/nowPlayingSlice";
-
+import { fetchMNow } from "../../redux/HomeSlices/mNow";
+import { fetchMTop } from "../../redux/HomeSlices/mTop";
+import { fetchTNow } from "../../redux/HomeSlices/tNow";
+import { fetchTTop } from "../../redux/HomeSlices/tTop";
 import MovieCarousel from "../../components/carousel/MovieCarousel";
 import SeriesCarousel from "../../components/carousel/SeriesCarousel";
 import { FaFire, FaTrophy } from "react-icons/fa";
@@ -14,31 +15,41 @@ import "swiper/css/navigation";
 import "swiper/css/autoplay";
 import TopCard from "./TopCard";
 
+const POSTER = (path) =>
+  path ? `https://image.tmdb.org/t/p/w500${path}` : "/placeholder.png";
+
 function Home() {
   const dsp = useDispatch();
 
-  const { moviesisLoading } = useSelector((s) => s.nowPlayingReducer.movies);
-  const { topMoviesList } = useSelector((s) => s.topRatedReducer.movies);
-  const { topTvList } = useSelector((s) => s.topRatedReducer.tvShows);
+  const { mNowList, mNIsLoading } = useSelector((s) => s.mNowReducer);
+  const { mTopList, mTisLoading } = useSelector((s) => s.mTopReducer);
+  const { tNowList, tNisLoading } = useSelector((s) => s.tNowReducer);
+  const { tTopList, tTisLoading } = useSelector((s) => s.tTopReducer);
 
   useEffect(() => {
-    dsp(fetchNowPlayingMovies());
+    dsp(fetchMNow());
+    dsp(fetchMTop());
+    dsp(fetchTNow());
+    dsp(fetchTTop());
   }, []);
 
-  useEffect(() => {
-    async function loadTopRated() {
-      const { fetchTopRatedMovies, fetchTopRatedTV } = await import(
-        "../../redux/HomeSlices/topRatedSlice"
-      );
+  const navigate = useNavigate();
 
-      dsp(fetchTopRatedMovies());
-      dsp(fetchTopRatedTV());
-    }
+  if (mNIsLoading) return <MovieLoader />;
 
-    loadTopRated();
-  }, [dsp]);
-
-  if (moviesisLoading) return <MovieLoader />;
+  const cardVariants = {
+    hidden: { opacity: 50, y: 60, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+      },
+    },
+  };
 
   const sectionVariants = {
     hidden: { opacity: 50 },
@@ -66,10 +77,9 @@ function Home() {
   return (
     <main className="HomePageaa min-h-screen bg-background-primary text-text-primary relative overflow-hidden">
       <div className="relative z-10">
-        {/* ===== hola ===== */}
         <MovieCarousel />
 
-        {/* Trending Series */}
+        {/* Trending Series Section */}
         <motion.section
           initial="hidden"
           whileInView="visible"
@@ -96,7 +106,6 @@ function Home() {
             </div>
           </motion.div>
 
-          {/* ===== hola ===== */}
           <SeriesCarousel />
         </motion.section>
 
@@ -123,7 +132,7 @@ function Home() {
           </motion.div>
 
           <div className="grid gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 container mx-auto">
-            {topMoviesList?.slice(0, 10).map((item, index) => (
+            {mTopList?.slice(0, 10).map((item, index) => (
               <TopCard key={item.id || index} item={item} isSeries={false} />
             ))}
           </div>
@@ -152,7 +161,7 @@ function Home() {
           </motion.div>
 
           <div className="grid gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 container mx-auto">
-            {topTvList?.slice(0, 10).map((item, index) => (
+            {tTopList?.slice(0, 10).map((item, index) => (
               <TopCard key={item.id || index} item={item} isSeries={true} />
             ))}
           </div>

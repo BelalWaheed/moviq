@@ -2,34 +2,29 @@ import React, { useEffect, useState } from "react";
 import { PlayIcon } from "@heroicons/react/24/solid";
 import { Button } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
+import { GetSeriesImages } from "../../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesImages";
+import { getSeriesTrailer } from "../../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesTrailer";
 import { useNavigate } from "react-router-dom";
-import ImagePreview from "../SeriesImages/Preview/ImagePreview";
-import { GetSeriesSeasonsImages } from "../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSeasonsImages";
-import { GetSeriesSeasonsVideos } from "../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSeasonsVideos";
+import ImagePreview from "../../SeriesImages/Preview/ImagePreview";
 
 const MediaSection = () => {
     const [activeTab, setActiveTab] = useState("videos");
     const [selectedImage, setSelectedImage] = useState(null);
 
-    const { SeriesSeasonsImagesDetails } = useSelector(
-        state => state.SeriesSeasonsImagesDetailsReducer
-    );
+    const {
+        SeriesImagesDetails,
+        SeriesImagesDetailsLoading,
+        SeriesImagesDetailsError
+    } = useSelector(state => state.SeriesImagesDetailsReducer);
 
-    const { SeriesSeasonsVideosData, SeriesSeasonsVideosDataLoading } =
-        useSelector(state => state.SeriesSeasonsVideosReducer);
+    const { seriesVideosData, seriesVideosDataLoading } = useSelector(
+        state => state.seriesTrailerReducer
+    );
     useEffect(() => {
         dispatch(
-            GetSeriesSeasonsImages({
-                seriesId: localStorage.getItem("seriesId"),
-                seasonNumber: localStorage.getItem("seasonNumber")
-            })
+            GetSeriesImages({ seriesId: localStorage.getItem("seriesId") })
         );
-        dispatch(
-            GetSeriesSeasonsVideos({
-                seriesId: localStorage.getItem("seriesId"),
-                seasonNumber: localStorage.getItem("seasonNumber")
-            })
-        );
+        dispatch(getSeriesTrailer(localStorage.getItem("seriesId")));
     }, []);
 
     const dispatch = useDispatch();
@@ -37,7 +32,8 @@ const MediaSection = () => {
 
     const tabs = [
         { key: "videos", label: "Videos" },
-
+        { key: "backdrops", label: "Backdrops" },
+        { key: "logos", label: "Logos" },
         { key: "posters", label: "Posters" }
     ];
 
@@ -88,9 +84,9 @@ const MediaSection = () => {
                 {/* Videos */}
                 {activeTab === "videos" && (
                     <>
-                        {SeriesSeasonsVideosDataLoading ? (
+                        {seriesVideosDataLoading ? (
                             <span className="loader"></span>
-                        ) : SeriesSeasonsVideosData?.results?.length === 0 ? (
+                        ) : seriesVideosData?.results?.length === 0 ? (
                             <div className="pb-10 px-12 mx-auto mt-10 w-full sm:w-[80%] md:w-[60%] lg:w-[50%] h-[300px] flex flex-col items-center justify-center bg-gray-900 rounded-2xl border border-gray-700 shadow-lg">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -114,8 +110,8 @@ const MediaSection = () => {
                                 </p>
                             </div>
                         ) : (
-                            SeriesSeasonsVideosData?.results
-                                ?.slice(0, 5)
+                            seriesVideosData?.results
+                                ?.slice(0, 10)
                                 ?.map(vid => (
                                     <div
                                         key={vid.id}
@@ -136,14 +132,70 @@ const MediaSection = () => {
                                     </div>
                                 ))
                         )}
-                        {SeriesSeasonsVideosData?.results?.length > 10 && (
+                    </>
+                )}
+
+                {/* Backdrops */}
+                {activeTab === "backdrops" && (
+                    <>
+                        {SeriesImagesDetails?.backdrops
+                            ?.slice(0, 10)
+                            .map((backdrop, idx) => (
+                                <div
+                                    onClick={() => setSelectedImage(backdrop)}
+                                    key={backdrop.file_path}
+                                    style={getImageStyle(
+                                        backdrop.width,
+                                        backdrop.height,
+                                        "backdrops"
+                                    )}
+                                    className="cursor-pointer bg-[#1a1a1a] rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center hover:scale-105 transition-transform duration-300">
+                                    <img
+                                        src={`https://image.tmdb.org/t/p/w500${backdrop.file_path}`}
+                                        alt="backdrop"
+                                        className="w-full h-full object-contain"
+                                    />
+                                </div>
+                            ))}
+                        {SeriesImagesDetails?.backdrops?.length > 10 && (
                             <button
-                                onClick={() => navigate("/AllSeasonsVideos")}
+                                onClick={() => navigate("/BackdropsPage")}
                                 className="min-w-[150px] flex flex-col justify-center items-center bg-zinc-800 rounded-2xl cursor-pointer hover:scale-105 hover:bg-red-600 transition-all duration-300">
                                 <span className="text-white text-lg font-bold">
                                     +
-                                    {SeriesSeasonsVideosData?.results?.length -
-                                        5}
+                                    {SeriesImagesDetails?.backdrops.length - 10}
+                                </span>
+                                <span className="text-sm text-gray-300">
+                                    Show More
+                                </span>
+                            </button>
+                        )}
+                    </>
+                )}
+
+                {/* Logos */}
+                {activeTab === "logos" && (
+                    <>
+                        {SeriesImagesDetails?.logos
+                            ?.slice(0, 10)
+                            ?.map((logo, idx) => (
+                                <div
+                                    onClick={() => setSelectedImage(logo)}
+                                    key={logo.file_path}
+                                    className="cursor-pointer w-[200px] h-[100px] bg-[#1a1a1a] rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center hover:scale-105 transition-transform duration-300">
+                                    <img
+                                        src={`https://image.tmdb.org/t/p/w500${logo.file_path}`}
+                                        alt="logo"
+                                        className="w-full h-full object-contain p-4"
+                                    />
+                                </div>
+                            ))}
+                        {SeriesImagesDetails?.logos?.length > 10 && (
+                            <button
+                                onClick={() => navigate("/LogosPage")}
+                                className="min-w-[150px] flex flex-col justify-center items-center bg-zinc-800 rounded-2xl cursor-pointer hover:scale-105 hover:bg-red-600 transition-all duration-300">
+                                <span className="text-white text-lg font-bold">
+                                    +{SeriesImagesDetails?.logos.length - 10}
                                 </span>
                                 <span className="text-sm text-gray-300">
                                     Show More
@@ -156,7 +208,7 @@ const MediaSection = () => {
                 {/* Posters */}
                 {activeTab === "posters" && (
                     <>
-                        {SeriesSeasonsImagesDetails?.posters
+                        {SeriesImagesDetails?.posters
                             ?.slice(0, 10)
                             ?.map((poster, idx) => (
                                 <div
@@ -175,14 +227,12 @@ const MediaSection = () => {
                                     />
                                 </div>
                             ))}
-                        {SeriesSeasonsImagesDetails?.posters?.length > 10 && (
+                        {SeriesImagesDetails?.posters?.length > 10 && (
                             <button
-                                onClick={() => navigate("/PostersSeasonsPage")}
+                                onClick={() => navigate("/PostersPage")}
                                 className="min-w-[150px] flex flex-col justify-center items-center bg-zinc-800 rounded-2xl cursor-pointer hover:scale-105 hover:bg-red-600 transition-all duration-300">
                                 <span className="text-white text-lg font-bold">
-                                    +
-                                    {SeriesSeasonsImagesDetails?.posters
-                                        ?.length - 10}
+                                    +{SeriesImagesDetails?.posters?.length - 10}
                                 </span>
                                 <span className="text-sm text-gray-300">
                                     Show More

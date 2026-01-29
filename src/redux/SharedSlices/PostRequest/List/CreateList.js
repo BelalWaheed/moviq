@@ -1,11 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const AddToWatchlist = createAsyncThunk(
-    "AddToWatchlist",
-    async (
-        { media_type, media_id, watchlist, accountId, sessionId },
-        thunkAPI
-    ) => {
+export const CreateList = createAsyncThunk(
+    "CreateList",
+    async ({ name, description, sessionId }, thunkAPI) => {
         const { rejectWithValue } = thunkAPI;
 
         try {
@@ -17,13 +14,13 @@ export const AddToWatchlist = createAsyncThunk(
                     Authorization: `Bearer ${import.meta.env.VITE_TMDB_v3_omar}`
                 },
                 body: JSON.stringify({
-                    media_type,
-                    media_id,
-                    watchlist
+                    name,
+                    description,
+                    language: "en"
                 })
             };
             const request = await fetch(
-                `https://api.themoviedb.org/3/account/${accountId}/watchlist?session_id=${sessionId}`,
+                `https://api.themoviedb.org/3/list?session_id=${sessionId}`,
                 options
             );
             const response = await request.json();
@@ -38,29 +35,29 @@ export const AddToWatchlist = createAsyncThunk(
 );
 
 const initialState = {
-    watchlistDetails: null,
-    watchlistLoading: false,
-    watchlistError: false
+    listDetails: null,
+    listLoading: false,
+    listError: false
 };
 
-const watchlist = createSlice({
-    name: "watchlist",
+const list = createSlice({
+    name: "list",
     initialState,
 
     extraReducers: builder => {
-        builder.addCase(AddToWatchlist.pending, (state, { payload }) => {
-            state.watchlistLoading = true;
+        builder.addCase(CreateList.pending, (state, { payload }) => {
+            state.listLoading = true;
         });
-        builder.addCase(AddToWatchlist.fulfilled, (state, { payload }) => {
-            state.watchlistDetails = payload;
+        builder.addCase(CreateList.fulfilled, (state, { payload }) => {
+            state.listDetails = payload;
 
-            state.watchlistLoading = false;
+            state.listLoading = false;
         });
-        builder.addCase(AddToWatchlist.rejected, (state, { payload }) => {
-            state.watchlistError = true;
-            state.watchlistLoading = false;
+        builder.addCase(CreateList.rejected, (state, { payload }) => {
+            state.listError = true;
+            state.listLoading = false;
         });
     }
 });
 
-export const watchlistReducer = watchlist.reducer;
+export const createListReducer = list.reducer;

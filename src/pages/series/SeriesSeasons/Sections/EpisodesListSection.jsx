@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FaCalendarAlt, FaClock, FaStar } from "react-icons/fa";
-import { GetSeriesEpisodesDetails } from "../../../redux/SeriesSlices/GetRequest/SeriesEpisodes/GetSeriesEpisodesDetails";
+import { GetSeriesEpisodesDetails } from "../../../../redux/SeriesSlices/GetRequest/SeriesEpisodes/GetSeriesEpisodesDetails";
 
 const EpisodesListSection = () => {
     const { seasonDetails } = useSelector(state => state.seriesSeasonsReducer);

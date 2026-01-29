@@ -3,10 +3,10 @@ import { Typography } from "@material-tailwind/react";
 import { FaStar } from "react-icons/fa";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { AddSeriesRating } from "../../../redux/SeriesSlices/PostRequest/AddSeriesRating";
+import { AddSeriesRating } from "../../../../redux/SeriesSlices/PostRequest/AddSeriesRating";
 import Swal from "sweetalert2";
-import { GetRatedSeries } from "../../../redux/SeriesSlices/GetRequest/UserInteractions/GetRatedSeries";
-import { RequestSingIn } from "../../../redux/AuthSlices/RequestSingIn";
+import { GetRatedSeries } from "../../../../redux/SeriesSlices/GetRequest/UserInteractions/GetRatedSeries";
+import { RequestSingIn } from "../../../../redux/AuthSlices/RequestSingIn";
 
 const UserRateSection = () => {
     const dispatch = useDispatch();

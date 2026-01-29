@@ -3,7 +3,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { GetSeriesAccountStates } from "../../../redux/SeriesSlices/GetRequest/UserInteractions/GetSeriesAccountStates.js";
+import { GetSeriesAccountStates } from "../../../../redux/SeriesSlices/GetRequest/UserInteractions/GetSeriesAccountStates.js";
 
 const RatingWishlistFavourite = () => {
     const dispatch = useDispatch();
@@ -11,8 +11,12 @@ const RatingWishlistFavourite = () => {
     const { accountSeriesStatesDetails } = useSelector(
         state => state.GetAccountSeriesStatesReducer
     );
+    const { favoriteDetails } = useSelector(state => state.favoriteReducer);
+    const { watchlistDetails } = useSelector(state => state.watchlistReducer);
+    const { SeriesRatingDetails, isRated } = useSelector(
+        state => state.SeriesRatingReducer
+    );
 
-    // if page was updated
     useEffect(() => {
         dispatch(
             GetSeriesAccountStates({
@@ -20,7 +24,7 @@ const RatingWishlistFavourite = () => {
                 sessionId: localStorage.getItem("sessionId")
             })
         );
-    }, [accountSeriesStatesDetails]);
+    }, [favoriteDetails, watchlistDetails, SeriesRatingDetails, isRated]);
     return (
         <>
             {isLogged && localStorage.getItem("sessionId") && (

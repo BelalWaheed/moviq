@@ -1,14 +1,10 @@
 import React from "react";
-import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { GetSeriesSeasons } from "../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSeasons";
-import { GetSeriesSeasonsAggregateCredits } from "../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSesonsAggregateCredits";
+import { GetSeriesSeasons } from "../../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSeasons";
+import { GetSeriesSeasonsAggregateCredits } from "../../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSesonsAggregateCredits";
 import { useNavigate } from "react-router-dom";
-import { GetSeriesSeasonsImages } from "../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSeasonsImages";
-import {
-    GetSeriesSeasonsVideos,
-    SeriesSeasonsVideosReducer
-} from "../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSeasonsVideos";
+import { GetSeriesSeasonsImages } from "../../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSeasonsImages";
+import { GetSeriesSeasonsVideos } from "../../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSeasonsVideos";
 
 const SeasonsSection = () => {
     const { selectedSeriesDetails } = useSelector(
@@ -16,15 +12,6 @@ const SeasonsSection = () => {
     );
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.2, ease: "easeOut" }
-        }
-    };
 
     return (
         <section className="max-w-6xl mx-auto px-6 pb-20">

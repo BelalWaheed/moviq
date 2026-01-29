@@ -10,8 +10,7 @@ const BACKDROP = (path) =>
   path ? `https://image.tmdb.org/t/p/original${path}` : "/placeholder.png";
 
 export default function MovieCarousel() {
-  const { moviesList } = useSelector((s) => s.nowPlayingReducer.movies);
-
+  const { mNowList, mNowisLoading } = useSelector((s) => s.mNowReducer);
   const navigate = useNavigate();
   const dsp = useDispatch();
 
@@ -45,7 +44,7 @@ export default function MovieCarousel() {
         slidesPerView={1}
         className="movie-swiper w-full"
       >
-        {moviesList.map((it, i) => {
+        {mNowList.map((it, i) => {
           const title = it.title || it.name || "Untitled";
           const backdrop = it.backdrop_path || it.poster_path;
           const overview = it.overview || "";

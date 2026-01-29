@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const GetMovieCredits = createAsyncThunk(
-    "GetMovieCredits",
-    async ({ movieId }, thunkAPI) => {
+export const GetListsDetails = createAsyncThunk(
+    "GetListsDetails",
+    async ({ listId, pageNumber }, thunkAPI) => {
         const { rejectWithValue } = thunkAPI;
+
         try {
             const options = {
                 method: "GET",
@@ -13,15 +14,13 @@ export const GetMovieCredits = createAsyncThunk(
                 }
             };
             const request = await fetch(
-                `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`,
+                `https://api.themoviedb.org/3/list/${listId}?language=en-US&page=${pageNumber}`,
                 options
             );
             const response = await request.json();
-
             if (response.success === false) {
                 return rejectWithValue(response);
             }
-
             return response;
         } catch (e) {
             return rejectWithValue({ success: false, message: e.message });
@@ -30,28 +29,31 @@ export const GetMovieCredits = createAsyncThunk(
 );
 
 const initialState = {
-    MovieCreditsDetails: null,
-    MovieCreditsDetailsLoading: false,
-    MovieCreditsDetailsError: false
+    listData: null,
+    listDataLoading: false,
+    listDataError: false
 };
 
-const MovieCredits = createSlice({
-    name: "MovieCredits",
+const ListsDetails = createSlice({
+    name: "ListsDetails",
     initialState,
 
     extraReducers: builder => {
-        builder.addCase(GetMovieCredits.pending, state => {
-            state.MovieCreditsDetailsLoading = true;
+        builder.addCase(GetListsDetails.pending, (state, { payload }) => {
+            state.listDataLoading = true;
         });
-        builder.addCase(GetMovieCredits.fulfilled, (state, { payload }) => {
-            state.MovieCreditsDetails = payload;
-            state.MovieCreditsDetailsLoading = false;
+        builder.addCase(GetListsDetails.fulfilled, (state, { payload }) => {
+            console.log(payload);
+
+            state.listData = payload;
+
+            state.listDataLoading = false;
         });
-        builder.addCase(GetMovieCredits.rejected, state => {
-            state.MovieCreditsDetailsError = true;
-            state.MovieCreditsDetailsLoading = false;
+        builder.addCase(GetListsDetails.rejected, (state, { payload }) => {
+            state.listDataError = true;
+            state.listDataLoading = false;
         });
     }
 });
 
-export const MovieCreditsReducer = MovieCredits.reducer;
+export const GetListsDetailsReducer = ListsDetails.reducer;
