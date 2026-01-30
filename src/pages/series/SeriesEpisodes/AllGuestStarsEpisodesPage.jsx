@@ -1,7 +1,7 @@
 import { Button } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { GetSeriesSeasonsAggregateCredits } from "../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSesonsAggregateCredits";
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,6 +14,7 @@ import { GetSeriesEpisodesDetails } from "../../../redux/SeriesSlices/GetRequest
 function AllGuestStarsEpisodesPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { seriesId, seasonNumber, episodeNumber } = useParams();
 
     const { SeriesEpisodesData } = useSelector(
         state => state.SeriesEpisodesDataReducer
@@ -28,16 +29,18 @@ function AllGuestStarsEpisodesPage() {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, [SeriesEpisodesData]);
 
-    // if page was updated
+    // Fetch using URL params
     useEffect(() => {
-        dispatch(
-            GetSeriesEpisodesDetails({
-                seriesId: localStorage.getItem("seriesId"),
-                seasonNumber: localStorage.getItem("seasonNumber"),
-                episodeNumber: localStorage.getItem("episodeNumber")
-            })
-        );
-    }, []);
+        if (seriesId && seasonNumber && episodeNumber) {
+            dispatch(
+                GetSeriesEpisodesDetails({
+                    seriesId,
+                    seasonNumber,
+                    episodeNumber
+                })
+            );
+        }
+    }, [dispatch, seriesId, seasonNumber, episodeNumber]);
 
     // Hide / Show Buttons on Scroll
     useEffect(() => {
@@ -93,8 +96,7 @@ function AllGuestStarsEpisodesPage() {
                                         personId: actor.id
                                     })
                                 );
-                                localStorage.setItem("personId", actor.id);
-                                navigate("/PersonalInfo");
+                                navigate(`/person/${actor.id}`);
                             }}
                             key={actor.id}
                             className="bg-zinc-900 rounded-xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">

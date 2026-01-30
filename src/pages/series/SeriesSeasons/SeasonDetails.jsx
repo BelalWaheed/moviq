@@ -7,7 +7,7 @@ import MovieLoader from "../../loading/MovieLoader";
 import NotFound from "../../notFound/NotFound";
 import { Button } from "@material-tailwind/react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GetSeriesSeasonsAggregateCredits } from "../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSesonsAggregateCredits";
 import EpisodesListSection from "./Sections/EpisodesListSection";
 import CastSection from "././Sections/CastSection";
@@ -18,6 +18,7 @@ import { getSeriesDetails } from "../../../redux/SeriesSlices/GetRequest/SeriesD
 const SeasonDetails = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { seriesId, seasonNumber } = useParams();
 
     const { seasonDetails, seasonDetailsLoading, seasonDetailsError } =
         useSelector(state => state.seriesSeasonsReducer);
@@ -34,22 +35,24 @@ const SeasonDetails = () => {
         });
     }, [seasonDetails]);
 
-    //if the page was updated
+    // Fetch season data using URL params
     useEffect(() => {
-        dispatch(
-            GetSeriesSeasons({
-                seriesId: localStorage.getItem("seriesId"),
-                seasonNumber: localStorage.getItem("seasonNumber")
-            })
-        );
-        dispatch(
-            GetSeriesSeasonsAggregateCredits({
-                seriesId: localStorage.getItem("seriesId"),
-                seasonNumber: localStorage.getItem("seasonNumber")
-            })
-        );
-        dispatch(getSeriesDetails(localStorage.getItem("seriesId")));
-    }, []);
+        if (seriesId && seasonNumber) {
+            dispatch(
+                GetSeriesSeasons({
+                    seriesId: seriesId,
+                    seasonNumber: seasonNumber
+                })
+            );
+            dispatch(
+                GetSeriesSeasonsAggregateCredits({
+                    seriesId: seriesId,
+                    seasonNumber: seasonNumber
+                })
+            );
+            dispatch(getSeriesDetails(seriesId));
+        }
+    }, [dispatch, seriesId, seasonNumber]);
 
     return (
         <>
@@ -157,7 +160,7 @@ const SeasonDetails = () => {
                                     </div>
                                     <Button
                                         onClick={() =>
-                                            navigate("/seriesDetails")
+                                            navigate(`/series/${seriesId}`)
                                         }
                                         color="gray"
                                         className="rounded-full w-fit mt-6 flex items-center gap-2 hover:shadow-gray-500/30">

@@ -38,6 +38,8 @@ const MovieRecommendations = createSlice({
         builder
             .addCase(GetMovieRecommendations.pending, state => {
                 state.MovieRecommendationsDetailsLoading = true;
+                state.MovieRecommendationsDetails = null; // Clear previous data
+                state.MovieRecommendationsDetailsError = false;
             })
             .addCase(
                 GetMovieRecommendations.fulfilled,

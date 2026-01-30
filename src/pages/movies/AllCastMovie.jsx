@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
 import MovieLoader from "../loading/MovieLoader";
@@ -11,6 +11,7 @@ import { GetPersonCombinedCredits } from "../../redux/SharedSlices/GetRequest/Pe
 function AllCastMovie() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id: movieId } = useParams();
   const {
     MovieCreditsDetails,
     MovieCreditsDetailsLoading,
@@ -61,7 +62,7 @@ function AllCastMovie() {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => navigate("/moviedetails")}
+                  onClick={() => navigate(`/movie/${movieId}`)}
                   className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-800 px-5 py-2 rounded-full shadow-md hover:shadow-red-500/30 transition"
                 >
                   <IoArrowBackOutline className="w-5 h-5 text-white" />
@@ -74,21 +75,20 @@ function AllCastMovie() {
           {/* ====== Grid of Cast ====== */}
           <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-3 mt-6">
             {MovieCreditsDetails?.cast?.slice(0, actorsCount)?.map((actor) => (
-              <div
-                onClick={() => {
-                  dispatch(
-                    GetPersonDetails({
-                      personId: actor.id,
-                    })
-                  );
-                  dispatch(
-                    GetPersonCombinedCredits({
-                      personId: actor.id,
-                    })
-                  );
-                  localStorage.setItem("personId", actor.id);
-                  navigate("/PersonalInfo");
-                }}
+                <div
+                  onClick={() => {
+                    dispatch(
+                      GetPersonDetails({
+                        personId: actor.id,
+                      })
+                    );
+                    dispatch(
+                      GetPersonCombinedCredits({
+                        personId: actor.id,
+                      })
+                    );
+                    navigate(`/person/${actor.id}`);
+                  }}
                 key={actor.id}
                 className="bg-zinc-900 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
               >

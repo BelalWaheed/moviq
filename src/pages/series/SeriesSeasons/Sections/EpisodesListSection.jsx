@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaCalendarAlt, FaClock, FaStar } from "react-icons/fa";
 import { GetSeriesEpisodesDetails } from "../../../../redux/SeriesSlices/GetRequest/SeriesEpisodes/GetSeriesEpisodesDetails";
 
@@ -8,6 +8,8 @@ const EpisodesListSection = () => {
     const { seasonDetails } = useSelector(state => state.seriesSeasonsReducer);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { seriesId, seasonNumber } = useParams();
+
     return (
         <section className="max-w-6xl mx-auto px-6 pb-20">
             <h2 className="text-2xl font-bold mb-4 text-red-500">Episodes</h2>
@@ -15,10 +17,6 @@ const EpisodesListSection = () => {
                 {seasonDetails?.episodes?.slice(0, 10).map(ep => (
                     <div
                         onClick={() => {
-                            localStorage.setItem(
-                                "episodeNumber",
-                                ep?.episode_number
-                            );
                             dispatch(
                                 GetSeriesEpisodesDetails({
                                     seriesId: ep?.show_id,
@@ -26,7 +24,7 @@ const EpisodesListSection = () => {
                                     episodeNumber: ep?.episode_number
                                 })
                             );
-                            navigate("/EpisodeCard");
+                            navigate(`/series/${seriesId}/season/${seasonNumber}/episode/${ep?.episode_number}`);
                         }}
                         key={ep.id}
                         className="
@@ -71,7 +69,7 @@ const EpisodesListSection = () => {
                 ))}
                 {seasonDetails?.episodes.length > 10 && (
                     <button
-                        onClick={() => navigate("/AllEpisode")}
+                        onClick={() => navigate(`/series/${seriesId}/season/${seasonNumber}/episodes`)}
                         className="min-w-[150px] flex flex-col justify-center items-center bg-zinc-800 rounded-2xl cursor-pointer p-4">
                         <span className="text-white text-lg font-bold">
                             +{seasonDetails?.episodes.length - 10}

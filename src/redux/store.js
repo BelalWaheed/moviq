@@ -36,6 +36,10 @@ import { MovieReviewsReducer } from "./moviesSlices/GetRequest/MovieDetails/GetM
 import { MovieImagesReducer } from "./moviesSlices/GetRequest/MovieDetails/GetMovieImages";
 import { MovieExternalLinksReducer } from "./moviesSlices/GetRequest/MovieDetails/GetMovieExternalLinks";
 import { MovieVideosReducer } from "./moviesSlices/GetRequest/MovieDetails/GetMovieVideos";
+import { GetAccountMovieStatesReducer } from "./moviesSlices/GetRequest/UserInteractions/GetMovieAccountStates";
+import { MovieWatchProvidersReducer } from "./moviesSlices/GetRequest/MovieDetails/GetMovieWatchProviders";
+import { MovieRatingReducer } from "./moviesSlices/PostRequest/AddMovieRating.js";
+import { RatedMoviesReducer } from "./moviesSlices/GetRequest/UserInteractions/GetRatedMovies.js";
 
 // Home Reducers
 import { mNowReducer } from "./HomeSlices/mNow";
@@ -59,6 +63,7 @@ import { CheckItemStatusReducer } from "./SharedSlices/GetRequest/CheckItemStatu
 import { SignInTokenReducer } from "./AuthSlices/RequestSingIn.js";
 import { AccountInfoSliceReducer } from "./AuthSlices/AccountInfo.js";
 import { RequestSignOutReducer } from "./AuthSlices/RequestSignOut.js";
+import { ProfileDataReducer } from "./AuthSlices/ProfileData.js";
 
 const store = configureStore({
     reducer: {
@@ -97,6 +102,10 @@ const store = configureStore({
         MovieImagesReducer,
         MovieExternalLinksReducer,
         MovieVideosReducer,
+        GetAccountMovieStatesReducer,
+        MovieWatchProvidersReducer,
+        MovieRatingReducer,
+        RatedMoviesReducer,
 
         // Home
         mNowReducer,
@@ -119,7 +128,8 @@ const store = configureStore({
         // Auth
         SignInTokenReducer,
         AccountInfoSliceReducer,
-        RequestSignOutReducer
+        RequestSignOutReducer,
+        ProfileDataReducer
     }
 });
 

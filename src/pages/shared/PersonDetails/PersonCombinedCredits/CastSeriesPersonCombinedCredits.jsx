@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     getSeriesDetails,
     setSeriesId
@@ -15,22 +15,14 @@ const CastSeriesPersonCombinedCredits = ({ PersonDetailsname }) => {
     } = useSelector(state => state.personCombinedCreditsReducer);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { id: personId } = useParams();
 
     //if page was updated
     useEffect(() => {
-        dispatch(
-            GetPersonCombinedCredits({
-                personId: localStorage.getItem("personId")
-            })
-        );
-        dispatch(getSeriesDetails(localStorage.getItem("seriesId")));
-        dispatch(setSeriesId(localStorage.getItem("seriesId")));
-        dispatch(
-            GetSeriesAggregateCredits({
-                seriesId: localStorage.getItem("seriesId")
-            })
-        );
-    }, []);
+        if (personId) {
+            dispatch(GetPersonCombinedCredits({ personId }));
+        }
+    }, [dispatch, personId]);
 
     //  remove same series
     const uniqueSeries =
@@ -65,8 +57,7 @@ const CastSeriesPersonCombinedCredits = ({ PersonDetailsname }) => {
                                             seriesId: targetId
                                         })
                                     );
-                                    localStorage.setItem("seriesId", targetId);
-                                    navigate("/SeriesDetails");
+                                    navigate(`/series/${targetId}`);
                                 }}>
                                 <img
                                     src={
@@ -113,7 +104,7 @@ const CastSeriesPersonCombinedCredits = ({ PersonDetailsname }) => {
 
                         {uniqueSeries.length > 10 && (
                             <button
-                                onClick={() => navigate("/AllPersonSeriesCast")}
+                                onClick={() => navigate(`/person/${personId}/series/cast`)}
                                 className="min-w-[150px] flex flex-col justify-center items-center bg-zinc-800 rounded-2xl cursor-pointer hover:scale-105 hover:bg-red-600 transition-all duration-300">
                                 <span className="text-white text-lg font-bold">
                                     +{uniqueSeries.length - 10}

@@ -98,7 +98,7 @@ export default function MovieCarousel() {
                                shadow-lg transition-transform transform-gpu hover:scale-105"
                     onClick={() => {
                       dsp(getMovieDetails(it.id));
-                      navigate("/moviedetails");
+                      navigate(`/movie/${it.id}`);
                     }}
                   >
                     <span className="whitespace-nowrap">Watch Now</span>

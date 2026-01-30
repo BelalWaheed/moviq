@@ -8,7 +8,7 @@ import {
     setSeriesId
 } from "../../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesDetails";
 import { GetSeriesAggregateCredits } from "../../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesAggregateCredits";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import MovieLoader from "../../../loading/MovieLoader";
 import { GetPersonCombinedCredits } from "../../../../redux/SharedSlices/GetRequest/Person/GetPersonCombinedCredits";
@@ -17,6 +17,7 @@ import { GetPersonDetails } from "../../../../redux/SharedSlices/GetRequest/Pers
 const AllPersonSeriesCast = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { id: personId } = useParams();
 
     const {
         personCombinedCreditsDetails,
@@ -49,15 +50,11 @@ const AllPersonSeriesCast = () => {
 
     // if page was updated
     useEffect(() => {
-        dispatch(
-            GetPersonCombinedCredits({
-                personId: localStorage.getItem("personId")
-            })
-        );
-        dispatch(
-            GetPersonDetails({ personId: localStorage.getItem("personId") })
-        );
-    }, []);
+        if (personId) {
+            dispatch(GetPersonCombinedCredits({ personId }));
+            dispatch(GetPersonDetails({ personId }));
+        }
+    }, [dispatch, personId]);
 
     if (personCombinedCreditsDetailsLoading) return <MovieLoader />;
     //  remove same series
@@ -136,7 +133,7 @@ const AllPersonSeriesCast = () => {
                                         seriesId: series.id
                                     })
                                 );
-                                navigate("/seriesDetails");
+                                navigate(`/series/${series.id}`);
                             }}
                             className="w-full shadow-lg rounded-xl overflow-hidden 
                                        hover:scale-[1.05] transition-transform cursor-pointer 

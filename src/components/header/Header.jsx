@@ -79,7 +79,8 @@ export default function Header() {
     // Redirect to TMDB auth when token is ready
     useEffect(() => {
         if (RequestSingInDetails?.success) {
-            window.location.href = `https://www.themoviedb.org/authenticate/${RequestSingInDetails.request_token}?redirect_to=https://moviqq.vercel.app/`;
+            // window.location.href = `https://www.themoviedb.org/authenticate/${RequestSingInDetails.request_token}?redirect_to=https://moviqq.vercel.app/`;
+            window.location.href = `https://www.themoviedb.org/authenticate/${RequestSingInDetails.request_token}?redirect_to=http://localhost:5173/`;
         }
     }, [RequestSingInDetails]);
 
@@ -104,10 +105,12 @@ export default function Header() {
     }, []);
 
     // Check if a link is active
-    const isActive = path =>
-        path === "/"
-            ? location.pathname === "/"
-            : location.pathname.startsWith(path);
+    const isActive = path => {
+        if (path === "/") return location.pathname === "/";
+        if (path === "/movies") return location.pathname.startsWith("/movie");
+        if (path === "/series") return location.pathname.startsWith("/series");
+        return location.pathname.startsWith(path);
+    };
 
     useEffect(() => {
         if (!isLogged) {
@@ -244,7 +247,22 @@ export default function Header() {
                                                 y: -5
                                             }}
                                             transition={{ duration: 0.15 }}
-                                            className="absolute right-0 mt-2 w-36 bg-background-elevated rounded-lg shadow-lg border border-accent-primary/20 p-1 z-50">
+                                            className="absolute right-0 mt-2 w-44 bg-background-elevated rounded-lg shadow-lg border border-accent-primary/20 p-1 z-50">
+                                            {/* Profile Link */}
+                                            <Link
+                                                to="/profile"
+                                                onClick={() => setDropdownOpen(false)}
+                                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-text-primary hover:bg-accent-primary/10 rounded-md transition">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                </svg>
+                                                My Profile
+                                            </Link>
+                                            
+                                            {/* Divider */}
+                                            <div className="border-t border-gray-700 my-1" />
+                                            
+                                            {/* Sign Out */}
                                             <button
                                                 onClick={() => {
                                                     setDropdownOpen(false);

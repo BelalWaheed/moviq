@@ -1,52 +1,39 @@
 import { motion } from "framer-motion";
-import { FaHeart, FaBookmark, FaListUl } from "react-icons/fa";
+import { FaHeart, FaBookmark } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { AddFavorite } from "../../../../redux/SharedSlices/PostRequest/AddFavorite";
-import { useEffect, useState } from "react";
-import { GetSeriesAccountStates } from "../../../../redux/SeriesSlices/GetRequest/UserInteractions/GetSeriesAccountStates";
+import { AddFavorite } from "../../../redux/SharedSlices/PostRequest/AddFavorite";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { GetMovieAccountStates } from "../../../redux/moviesSlices/GetRequest/UserInteractions/GetMovieAccountStates";
 import Swal from "sweetalert2";
-import { AddToWatchlist } from "../../../../redux/SharedSlices/PostRequest/AddToWatchlist";
-import { RequestSingIn } from "../../../../redux/AuthSlices/RequestSingIn";
-import { GetLists } from "../../../../redux/SharedSlices/GetRequest/Lists";
+import { AddToWatchlist } from "../../../redux/SharedSlices/PostRequest/AddToWatchlist";
+import { RequestSingIn } from "../../../redux/AuthSlices/RequestSingIn";
 
-const FavouriteWishlistSection = ({}) => {
+const MovieInteractionsSection = () => {
+    const { id: movieId } = useParams();
+    
     const { AccountInfoDetails, isLogged } = useSelector(
         state => state.AccountInfoSliceReducer
     );
     const { favoriteDetails } = useSelector(state => state.favoriteReducer);
     const { watchlistDetails } = useSelector(state => state.watchlistReducer);
-    const { accountSeriesStatesDetails } = useSelector(
-        state => state.GetAccountSeriesStatesReducer
+    const { accountMovieStatesDetails } = useSelector(
+        state => state.GetAccountMovieStatesReducer
     );
-
-    const { listDetails } = useSelector(state => state.createListReducer);
-    const { userListDetails } = useSelector(state => state.getListsReducer);
 
     const dispatch = useDispatch();
 
-    // Get Series Account States
+    // Get Movie Account States
     useEffect(() => {
-        dispatch(
-            GetSeriesAccountStates({
-                seriesId: localStorage.getItem("seriesId"),
-                sessionId: localStorage.getItem("sessionId")
-            })
-        );
-    }, [favoriteDetails, watchlistDetails]);
-
-    // Get user lists
-    useEffect(() => {
-        dispatch(
-            GetLists({
-                pageNumber: userListDetails?.page,
-                accountId: AccountInfoDetails?.id,
-                sessionId: localStorage.getItem("sessionId")
-            })
-        );
-    }, [listDetails]);
-
-    const [openLists, setOpenLists] = useState(false);
-    const [openCreate, setOpenCreate] = useState(false);
+        if (movieId && localStorage.getItem("sessionId")) {
+            dispatch(
+                GetMovieAccountStates({
+                    movieId: movieId,
+                    sessionId: localStorage.getItem("sessionId")
+                })
+            );
+        }
+    }, [dispatch, movieId, favoriteDetails, watchlistDetails]);
 
     return (
         <motion.div
@@ -70,20 +57,17 @@ const FavouriteWishlistSection = ({}) => {
                     isLogged && localStorage.getItem("sessionId")
                         ? dispatch(
                               AddFavorite({
-                                  media_type: "tv",
-                                  media_id:
-                                      localStorage.getItem("seriesId"),
-                                  favorite:
-                                      !accountSeriesStatesDetails?.favorite,
+                                  media_type: "movie",
+                                  media_id: movieId,
+                                  favorite: !accountMovieStatesDetails?.favorite,
                                   accountId: AccountInfoDetails?.id,
-                                  sessionId:
-                                      localStorage.getItem("sessionId")
+                                  sessionId: localStorage.getItem("sessionId")
                               })
                           )
                         : Swal.fire({
                               icon: "info",
                               title: "TMDB Connection Required!",
-                              text: "You need to connect your TMDB account before you can rate any series.",
+                              text: "You need to connect your TMDB account before you can add this movie to favorites.",
                               showCancelButton: true,
                               confirmButtonText: "Connect now",
                               cancelButtonText: "Maybe later",
@@ -104,13 +88,13 @@ const FavouriteWishlistSection = ({}) => {
                 rounded-xl font-semibold 
                 transition-all duration-200
                 ${
-                    accountSeriesStatesDetails?.favorite
+                    accountMovieStatesDetails?.favorite
                         ? "bg-red-600 text-white"
                         : "bg-white/20 text-white hover:bg-red-600/50"
                 }
             `}>
                 <FaHeart className="text-base sm:text-lg" />
-                {accountSeriesStatesDetails?.favorite
+                {accountMovieStatesDetails?.favorite
                     ? "Added to Favourite"
                     : "Add Favourite"}
             </motion.button>
@@ -123,20 +107,17 @@ const FavouriteWishlistSection = ({}) => {
                     isLogged && localStorage.getItem("sessionId")
                         ? dispatch(
                               AddToWatchlist({
-                                  media_type: "tv",
-                                  media_id:
-                                      localStorage.getItem("seriesId"),
-                                  watchlist:
-                                      !accountSeriesStatesDetails?.watchlist,
+                                  media_type: "movie",
+                                  media_id: movieId,
+                                  watchlist: !accountMovieStatesDetails?.watchlist,
                                   accountId: AccountInfoDetails?.id,
-                                  sessionId:
-                                      localStorage.getItem("sessionId")
+                                  sessionId: localStorage.getItem("sessionId")
                               })
                           )
                         : Swal.fire({
                               icon: "info",
                               title: "TMDB Connection Required!",
-                              text: "You need to connect your TMDB account before you can rate any series.",
+                              text: "You need to connect your TMDB account before you can add this movie to watchlist.",
                               showCancelButton: true,
                               confirmButtonText: "Connect now",
                               cancelButtonText: "Maybe later",
@@ -157,13 +138,13 @@ const FavouriteWishlistSection = ({}) => {
                 rounded-xl font-semibold 
                 transition-all duration-200
                 ${
-                    accountSeriesStatesDetails?.watchlist
+                    accountMovieStatesDetails?.watchlist
                         ? "bg-yellow-500 text-black"
                         : "bg-white/20 text-white hover:bg-yellow-500/60 hover:text-black"
                 }
             `}>
                 <FaBookmark className="text-base sm:text-lg" />
-                {accountSeriesStatesDetails?.watchlist
+                {accountMovieStatesDetails?.watchlist
                     ? "Added to Wishlist"
                     : "Add to Wishlist"}
             </motion.button>
@@ -171,4 +152,4 @@ const FavouriteWishlistSection = ({}) => {
     );
 };
 
-export default FavouriteWishlistSection;
+export default MovieInteractionsSection;

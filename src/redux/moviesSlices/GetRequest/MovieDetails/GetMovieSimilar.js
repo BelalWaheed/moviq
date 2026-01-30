@@ -41,6 +41,8 @@ const MovieSimilar = createSlice2({
         builder
             .addCase(GetMovieSimilar.pending, state => {
                 state.MovieSimilarDetailsLoading = true;
+                state.MovieSimilarDetails = null; // Clear previous data
+                state.MovieSimilarDetailsError = false;
             })
             .addCase(GetMovieSimilar.fulfilled, (state, { payload }) => {
                 state.MovieSimilarDetails = payload;

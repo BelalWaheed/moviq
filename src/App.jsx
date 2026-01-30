@@ -101,6 +101,12 @@ const PostersPage = lazy(() =>
 // Import movie pages
 const AllCastMovie = lazy(() => import("./pages/movies/AllCastMovie"));
 const AllCrewMovie = lazy(() => import("./pages/movies/AllCrewMovie"));
+const AllReviewsMovie = lazy(() => import("./pages/movies/AllReviewsMovie"));
+const MovieBackdropsPage = lazy(() => import("./pages/movies/MovieImages/MovieBackdropsPage"));
+const MoviePostersPage = lazy(() => import("./pages/movies/MovieImages/MoviePostersPage"));
+
+// Profile
+const ProfilePage = lazy(() => import("./pages/profile/ProfilePage"));
 
 function App() {
     return (
@@ -116,99 +122,50 @@ function App() {
                         <Route path="/search" element={<SearchPage />} />
 
                         {/* Movies */}
-                        <Route path="movies" element={<Movies />} />
-                        <Route
-                            path="moviedetails"
-                            element={<MovieDetailsCard />}
-                        />
-
-                        <Route path="AllCastMovie" element={<AllCastMovie />} />
-                        <Route path="AllCrewMovie" element={<AllCrewMovie />} />
+                        <Route path="/movies" element={<Movies />} />
+                        <Route path="/movie/:id" element={<MovieDetailsCard />} />
+                        <Route path="/movie/:id/cast" element={<AllCastMovie />} />
+                        <Route path="/movie/:id/crew" element={<AllCrewMovie />} />
+                        <Route path="/movie/:id/reviews" element={<AllReviewsMovie />} />
+                        <Route path="/movie/:id/backdrops" element={<MovieBackdropsPage />} />
+                        <Route path="/movie/:id/posters" element={<MoviePostersPage />} />
 
                         {/* Series */}
-                        <Route path="series" element={<Series />} />
-                        <Route path="seriesDetails" element={<DetailsCard />} />
-                        <Route
-                            path="SeasonDetails"
-                            element={<SeasonDetails />}
-                        />
-                        <Route
-                            path="SeasonDetailsCast"
-                            element={<AllCastPage />}
-                        />
-                        <Route path="AllEpisode" element={<AllEpisodes />} />
-                        <Route path="EpisodeCard" element={<EpisodeCard />} />
-                        <Route
-                            path="AllCastSeries"
-                            element={<AllCastSeries />}
-                        />
-                        <Route
-                            path="AllCrewSeries"
-                            element={<AllCrewSeries />}
-                        />
-                        <Route path="AllCrewPage" element={<AllCrewPage />} />
+                        <Route path="/series" element={<Series />} />
+                        <Route path="/series/:id" element={<DetailsCard />} />
+                        <Route path="/series/:seriesId/cast" element={<AllCastSeries />} />
+                        <Route path="/series/:seriesId/crew" element={<AllCrewSeries />} />
+                        <Route path="/series/:seriesId/reviews" element={<AllReviewsSeries />} />
+                        <Route path="/series/:seriesId/recommendations" element={<RecommendationsSection />} />
+                        <Route path="/series/:seriesId/backdrops" element={<BackdropsPage />} />
+                        <Route path="/series/:seriesId/logos" element={<LogosPage />} />
+                        <Route path="/series/:seriesId/posters" element={<PostersPage />} />
 
-                        <Route
-                            path="BackdropsPage"
-                            element={<BackdropsPage />}
-                        />
-                        <Route path="LogosPage" element={<LogosPage />} />
-                        <Route path="PostersPage" element={<PostersPage />} />
-                        <Route
-                            path="RecommendationsSection"
-                            element={<RecommendationsSection />}
-                        />
-                        <Route
-                            path="AllReviewsSeries"
-                            element={<AllReviewsSeries />}
-                        />
-                        <Route
-                            path="PostersSeasonsPage"
-                            element={<PostersSeasonsPage />}
-                        />
-                        <Route
-                            path="AllSeasonsVideos"
-                            element={<AllSeasonsVideos />}
-                        />
-                        <Route
-                            path="AllCastEpisodesPage"
-                            element={<AllCastEpisodesPage />}
-                        />
-                        <Route
-                            path="AllCrewEpisodesSeries"
-                            element={<AllCrewEpisodesSeries />}
-                        />
-                        <Route
-                            path="AllGuestStarsEpisodesPage"
-                            element={<AllGuestStarsEpisodesPage />}
-                        />
-                        <Route
-                            path="AllEpisodesVideos"
-                            element={<AllEpisodesVideos />}
-                        />
-                        <Route
-                            path="StillsEpisodesPage"
-                            element={<StillsEpisodesPage />}
-                        />
+                        {/* Seasons */}
+                        <Route path="/series/:seriesId/season/:seasonNumber" element={<SeasonDetails />} />
+                        <Route path="/series/:seriesId/season/:seasonNumber/cast" element={<AllCastPage />} />
+                        <Route path="/series/:seriesId/season/:seasonNumber/crew" element={<AllCrewPage />} />
+                        <Route path="/series/:seriesId/season/:seasonNumber/episodes" element={<AllEpisodes />} />
+                        <Route path="/series/:seriesId/season/:seasonNumber/posters" element={<PostersSeasonsPage />} />
+                        <Route path="/series/:seriesId/season/:seasonNumber/videos" element={<AllSeasonsVideos />} />
+
+                        {/* Episodes */}
+                        <Route path="/series/:seriesId/season/:seasonNumber/episode/:episodeNumber" element={<EpisodeCard />} />
+                        <Route path="/series/:seriesId/season/:seasonNumber/episode/:episodeNumber/cast" element={<AllCastEpisodesPage />} />
+                        <Route path="/series/:seriesId/season/:seasonNumber/episode/:episodeNumber/crew" element={<AllCrewEpisodesSeries />} />
+                        <Route path="/series/:seriesId/season/:seasonNumber/episode/:episodeNumber/guests" element={<AllGuestStarsEpisodesPage />} />
+                        <Route path="/series/:seriesId/season/:seasonNumber/episode/:episodeNumber/videos" element={<AllEpisodesVideos />} />
+                        <Route path="/series/:seriesId/season/:seasonNumber/episode/:episodeNumber/stills" element={<StillsEpisodesPage />} />
 
                         {/* Person */}
-                        <Route path="PersonalInfo" element={<PersonalInfo />} />
-                        <Route
-                            path="AllPersonSeriesCast"
-                            element={<AllPersonSeriesCast />}
-                        />
-                        <Route
-                            path="AllPersonMoviesCast"
-                            element={<AllPersonMoviesCast />}
-                        />
-                        <Route
-                            path="AllPersonSeriesCrew"
-                            element={<AllPersonSeriesCrew />}
-                        />
-                        <Route
-                            path="AllPersonMoviesCrew"
-                            element={<AllPersonMoviesCrew />}
-                        />
+                        <Route path="/person/:id" element={<PersonalInfo />} />
+                        <Route path="/person/:id/series/cast" element={<AllPersonSeriesCast />} />
+                        <Route path="/person/:id/movies/cast" element={<AllPersonMoviesCast />} />
+                        <Route path="/person/:id/series/crew" element={<AllPersonSeriesCrew />} />
+                        <Route path="/person/:id/movies/crew" element={<AllPersonMoviesCrew />} />
+
+                        {/* Profile */}
+                        <Route path="/profile" element={<ProfilePage />} />
 
                         {/* Not Found */}
                         <Route path="*" element={<NotFound />} />

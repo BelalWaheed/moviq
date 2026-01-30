@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GetPersonCombinedCredits } from "../../../../redux/SharedSlices/GetRequest/Person/GetPersonCombinedCredits";
 import {
   getMovieDetails,
@@ -11,23 +11,17 @@ import { GetMovieCredits } from "../../../../redux/moviesSlices/GetRequest/Movie
 const CastMoviesPersonCombinedCredits = ({ PersonDetailsname }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id: personId } = useParams();
 
   // Redux State
   const { personCombinedCreditsDetails, personCombinedCreditsDetailsLoading } =
     useSelector((state) => state.personCombinedCreditsReducer);
 
   useEffect(() => {
-    const personId = localStorage.getItem("personId");
-    const movieId = localStorage.getItem("movieId");
-
     if (personId) {
       dispatch(GetPersonCombinedCredits({ personId }));
     }
-    if (movieId) {
-      dispatch(setMovieId(movieId));
-      dispatch(getMovieDetails(movieId));
-    }
-  }, [dispatch]);
+  }, [dispatch, personId]);
 
   const uniqueMovies =
     personCombinedCreditsDetails?.cast
@@ -59,8 +53,7 @@ const CastMoviesPersonCombinedCredits = ({ PersonDetailsname }) => {
                   dispatch(getMovieDetails(item.id));
                   dispatch(setMovieId(item.id));
                   dispatch(GetMovieCredits({ movieId: item.id }));
-                  localStorage.setItem("movieId", item.id);
-                  navigate("/movieDetails");
+                  navigate(`/movie/${item.id}`);
                 }}
               >
                 <img
@@ -96,7 +89,7 @@ const CastMoviesPersonCombinedCredits = ({ PersonDetailsname }) => {
 
             {uniqueMovies.length > 10 && (
               <button
-                onClick={() => navigate("/AllPersonMoviesCast")}
+                onClick={() => navigate(`/person/${personId}/movies/cast`)}
                 className="min-w-[150px] flex flex-col justify-center items-center bg-zinc-800 rounded-2xl cursor-pointer hover:scale-105 hover:bg-red-600 transition-all duration-300"
               >
                 <span className="text-white text-lg font-bold">

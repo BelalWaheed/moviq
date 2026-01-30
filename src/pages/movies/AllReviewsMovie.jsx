@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetMovieReviews } from "../../redux/moviesSlices/GetRequest/MovieDetails/GetMovieReviews";
 import { MdOutlineNavigateNext } from "react-icons/md";
 import { MdOutlineNavigateBefore } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
 
 const AllReviewsMovie = () => {
@@ -14,10 +14,13 @@ const AllReviewsMovie = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id: movieId } = useParams();
 
   useEffect(() => {
-    dispatch(GetMovieReviews({ movieId: localStorage.getItem("movieId") }));
-  }, [dispatch]);
+    if (movieId) {
+      dispatch(GetMovieReviews({ movieId }));
+    }
+  }, [dispatch, movieId]);
 
   // Scroll to top
   useEffect(() => {
@@ -38,7 +41,7 @@ const AllReviewsMovie = () => {
           </span>
         </h2>
         <button
-          onClick={() => navigate("/moviedetails")}
+          onClick={() => navigate(`/movie/${movieId}`)}
           className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-800 px-5 py-2 rounded-full shadow-md hover:shadow-red-500/30 transition"
         >
           <IoArrowBackOutline className="w-5 h-5 text-white" />
@@ -125,7 +128,7 @@ const AllReviewsMovie = () => {
           onClick={() => {
             dispatch(
               GetMovieReviews({
-                movieId: localStorage.getItem("movieId"),
+                movieId,
                 pageNumber: MovieReviewsDetails?.page - 1,
               })
             );
@@ -152,7 +155,7 @@ const AllReviewsMovie = () => {
           onClick={() => {
             dispatch(
               GetMovieReviews({
-                movieId: localStorage.getItem("movieId"),
+                movieId,
                 pageNumber: MovieReviewsDetails?.page + 1,
               })
             );

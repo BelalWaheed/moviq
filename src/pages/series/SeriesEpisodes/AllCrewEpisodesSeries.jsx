@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { GetSeriesAggregateCredits } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesAggregateCredits";
 import MovieLoader from "../../loading/MovieLoader";
@@ -16,6 +16,7 @@ import { FaUser } from "react-icons/fa";
 function AllCrewEpisodesSeries() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { seriesId, seasonNumber, episodeNumber } = useParams();
     const {
         SeriesEpisodesData,
         SeriesEpisodesDataLoading,
@@ -31,16 +32,18 @@ function AllCrewEpisodesSeries() {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, [SeriesEpisodesData]);
 
-    // if page was updated
+    // Fetch using URL params
     useEffect(() => {
-        dispatch(
-            GetSeriesEpisodesDetails({
-                seriesId: localStorage.getItem("seriesId"),
-                seasonNumber: localStorage.getItem("seasonNumber"),
-                episodeNumber: localStorage.getItem("episodeNumber")
-            })
-        );
-    }, []);
+        if (seriesId && seasonNumber && episodeNumber) {
+            dispatch(
+                GetSeriesEpisodesDetails({
+                    seriesId,
+                    seasonNumber,
+                    episodeNumber
+                })
+            );
+        }
+    }, [dispatch, seriesId, seasonNumber, episodeNumber]);
 
     // Hide / Show Buttons on Scroll
     useEffect(() => {
@@ -101,11 +104,7 @@ function AllCrewEpisodesSeries() {
                                                 personId: worker.id
                                             })
                                         );
-                                        localStorage.setItem(
-                                            "personId",
-                                            worker.id
-                                        );
-                                        navigate("/PersonalInfo");
+                                        navigate(`/person/${worker.id}`);
                                     }}
                                     key={index}
                                     className="bg-zinc-900 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">

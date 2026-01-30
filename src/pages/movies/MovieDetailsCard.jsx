@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import { PlayIcon } from "@heroicons/react/24/solid";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { IoArrowBackOutline } from "react-icons/io5";
 import NotFound from "../notFound/NotFound";
@@ -32,10 +32,14 @@ import MovieMediaSection from "./sections/MovieMediaSection";
 import MovieExternalLinksSection from "./sections/MovieExternalLinksSection";
 import MovieTrailersSection from "./sections/MovieTrailersSection";
 import MovieProductionCompaniesSection from "./sections/MovieProductionCompaniesSection";
+import MovieInteractionsSection from "./sections/MovieInteractionsSection";
+import MovieWatchProvidersSection from "./sections/MovieWatchProvidersSection";
+import { GetMovieWatchProviders } from "../../redux/moviesSlices/GetRequest/MovieDetails/GetMovieWatchProviders";
 
 const MovieDetailsCard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id } = useParams();
   const { selectedMovieDetails, detailsLoading, detailsError } = useSelector(
     (state) => state.movieDetailsReducer
   );
@@ -50,30 +54,21 @@ const MovieDetailsCard = () => {
     });
   }, [selectedMovieDetails]);
 
-  // Fetch movie data
+  // Fetch movie data using URL param
   useEffect(() => {
-    const storedId = localStorage.getItem("movieId");
-    if (storedId) {
-      dispatch(getMovieDetails(storedId));
-      dispatch(GetMovieCredits({ movieId: storedId }));
-      dispatch(GetMovieRecommendations({ movieId: storedId }));
-      dispatch(GetMovieSimilar({ movieId: storedId }));
-      dispatch(GetMovieReviews({ movieId: storedId }));
-      dispatch(GetMovieImages({ movieId: storedId }));
-      dispatch(GetMovieExternalLinks({ movieId: storedId }));
-      dispatch(GetMovieVideos(storedId));
+    if (id) {
+      dispatch(getMovieDetails(id));
+      dispatch(GetMovieCredits({ movieId: id }));
+      // Lazy loaded: Recommendations, Similar, Reviews
+      dispatch(GetMovieImages({ movieId: id }));
+      dispatch(GetMovieExternalLinks({ movieId: id }));
+      dispatch(GetMovieVideos(id));
+      dispatch(GetMovieWatchProviders({ movieId: id }));
     }
-  }, [dispatch]);
+  }, [dispatch, id]);
 
-  // Keep localStorage synced when movie details change
-  useEffect(() => {
-    if (selectedMovieDetails?.id) {
-      localStorage.setItem("movieId", selectedMovieDetails.id);
-    }
-  }, [selectedMovieDetails]);
-
-  //  If there's no valid movie after all attempts
-  if (!localStorage.getItem("movieId") && !detailsLoading) {
+  //  If there's no valid movie ID
+  if (!id && !detailsLoading) {
     return <NotFound />;
   }
 
@@ -252,6 +247,9 @@ const MovieDetailsCard = () => {
                 </Button>
               </div>
 
+              {/* Interactions Section - Add Favourite/Wishlist/List */}
+              <MovieInteractionsSection />
+
               {/* External Links Section */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -276,6 +274,9 @@ const MovieDetailsCard = () => {
 
           {/* === Trailer Section === */}
           <MovieTrailersSection isTrailerOn={isTrailerOn} />
+
+          {/* Where to Watch Section */}
+          <MovieWatchProvidersSection />
 
           {/* Reviews Section */}
           <MovieReviewsSection />

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   getMovieDetails,
   setMovieId,
@@ -11,21 +11,15 @@ import { GetPersonCombinedCredits } from "../../../../redux/SharedSlices/GetRequ
 const CrewMoviesPersonCombinedCredits = ({ PersonDetailsname }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id: personId } = useParams();
   const { personCombinedCreditsDetails, personCombinedCreditsDetailsLoading } =
     useSelector((state) => state.personCombinedCreditsReducer);
 
   useEffect(() => {
-    const personId = localStorage.getItem("personId");
-    const movieId = localStorage.getItem("movieId");
-
     if (personId) {
       dispatch(GetPersonCombinedCredits({ personId }));
     }
-    if (movieId) {
-      dispatch(setMovieId(movieId));
-      dispatch(getMovieDetails(movieId));
-    }
-  }, [dispatch]);
+  }, [dispatch, personId]);
 
   const uniqueMovies =
     personCombinedCreditsDetails?.cast
@@ -53,8 +47,7 @@ const CrewMoviesPersonCombinedCredits = ({ PersonDetailsname }) => {
                   dispatch(getMovieDetails(item.id));
                   dispatch(setMovieId(item.id));
                   dispatch(GetMovieCredits({ movieId: item.id }));
-                  localStorage.setItem("movieId", item.id);
-                  navigate("/movieDetails");
+                  navigate(`/movie/${item.id}`);
                 }}
               >
                 <img
@@ -90,7 +83,7 @@ const CrewMoviesPersonCombinedCredits = ({ PersonDetailsname }) => {
 
             {uniqueMovies.length > 10 && (
               <button
-                onClick={() => navigate("/AllPersonMoviesCrew")}
+                onClick={() => navigate(`/person/${personId}/movies/crew`)}
                 className="min-w-[150px] flex flex-col justify-center items-center bg-zinc-800 rounded-2xl cursor-pointer hover:scale-105 hover:bg-red-600 transition-all duration-300"
               >
                 <span className="text-white text-lg font-bold">

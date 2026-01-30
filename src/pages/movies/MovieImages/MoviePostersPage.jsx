@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GetMovieImages } from "../../../redux/moviesSlices/GetRequest/MovieDetails/GetMovieImages";
 import { IoArrowBackOutline } from "react-icons/io5";
 import ImagePreview from "../../series/SeriesImages/Preview/ImagePreview";
 
 const MoviePostersPage = () => {
+  const { id: movieId } = useParams();
   const { MovieImagesDetails } = useSelector(
     (state) => state.MovieImagesReducer
   );
@@ -18,10 +19,12 @@ const MoviePostersPage = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // If page was updated
+  // Fetch images using URL params
   useEffect(() => {
-    dispatch(GetMovieImages({ movieId: localStorage.getItem("movieId") }));
-  }, [dispatch]);
+    if (movieId) {
+      dispatch(GetMovieImages({ movieId }));
+    }
+  }, [dispatch, movieId]);
 
   // Hide / Show header on scroll
   useEffect(() => {
@@ -62,7 +65,7 @@ const MoviePostersPage = () => {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => navigate("/moviedetails")}
+              onClick={() => navigate(`/movie/${movieId}`)}
               className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-800 px-5 py-2 rounded-full shadow-md hover:shadow-red-500/30 transition"
             >
               <IoArrowBackOutline className="w-5 h-5 text-white" />

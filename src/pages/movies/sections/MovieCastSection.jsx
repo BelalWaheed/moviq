@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import NotFound from "../../notFound/NotFound";
 import MovieLoader from "../../loading/MovieLoader";
 import { GetPersonDetails } from "../../../redux/SharedSlices/GetRequest/Person/GetPersonDetails";
@@ -15,6 +15,7 @@ const MovieCastSection = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id: movieId } = useParams();
 
   return (
     <>
@@ -40,8 +41,7 @@ const MovieCastSection = () => {
                         personId: actor.id,
                       })
                     );
-                    localStorage.setItem("personId", actor.id);
-                    navigate("/PersonalInfo");
+                    navigate(`/person/${actor.id}`);
                   }}
                   key={actor.id}
                   className="min-w-[150px] bg-zinc-900 rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300"
@@ -70,7 +70,7 @@ const MovieCastSection = () => {
 
               {MovieCreditsDetails.cast.length > 10 && (
                 <button
-                  onClick={() => navigate("/AllCastMovie")}
+                  onClick={() => navigate(`/movie/${movieId}/cast`)}
                   className="min-w-[150px] flex flex-col justify-center items-center bg-zinc-800 rounded-2xl cursor-pointer hover:scale-105 hover:bg-red-600 transition-all duration-300"
                 >
                   <span className="text-white text-lg font-bold">

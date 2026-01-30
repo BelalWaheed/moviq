@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { GiTombstone } from "react-icons/gi";
 import { GetPersonDetails } from "../../../redux/SharedSlices/GetRequest/Person/GetPersonDetails";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
 import MovieLoader from "../../loading/MovieLoader";
 import NotFound from "../../notFound/NotFound";
@@ -27,6 +27,7 @@ const PersonalInfo = () => {
     useSelector((state) => state.PersonReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id } = useParams();
 
   //for scroll to top
   useEffect(() => {
@@ -36,14 +37,16 @@ const PersonalInfo = () => {
     });
   }, [PersonDetails]);
 
-  // if page was refreshing
+  // Fetch person data using URL param
   useEffect(() => {
-    dispatch(
-      GetPersonDetails({
-        personId: localStorage.getItem("personId"),
-      })
-    );
-  }, []);
+    if (id) {
+      dispatch(
+        GetPersonDetails({
+          personId: id,
+        })
+      );
+    }
+  }, [dispatch, id]);
 
   return (
     <>
