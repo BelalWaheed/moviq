@@ -3,16 +3,17 @@ import { Card, CardBody } from "@material-tailwind/react";
 import { FaStar } from "react-icons/fa";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
-
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import MovieLoader from "../../../loading/MovieLoader";
 import { GetPersonCombinedCredits } from "../../../../redux/SharedSlices/GetRequest/Person/GetPersonCombinedCredits";
 import { GetPersonDetails } from "../../../../redux/SharedSlices/GetRequest/Person/GetPersonDetails";
+import { getMovieDetails } from "../../../../redux/moviesSlices/getMovieDetails";
 
 const AllPersonMoviesCrew = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { id: personId } = useParams();
 
     const {
         personCombinedCreditsDetails,
@@ -45,15 +46,11 @@ const AllPersonMoviesCrew = () => {
 
     // if page was updated
     useEffect(() => {
-        dispatch(
-            GetPersonCombinedCredits({
-                personId: localStorage.getItem("personId")
-            })
-        );
-        dispatch(
-            GetPersonDetails({ personId: localStorage.getItem("personId") })
-        );
-    }, []);
+        if (personId) {
+            dispatch(GetPersonCombinedCredits({ personId }));
+            dispatch(GetPersonDetails({ personId }));
+        }
+    }, [dispatch, personId]);
 
     if (personCombinedCreditsDetailsLoading) return <MovieLoader />;
 
@@ -125,6 +122,10 @@ const AllPersonMoviesCrew = () => {
                 {movies.slice(0, moviesCount).map((movie, index) => (
                     <div key={index}>
                         <Card
+                            onClick={() => {
+                                dispatch(getMovieDetails(movie.id));
+                                navigate(`/movie/${movie.id}`);
+                            }}
                             className="w-full shadow-lg rounded-xl overflow-hidden 
                                        hover:scale-[1.05] transition-transform cursor-pointer 
                                        group bg-zinc-900">

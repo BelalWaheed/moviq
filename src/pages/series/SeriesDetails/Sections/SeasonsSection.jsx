@@ -23,14 +23,6 @@ const SeasonsSection = () => {
                             key={idx}
                             className="hover:scale-105 transition duration-250 flex-shrink-0 cursor-pointer w-44 sm:w-56 md:w-64 bg-[#0f0f0f] rounded-2xl overflow-hidden shadow-lg border border-gray-800"
                             onClick={() => {
-                                localStorage.setItem(
-                                    "seriesId",
-                                    selectedSeriesDetails.id
-                                );
-                                localStorage.setItem(
-                                    "seasonNumber",
-                                    season.season_number
-                                );
                                 dispatch(
                                     GetSeriesSeasons({
                                         seriesId: selectedSeriesDetails.id,
@@ -55,7 +47,7 @@ const SeasonsSection = () => {
                                         seasonNumber: season.season_number
                                     })
                                 );
-                                navigate("/SeasonDetails");
+                                navigate(`/series/${selectedSeriesDetails.id}/season/${season.season_number}`);
                             }}>
                             <img
                                 src={

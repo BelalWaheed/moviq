@@ -1,7 +1,7 @@
 import { Button } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { GetSeriesSeasonsAggregateCredits } from "../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSesonsAggregateCredits";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,6 +11,7 @@ import { GetPersonCombinedCredits } from "../../../redux/SharedSlices/GetRequest
 function AllCrewPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { seriesId, seasonNumber } = useParams();
 
     const {
         seasonsAggregateCreditsDetails,
@@ -27,15 +28,17 @@ function AllCrewPage() {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, [seasonsAggregateCreditsDetails]);
 
-    // if page was updated
+    // Fetch data using URL params
     useEffect(() => {
-        dispatch(
-            GetSeriesSeasonsAggregateCredits({
-                seriesId: localStorage.getItem("seriesId"),
-                seasonNumber: localStorage.getItem("seasonNumber")
-            })
-        );
-    }, []);
+        if (seriesId && seasonNumber) {
+            dispatch(
+                GetSeriesSeasonsAggregateCredits({
+                    seriesId: seriesId,
+                    seasonNumber: seasonNumber
+                })
+            );
+        }
+    }, [dispatch, seriesId, seasonNumber]);
 
     // Hide / Show Buttons on Scroll
     useEffect(() => {
@@ -97,8 +100,7 @@ function AllCrewPage() {
                                         personId: Worker.id
                                     })
                                 );
-                                localStorage.setItem("personId", Worker.id);
-                                navigate("/PersonalInfo");
+                                navigate(`/person/${Worker.id}`);
                             }}
                             key={Worker.id}
                             className="bg-zinc-900 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">

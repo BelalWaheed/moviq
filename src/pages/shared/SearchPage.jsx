@@ -48,12 +48,10 @@ export default function SearchPage() {
   const handleResultClick = (item) => {
     if (item.media_type === "movie") {
       dispatch(getMovieDetails(item.id));
-      localStorage.setItem("movieId", item.id);
-      navigate("/moviedetails");
+      navigate(`/movie/${item.id}`);
     } else if (item.media_type === "tv") {
       dispatch(getSeriesDetails(item.id));
-      localStorage.setItem("seriesId", item.id);
-      navigate("/seriesDetails");
+      navigate(`/series/${item.id}`);
     }
   };
   

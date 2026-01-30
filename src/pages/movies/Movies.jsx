@@ -97,8 +97,7 @@ function Movies() {
                 <Card
                   onClick={() => {
                     dispatch(getMovieDetails(movie.id));
-                    localStorage.setItem("movieId", movie.id);
-                    navigate("/moviedetails");
+                    navigate(`/movie/${movie.id}`);
                   }}
                   className="w-full max-w-[220px] sm:max-w-[240px] md:max-w-[260px] lg:max-w-[280px] shadow-lg rounded-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer group bg-black"
                 >

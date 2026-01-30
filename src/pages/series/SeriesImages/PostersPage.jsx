@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GetSeriesImages } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesImages";
 import { IoArrowBackOutline } from "react-icons/io5";
 import ImagePreview from "./Preview/ImagePreview";
 
 const PostersPage = () => {
+    const { id: seriesId } = useParams();
     const {
         SeriesImagesDetails,
         SeriesImagesDetailsLoading,
@@ -20,12 +21,12 @@ const PostersPage = () => {
     const [lastScrollY, setLastScrollY] = useState(0);
     const [selectedImage, setSelectedImage] = useState(null);
 
-    // if page was updated
+    // Fetch images using URL params
     useEffect(() => {
-        dispatch(
-            GetSeriesImages({ seriesId: localStorage.getItem("seriesId") })
-        );
-    }, []);
+        if (seriesId) {
+            dispatch(GetSeriesImages({ seriesId }));
+        }
+    }, [dispatch, seriesId]);
 
     // Hide / Show header on scroll
     useEffect(() => {
@@ -65,7 +66,7 @@ const PostersPage = () => {
                         <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
-                            onClick={() => navigate("/seriesDetails")}
+                            onClick={() => navigate(`/series/${seriesId}`)}
                             className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-800 px-5 py-2 rounded-full shadow-md hover:shadow-red-500/30 transition">
                             <IoArrowBackOutline className="w-5 h-5 text-white" />
                             <span className="text-white font-medium">Back</span>

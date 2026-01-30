@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
 import MovieLoader from "../loading/MovieLoader";
@@ -11,6 +11,7 @@ import { GetPersonCombinedCredits } from "../../redux/SharedSlices/GetRequest/Pe
 function AllCrewMovie() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id: movieId } = useParams();
   const {
     MovieCreditsDetails,
     MovieCreditsDetailsLoading,
@@ -63,7 +64,7 @@ function AllCrewMovie() {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => navigate("/moviedetails")}
+                  onClick={() => navigate(`/movie/${movieId}`)}
                   className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-800 px-5 py-2 rounded-full shadow-md hover:shadow-red-500/30 transition"
                 >
                   <IoArrowBackOutline className="w-5 h-5 text-white" />
@@ -90,8 +91,7 @@ function AllCrewMovie() {
                         personId: worker.id,
                       })
                     );
-                    localStorage.setItem("personId", worker.id);
-                    navigate("/PersonalInfo");
+                    navigate(`/person/${worker.id}`);
                   }}
                   key={index}
                   className="bg-zinc-900 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer"

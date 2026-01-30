@@ -13,7 +13,7 @@ import {
 } from "react-icons/fa";
 import { PlayIcon } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import MovieLoader from "../../loading/MovieLoader";
 import NotFound from "../../notFound/NotFound";
@@ -40,6 +40,7 @@ import InteractionsSection from "./Sections/InteractionsSection";
 const DetailsCard = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { id } = useParams();
     const { selectedSeriesDetails, detailsLoading, detailsError } = useSelector(
         state => state.seriesDetailsReducer
     );
@@ -54,10 +55,12 @@ const DetailsCard = () => {
         });
     }, [selectedSeriesDetails]);
 
-    //if the page was updated
+    // Fetch series data using URL param
     useEffect(() => {
-        dispatch(getSeriesDetails(localStorage.getItem("seriesId")));
-    }, []);
+        if (id) {
+            dispatch(getSeriesDetails(id));
+        }
+    }, [dispatch, id]);
 
     return (
         <div className="relative w-full min-h-screen bg-black text-white font-poppins overflow-x-hidden">

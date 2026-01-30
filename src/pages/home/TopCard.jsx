@@ -31,11 +31,10 @@ export default function TopCard({ item, isSeries }) {
     const handleClick = () => {
         if (isSeries) {
             dispatch(getSeriesDetails(item.id));
-            localStorage.setItem("seriesId", item.id);
-            navigate("/seriesDetails");
+            navigate(`/series/${item.id}`);
         } else {
             dispatch(getMovieDetails(item.id));
-            navigate("/moviedetails");
+            navigate(`/movie/${item.id}`);
         }
     };
 

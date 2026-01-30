@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
+import CollapsibleSection from "../../../../components/CollapsibleSection";
+import { FaBuilding } from "react-icons/fa";
 
 const ProductionCompaniesSection = () => {
     const { selectedSeriesDetails } = useSelector(
         state => state.seriesDetailsReducer
     );
+
+    // Deduplicate production companies by id
+    const uniqueCompanies = useMemo(() => {
+        if (!selectedSeriesDetails?.production_companies) return [];
+        const seen = new Set();
+        return selectedSeriesDetails.production_companies.filter((comp) => {
+            if (seen.has(comp.id)) return false;
+            seen.add(comp.id);
+            return true;
+        });
+    }, [selectedSeriesDetails?.production_companies]);
 
     const itemVariants = {
         hidden: { opacity: 0, y: 30 },
@@ -16,57 +29,42 @@ const ProductionCompaniesSection = () => {
         }
     };
 
+    if (!uniqueCompanies.length) return null;
+
     return (
-        <section className="max-w-6xl mx-auto px-6 pb-10">
-            <h2 className="text-2xl font-bold mb-4 text-red-500">
-                Production Companies
-            </h2>
+        <CollapsibleSection 
+            title="Production Companies" 
+            icon={FaBuilding}
+            itemCount={uniqueCompanies.length}
+        >
             <div className="flex gap-6 overflow-x-auto overflow-y-hidden scroll-indicator pb-4">
-                {selectedSeriesDetails?.production_companies.length > 0 ? (
-                    selectedSeriesDetails.production_companies.map(comp => (
-                        <motion.div
-                            key={comp.id}
-                            variants={itemVariants}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: false, amount: 0.3 }}
-                            whileHover={{
-                                scale: 1.05,
-                                transition: { duration: 0.2 }
-                            }}
-                            className="flex-shrink-0 w-40 h-24 flex items-center justify-center bg-[#0f0f0f] rounded-xl border border-gray-800 overflow-hidden">
-                            {comp.logo_path ? (
-                                <img
-                                    src={`https://image.tmdb.org/t/p/w200${comp.logo_path}`}
-                                    alt={comp.name}
-                                    className="object-contain w-full h-full max-w-full max-h-full"
-                                />
-                            ) : (
-                                <p className="text-gray-400 text-center text-sm px-2 text-ellipsis overflow-hidden line-clamp-2">
-                                    {comp.name}
-                                </p>
-                            )}
-                        </motion.div>
-                    ))
-                ) : (
+                {uniqueCompanies.map(comp => (
                     <motion.div
-                        className="bg-[#0f0f0f] border border-gray-800 rounded-2xl p-10"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        transition={{ duration: 0.4 }}
-                        viewport={{ once: true }}>
-                        <p className="text-gray-400 text-lg font-medium">
-                            ❌ No Production Companies available for this
-                            series.
-                        </p>
-                        <p className="text-gray-600 text-sm mt-2">
-                            This series doesn’t have any Production Companies
-                            information.
-                        </p>
+                        key={comp.id}
+                        variants={itemVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: false, amount: 0.3 }}
+                        whileHover={{
+                            scale: 1.05,
+                            transition: { duration: 0.2 }
+                        }}
+                        className="flex-shrink-0 w-40 h-24 flex items-center justify-center bg-[#0f0f0f] rounded-xl border border-gray-800 overflow-hidden">
+                        {comp.logo_path ? (
+                            <img
+                                src={`https://image.tmdb.org/t/p/w200${comp.logo_path}`}
+                                alt={comp.name}
+                                className="object-contain w-full h-full max-w-full max-h-full"
+                            />
+                        ) : (
+                            <p className="text-gray-400 text-center text-sm px-2 text-ellipsis overflow-hidden line-clamp-2">
+                                {comp.name}
+                            </p>
+                        )}
                     </motion.div>
-                )}
+                ))}
             </div>
-        </section>
+        </CollapsibleSection>
     );
 };
 

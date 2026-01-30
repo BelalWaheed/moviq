@@ -52,7 +52,7 @@ const MainCard = ({
                     })
                 );
 
-                navigate("/seriesDetails");
+                navigate(`/series/${id}`);
             }}
             className="w-full max-w-[220px] sm:max-w-[240px] md:max-w-[260px] lg:max-w-[280px] shadow-lg rounded-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer group bg-black">
             <div className="relative w-full aspect-[2/3] overflow-hidden bg-black">

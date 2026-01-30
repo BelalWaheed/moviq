@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Button, Card, CardBody } from "@material-tailwind/react";
 import { FaStar, FaClock } from "react-icons/fa";
 import { CalendarDaysIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { GetSeriesSeasons } from "../../../redux/SeriesSlices/GetRequest/SeriesSeasons/GetSeriesSeasons";
 import { motion } from "framer-motion";
@@ -13,6 +13,7 @@ import { GetSeriesEpisodesDetails } from "../../../redux/SeriesSlices/GetRequest
 const AllEpisodes = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { seriesId, seasonNumber } = useParams();
     const { seasonDetails } = useSelector(state => state.seriesSeasonsReducer);
     // scroll to top
     useEffect(() => {
@@ -21,13 +22,15 @@ const AllEpisodes = () => {
 
     // if page was updated
     useEffect(() => {
-        dispatch(
-            GetSeriesSeasons({
-                seriesId: localStorage.getItem("seriesId"),
-                seasonNumber: localStorage.getItem("seasonNumber")
-            })
-        );
-    }, []);
+        if (seriesId && seasonNumber) {
+            dispatch(
+                GetSeriesSeasons({
+                    seriesId: seriesId,
+                    seasonNumber: seasonNumber
+                })
+            );
+        }
+    }, [dispatch, seriesId, seasonNumber]);
 
     const cardVariants = {
         hidden: { opacity: 0, y: 20 },
@@ -37,9 +40,9 @@ const AllEpisodes = () => {
     return (
         <div className="bg-black min-h-screen px-6 py-10 text-white">
             <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold text-red-500">All Episode</h1>
+                <h1 className="text-3xl font-bold text-red-500">All Episodes</h1>
                 <Button
-                    onClick={() => navigate("/SeasonDetails")}
+                    onClick={() => navigate(`/series/${seriesId}/season/${seasonNumber}`)}
                     color="gray"
                     className="rounded-full w-fit mt-6 flex items-center gap-2 hover:shadow-gray-500/30">
                     <IoArrowBackOutline className="w-5 h-5 text-white" />
@@ -59,10 +62,6 @@ const AllEpisodes = () => {
                         className="w-full">
                         <Card
                             onClick={() => {
-                                localStorage.setItem(
-                                    "episodeNumber",
-                                    episode?.episode_number
-                                );
                                 dispatch(
                                     GetSeriesEpisodesDetails({
                                         seriesId: episode?.show_id,
@@ -70,7 +69,7 @@ const AllEpisodes = () => {
                                         episodeNumber: episode?.episode_number
                                     })
                                 );
-                                navigate("/EpisodeCard");
+                                navigate(`/series/${episode?.show_id}/season/${episode?.season_number}/episode/${episode?.episode_number}`);
                             }}
                             className="w-full max-w-[240px] md:max-w-[260px] lg:max-w-[280px] shadow-lg rounded-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer group bg-black">
                             <div className="relative w-full h-40 sm:h-44 overflow-hidden bg-black">
@@ -78,7 +77,7 @@ const AllEpisodes = () => {
                                     src={
                                         episode.still_path
                                             ? `https://image.tmdb.org/t/p/w500${episode.still_path}`
-                                            : "./Image-not-found.png"
+                                            : "/Image-not-found.png"
                                     }
                                     alt={episode.name}
                                     className="absolute inset-0 w-full h-full object-cover group-hover:opacity-90 transition-opacity"

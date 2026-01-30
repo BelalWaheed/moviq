@@ -13,6 +13,7 @@ import {
 import { motion } from "framer-motion";
 import { GetSeriesEpisodesDetails } from "../../../redux/SeriesSlices/GetRequest/SeriesEpisodes/GetSeriesEpisodesDetails";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import GuestStarsSection from "../SeriesEpisodes/Sections/GuestStarsSection";
 import CrewSection from "./Sections/CrewSection";
 import { FaCircleInfo } from "react-icons/fa6";
@@ -22,6 +23,7 @@ import UserRateSection from "./Sections/UserRateSection";
 
 const EpisodeDetailsCard = () => {
     const dispatch = useDispatch();
+    const { seriesId, seasonNumber, episodeNumber } = useParams();
     const { SeriesEpisodesData } = useSelector(
         state => state.SeriesEpisodesDataReducer
     );
@@ -30,16 +32,18 @@ const EpisodeDetailsCard = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, [SeriesEpisodesData]);
 
-    // if page was updated
+    // Fetch episode data using URL params
     useEffect(() => {
-        dispatch(
-            GetSeriesEpisodesDetails({
-                seriesId: localStorage.getItem("seriesId"),
-                seasonNumber: localStorage.getItem("seasonNumber"),
-                episodeNumber: localStorage.getItem("episodeNumber")
-            })
-        );
-    }, []);
+        if (seriesId && seasonNumber && episodeNumber) {
+            dispatch(
+                GetSeriesEpisodesDetails({
+                    seriesId: seriesId,
+                    seasonNumber: seasonNumber,
+                    episodeNumber: episodeNumber
+                })
+            );
+        }
+    }, [dispatch, seriesId, seasonNumber, episodeNumber]);
 
     return (
         <div className="relative w-full min-h-screen bg-black text-white font-poppins">

@@ -1,7 +1,7 @@
 import { Button } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { GetSeriesAggregateCredits } from "../../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesAggregateCredits";
 import MovieLoader from "../../loading/MovieLoader";
@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 function AllCastSeries() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { id: seriesId } = useParams();
     const {
         SeriesAggregateCreditsDetails,
         SeriesAggregateCreditsDetailsLoading,
@@ -27,15 +28,16 @@ function AllCastSeries() {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, [SeriesAggregateCreditsDetails]);
 
-    // if page was updated
+    // Fetch data using URL param
     useEffect(() => {
-        dispatch(
-            GetSeriesAggregateCredits({
-                seriesId: localStorage.getItem("seriesId"),
-                seasonNumber: localStorage.getItem("seasonNumber")
-            })
-        );
-    }, []);
+        if (seriesId) {
+            dispatch(
+                GetSeriesAggregateCredits({
+                    seriesId: seriesId
+                })
+            );
+        }
+    }, [dispatch, seriesId]);
 
     // Hide / Show Buttons on Scroll
     useEffect(() => {
@@ -73,7 +75,7 @@ function AllCastSeries() {
                                 <motion.button
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.95 }}
-                                    onClick={() => navigate("/SeriesDetails")}
+                                    onClick={() => navigate(`/series/${seriesId}`)}
                                     className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-800 px-5 py-2 rounded-full shadow-md hover:shadow-red-500/30 transition">
                                     <IoArrowBackOutline className="w-5 h-5 text-white" />
                                     <span className="text-white font-medium">
@@ -96,11 +98,7 @@ function AllCastSeries() {
                                                 personId: actor.id
                                             })
                                         );
-                                        localStorage.setItem(
-                                            "personId",
-                                            actor.id
-                                        );
-                                        navigate("/PersonalInfo");
+                                        navigate(`/person/${actor.id}`);
                                     }}
                                     key={actor.id}
                                     className="bg-zinc-900 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer">
