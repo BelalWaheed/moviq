@@ -15,6 +15,7 @@ import { Card, CardBody } from "@material-tailwind/react";
 import { FaStar } from "react-icons/fa";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import MoviePagination from "./MoviePagination";
+import SEO from "../../components/seo/SEO";
 
 function Movies() {
   const dispatch = useDispatch();
@@ -22,6 +23,17 @@ function Movies() {
 
   const { moviesList, moviesLoading, typing, moviesError, page, currentType } =
     useSelector((state) => state.moviesReducer);
+
+  // Get display name for current type
+  const getTypeName = () => {
+    const types = {
+      now_playing: "Now Playing",
+      popular: "Popular",
+      top_rated: "Top Rated",
+      upcoming: "Upcoming"
+    };
+    return types[typing] || "Movies";
+  };
 
   // Scroll to top
   useEffect(() => {
@@ -47,6 +59,13 @@ function Movies() {
 
   return (
     <div className="bg-black min-h-screen">
+      <SEO 
+        title={`${getTypeName()} Movies`}
+        description={`Browse ${getTypeName().toLowerCase()} movies. Find the best films to watch, from blockbusters to hidden gems.`}
+        keywords={`${getTypeName().toLowerCase()} movies, films, cinema, watch movies, movie list`}
+        type="website"
+      />
+      
       <div className="px-6 lg:px-12 py-12">
         <h1 className="text-white text-center md:text-start lg:text-start xl:text-start text-4xl sm:text-4xl lg:text-6xl font-bold mb-6">
           Movies

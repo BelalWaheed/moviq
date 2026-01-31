@@ -62,7 +62,7 @@ const MovieWatchProvidersSection = () => {
         .map(coun => coun.iso2);
 
     return (
-        <div className="container mx-8 md:mx-auto relative w-full md:w-1/2 min-h-fit z-[1] mt-6">
+        <div className="container mx-auto px-4 md:px-0 relative w-full md:w-1/2 min-h-fit z-[1] mt-6">
             {/* Header */}
             <div
                 onClick={() => setIsOpen(!isOpen)}

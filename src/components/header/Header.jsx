@@ -14,7 +14,7 @@ import { RequestSingOut } from "../../redux/AuthSlices/RequestSignOut";
 
 // Navigation links
 const navLinks = [
-    { to: "/", label: "Home" },
+    // { to: "/", label: "Home" },
     { to: "/movies", label: "Movies" },
     { to: "/series", label: "Series" }
 ];
@@ -120,39 +120,37 @@ export default function Header() {
 
     return (
         // Header wrapper
-        <header className="bg-background-primary/95 backdrop-blur-md border-b border-background-elevated/50 sticky top-0  z-50 shadow-lg">
-            <div className="max-w-7xl  mx-auto p-2  sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-12">
+        <header className="bg-background-primary/95 backdrop-blur-md border-background -elevated/50 sticky top-0 z-50 shadow-lg">
+            <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2">
+                <div className="flex items-center justify-between h-14 md:h-16 gap-2">
                     {/* Left: Logo */}
-                    <div className="flex items-center gap-3">
-                        <Link to="/" className="flex items-center gap-2 group">
+                    <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
+                        <motion.div
+                            whileHover={{ rotate: 6, scale: 1.03 }}
+                            transition={{ duration: 0.24 }}
+                            className="relative">
+                            <Film className="w-5 md:w-7 text-accent-primary" />
                             <motion.div
-                                whileHover={{ rotate: 6, scale: 1.03 }}
-                                transition={{ duration: 0.24 }}
-                                className="relative">
-                                <Film className="w-5 md:w-7 text-accent-primary" />
-                                <motion.div
-                                    animate={{
-                                        scale: [1, 1.08, 1],
-                                        opacity: [0.5, 0.9, 0.5]
-                                    }}
-                                    transition={{
-                                        duration: 2.8,
-                                        repeat: Infinity
-                                    }}
-                                    className="absolute inset-0 bg-accent-primary rounded-full blur-md opacity-40"
-                                />
-                            </motion.div>
+                                animate={{
+                                    scale: [1, 1.08, 1],
+                                    opacity: [0.5, 0.9, 0.5]
+                                }}
+                                transition={{
+                                    duration: 2.8,
+                                    repeat: Infinity
+                                }}
+                                className="absolute inset-0 bg-accent-primary rounded-full blur-md opacity-40"
+                            />
+                        </motion.div>
 
-                            <span className="text-xl md:text-2xl mr-1 font-black bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-primary bg-clip-text text-transparent">
-                                Moviq
-                            </span>
-                        </Link>
-                    </div>
+                        <span className="text-lg md:text-2xl font-black bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-primary bg-clip-text text-transparent">
+                            Moviq
+                        </span>
+                    </Link>
 
-                    {/* Desktop navigation */}
+                    {/* Center: Navigation - visible on all screens */}
                     <nav
-                        className="hidden md:flex md:items-center md:gap-2 search-scroll"
+                        className="flex items-center gap-2 md:gap-3"
                         aria-label="Primary">
                         {navLinks.map((l, idx) => (
                             <motion.div
@@ -162,7 +160,7 @@ export default function Header() {
                                 transition={{ delay: idx * 0.08 }}>
                                 <Link
                                     to={l.to}
-                                    className={`relative px-4 py-2 rounded-lg text-md font-medium transition-all ${
+                                    className={`whitespace-nowrap px-4 md:px-5 py-2 md:py-2.5 rounded-xl text-sm md:text-base font-semibold transition-all ${
                                         isActive(l.to)
                                             ? "text-accent-primary bg-accent-primary/10 border border-accent-primary/20"
                                             : "text-text-secondary hover:text-text-primary hover:bg-background-elevated"
@@ -174,10 +172,13 @@ export default function Header() {
                     </nav>
 
                     {/* Right side elements */}
-                    <div className="flex items-center gap-3">
-                        {/* Desktop search bar */}
-                        <div className="hidden md:flex items-center gap-3">
+                    <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
+                        {/* Search bar - icon on mobile, full on desktop */}
+                        <div className="hidden md:block">
                             <Search />
+                        </div>
+                        <div className="md:hidden">
+                            <Search iconOnly />
                         </div>
 
                         {/* TMDB connect button or loading */}
@@ -185,7 +186,7 @@ export default function Header() {
                             // Loading State
                             <div className="flex items-center gap-2 text-sm text-text-secondary">
                                 <span className="w-4 h-4 border-2 border-t-transparent border-white/70 rounded-full animate-spin"></span>
-                                <span>Loading...</span>
+                                <span className="hidden md:inline">Loading...</span>
                             </div>
                         ) : (
                             !isLogged && (
@@ -198,7 +199,7 @@ export default function Header() {
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.97 }}
                                     className="flex items-center gap-2 bg-background-muted/80 text-white text-xs font-semibold px-2 py-1.5 md:px-4 md:py-2 rounded-md shadow-md hover:bg-[#009fc9] transition-all">
-                                    login
+                                    Login
                                 </motion.button>
                             )
                         )}
@@ -220,9 +221,9 @@ export default function Header() {
                                                 : `https://www.gravatar.com/avatar/${AccountInfoDetails?.avatar?.gravatar?.hash}?d=mp`
                                         }
                                         alt="avatar"
-                                        className="w-9 h-9 rounded-full border border-accent-primary/40"
+                                        className="w-8 h-8 md:w-9 md:h-9 rounded-full border border-accent-primary/40"
                                     />
-                                    <span className="text-text-primary font-medium text-sm">
+                                    <span className="hidden md:inline text-text-primary font-medium text-sm">
                                         {AccountInfoDetails?.username}
                                     </span>
                                 </motion.div>
@@ -277,29 +278,6 @@ export default function Header() {
                                 </AnimatePresence>
                             </div>
                         )}
-                    </div>
-                </div>
-
-                {/* Mobile layout */}
-                <div className="md:hidden border-t border-background-elevated/50 bg-background-primary">
-                    <div className="flex justify-between items-center px-3 ">
-                        <div className="flex gap-2 overflow-x-auto">
-                            {navLinks.map(l => (
-                                <Link
-                                    key={l.to}
-                                    to={l.to}
-                                    className={`flex-shrink-0 px-2  rounded-lg text-sm font-medium transition-all ${
-                                        isActive(l.to)
-                                            ? "text-accent-primary bg-accent-primary/10 border border-accent-primary/20"
-                                            : "text-text-secondary hover:text-text-primary hover:bg-background-elevated"
-                                    }`}>
-                                    {l.label}
-                                </Link>
-                            ))}
-                        </div>
-
-                        {/* Mobile search icon */}
-                        <Search iconOnly />
                     </div>
                 </div>
             </div>

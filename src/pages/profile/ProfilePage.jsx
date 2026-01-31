@@ -31,6 +31,7 @@ import { signOut } from "../../redux/AuthSlices/AccountInfo";
 import { RequestSingOut } from "../../redux/AuthSlices/RequestSignOut";
 import { getMovieDetails } from "../../redux/moviesSlices/getMovieDetails";
 import { getSeriesDetails } from "../../redux/SeriesSlices/GetRequest/SeriesDetails/GetSeriesDetails";
+import SEO from "../../components/seo/SEO";
 
 const ProfilePage = () => {
     const dispatch = useDispatch();
@@ -183,6 +184,13 @@ const ProfilePage = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-background-primary via-background-elevated to-background-primary">
+            <SEO 
+                title={`${AccountInfoDetails?.username || "User"}'s Profile`}
+                description={`View ${AccountInfoDetails?.username || "user"}'s favorite movies and TV series, watchlist, and ratings on Moviq.`}
+                keywords="profile, favorites, watchlist, ratings, movies, TV series"
+                type="profile"
+            />
+            
             {/* Hero Section with Profile Info */}
             <div className="relative overflow-hidden">
                 {/* Background gradient */}

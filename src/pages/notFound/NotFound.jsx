@@ -1,9 +1,19 @@
 import { motion } from "framer-motion";
 import { FaExclamationTriangle } from "react-icons/fa";
+import SEO from "../../components/seo/SEO";
 
 function NotFound() {
   return (
     <div className="bg-background-primary min-h-[484px] flex flex-col items-center justify-center py-20">
+      <SEO 
+        title="Page Not Found"
+        description="The page you're looking for doesn't exist or has been moved."
+        keywords="404, not found, error, page not found"
+      />
+      
+      {/* Visually hidden H1 for SEO */}
+      <h1 className="sr-only">Error - Page Not Found</h1>
+      
       <motion.div
         className="relative w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center"
         animate={{
