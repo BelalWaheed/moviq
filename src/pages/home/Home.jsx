@@ -14,6 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/autoplay";
 import TopCard from "./TopCard";
+import SEO from "../../components/seo/SEO";
 
 const POSTER = (path) =>
   path ? `https://image.tmdb.org/t/p/w500${path}` : "/placeholder.png";
@@ -76,6 +77,15 @@ function Home() {
 
   return (
     <main className="HomePageaa min-h-screen bg-background-primary text-text-primary relative overflow-hidden">
+      <SEO 
+        title="Home"
+        description="Discover trending movies and TV series. Browse top-rated films, latest releases, and popular shows on Moviq."
+        keywords="movies, TV series, trending, top rated, new releases, streaming, entertainment"
+      />
+      
+      {/* Visually hidden H1 for SEO */}
+      <h1 className="sr-only">Moviq - Discover Movies and TV Series</h1>
+      
       <div className="relative z-10">
         <MovieCarousel />
 

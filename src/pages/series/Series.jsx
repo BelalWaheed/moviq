@@ -12,6 +12,7 @@ import {
     setType
 } from "../../redux/SeriesSlices/SeriesSlice";
 import NotFound from "../notFound/NotFound";
+import SEO from "../../components/seo/SEO";
 
 function Series() {
     const dispatch = useDispatch();
@@ -24,6 +25,18 @@ function Series() {
         page,
         currentType
     } = useSelector(state => state.seriesReducer);
+
+    // Get display name for current type
+    const getTypeName = () => {
+        const types = {
+            airing_today: "Airing Today",
+            on_the_air: "On The Air",
+            popular: "Popular",
+            top_rated: "Top Rated"
+        };
+        return types[typing] || "Series";
+    };
+
     // scroll to top
     useEffect(() => {
         window.scrollTo({
@@ -48,6 +61,13 @@ function Series() {
 
     return (
         <div className="bg-black min-h-screen">
+            <SEO 
+                title={`${getTypeName()} TV Series`}
+                description={`Browse ${getTypeName().toLowerCase()} TV series. Discover the best shows to binge-watch and new episodes airing now.`}
+                keywords={`${getTypeName().toLowerCase()} TV series, shows, episodes, streaming, binge watch`}
+                type="website"
+            />
+            
             <div className="px-6 lg:px-12 py-12">
                 <h1 className="text-white text-center md:text-start lg:text-start xl:text-start text-4xl sm:text-4xl lg:text-6xl font-bold mb-6">
                     Series
