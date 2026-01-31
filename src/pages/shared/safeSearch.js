@@ -1,26 +1,103 @@
 export function safeFilter(results = []) {
     if (!Array.isArray(results)) return [];
+const banned = [
+  // Core porn terms
+  "porn",
+  "porno",
+  "pornographic",
+  "xxx",
+  "xvideos",
+  "xhamster",
+  "redtube",
+  "youporn",
 
-    // Strict NSFW keywords (direct & unsafe)
-    const banned = [
-        "porn",
-        "pornographic",
-        "xxx",
-        "hentai",
-        "erotic",
-        "erotica",
-        "explicit sex",
-        "adult video",
-        "sexual acts",
-        "nsfw",
-        "nudity",
-        "nude",
-        "fetish",
-        "seduce",
-        "seduction"
-    ];
+  // NSFW / adult labels
+  "nsfw",
+  "18+",
+  "adult",
+  "adults only",
+  "explicit",
+  "uncensored",
 
-    const bannedRegex = new RegExp(`\\b(${banned.join("|")})\\b`, "i");
+  // Hentai / anime NSFW
+  "hentai",
+  "ecchi",
+  "doujin",
+  "doujinshi",
+  "yaoi",
+  "yuri",
+  "ahegao",
+  "tentacle",
+  "futanari",
+  "lewd",
+
+  // Sexual intent / behavior
+  "sex",
+  "sexual",
+  "sexualized",
+  "sexual content",
+  "sexual acts",
+  "intercourse",
+  "hardcore",
+  "softcore",
+  "orgy",
+  "orgies",
+  "threesome",
+  "gangbang",
+  "bdsm",
+  "kink",
+  "fetish",
+  "voyeur",
+  "exhibitionism",
+
+  // Nudity
+  "nudity",
+  "nude",
+  "naked",
+  "bare",
+  "topless",
+  "bottomless",
+
+  // Seduction / arousal
+  "erotic",
+  "erotica",
+  "sensual",
+  "lust",
+  "horny",
+  "seduce",
+  "seduction",
+  "foreplay",
+
+  // Sex work / platforms
+  "onlyfans",
+  "fansly",
+  "camgirl",
+  "camboy",
+  "camshow",
+  "webcam",
+  "escort",
+  "prostitution",
+  "hooker",
+  "strip",
+  "striptease",
+
+  // Common slang
+  "milf",
+  "nsfw anime",
+  "adult anime",
+  "rule 34",
+  "r34",
+  "D×D",
+  "Dirty ",
+  "vibrator",
+  "high school",
+  
+];
+
+const bannedRegex = new RegExp(
+  `\\b(${banned.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\b`,
+  "i"
+);
 
     // Genres that are not safe for HR-friendly environments
     const forbiddenGenres = ["romance", "adult"];
